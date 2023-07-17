@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.moondance</groupId>
+	<artifactId>nettty</artifactId>
+	<version>1.7.0</version>
+
+	<name>Nettty</name>
+	<description>Brain of God</description>
+
+	<developers>
+		<developer>
+			<id>thinian</id>
+			<name>Mark Miller</name>
+			<url>https://gitlab.com/philjord</url>
+			<organization>Moondance</organization>
+			<organizationUrl>http://www.moondance.com/</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:https://gitlab.com/Thinian/nettty.git</connection>
+		<developerConnection></developerConnection>
+		<tag>HEAD</tag>
+		<url>https://gitlab.com/Thinian/nettty</url>
+	</scm>
+
+	<properties>
+		<jogamp.version>2.3.2</jogamp.version>
+
+		<!-- NB: Avoid platform encoding warning when copying resources. -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jogamp.java3d</groupId>
+			<artifactId>java3d-core</artifactId>
+			<version>1.7.0</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.jogamp.java3d</groupId>
+			<artifactId>java3d-utils</artifactId>
+			<version>1.7.0</version>
+		</dependency>		
+	</dependencies>
+
+	<build>
+	
+		<defaultGoal>install</defaultGoal>
+
+		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+					<exclude>**/package.html</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<additionalJOption>-Xdoclint:none</additionalJOption>
+					<links>
+						<link>http://docs.oracle.com/javase/8/docs/api/</link>
+					</links>
+				</configuration>				
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
