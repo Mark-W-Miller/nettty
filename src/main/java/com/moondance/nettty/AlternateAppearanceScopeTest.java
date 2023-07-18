@@ -42,40 +42,25 @@
  * $State$
  */
 
-package org.jdesktop.j3d.examples.alternate_appearance;
+package com.moondance.nettty;
 
-import java.awt.Container;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.JApplet;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-
-import org.jogamp.java3d.AlternateAppearance;
-import org.jogamp.java3d.AmbientLight;
-import org.jogamp.java3d.Appearance;
-import org.jogamp.java3d.BoundingLeaf;
-import org.jogamp.java3d.BoundingSphere;
-import org.jogamp.java3d.Bounds;
-import org.jogamp.java3d.BranchGroup;
-import org.jogamp.java3d.Canvas3D;
-import org.jogamp.java3d.DirectionalLight;
-import org.jogamp.java3d.Group;
-import org.jogamp.java3d.Material;
-import org.jogamp.java3d.Shape3D;
+import com.moondance.nettty.graphics.SphereGroup;
+import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.applet.MainFrame;
+import org.jogamp.java3d.utils.behaviors.vp.OrbitBehavior;
 import org.jogamp.java3d.utils.universe.SimpleUniverse;
+import org.jogamp.java3d.utils.universe.ViewingPlatform;
 import org.jogamp.vecmath.Color3f;
 import org.jogamp.vecmath.Point3d;
 import org.jogamp.vecmath.Vector3f;
 
-public class AlternateAppearanceBoundsTest extends JApplet
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class AlternateAppearanceScopeTest extends JApplet
         implements ActionListener {
 
 
@@ -83,13 +68,14 @@ public class AlternateAppearanceBoundsTest extends JApplet
     Appearance app, otherApp;
     JComboBox altAppMaterialColor;
     JComboBox appMaterialColor;
-    JCheckBox useBoundingLeaf;
-    JCheckBox override;
-    JComboBox boundsType;
+    JComboBox altAppScoping;
+    JComboBox override;
     private Group content1 = null;
+    private Group content2 = null;
+    BoundingSphere worldBounds;
     AlternateAppearance altApp;
-    Shape3D[] shapes1;
-    boolean boundingLeafOn = false;
+    Shape3D[] shapes1, shapes2;
+    boolean shape1Enabled = false, shape2Enabled = false;
     // Globally used colors
     Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
     Color3f red = new Color3f(1.0f, 0.0f, 0.0f);
@@ -97,29 +83,9 @@ public class AlternateAppearanceBoundsTest extends JApplet
     Color3f blue = new Color3f(0.0f, 0.0f, 1.0f);
     Color3f[] colors = {white, red, green, blue};
 
-    private Bounds worldBounds = new BoundingSphere(
-            new Point3d(0.0, 0.0, 0.0),  // Center
-            1000.0);                      // Extent
-    private Bounds smallBounds = new BoundingSphere(
-            new Point3d(0.0, 0.0, 0.0),  // Center
-            0.25);                         // Extent
-    private Bounds tinyBounds = new BoundingSphere(
-            new Point3d(0.0, 0.0, 0.0),  // Center
-            0.05);                         // Extent
-    private BoundingLeaf leafBounds = null;
-    private int currentBounds = 2;
+    private SimpleUniverse u;
 
-    private Bounds[] allBounds = {tinyBounds, smallBounds, worldBounds};
-
-    DirectionalLight light1 = null;
-
-    // Get the current bounding leaf position
-    private int currentPosition = 0;
-    //    Point3f pos = (Point3f)positions[currentPosition].value;
-
-    private SimpleUniverse u = null;
-
-    public AlternateAppearanceBoundsTest() {
+    public AlternateAppearanceScopeTest() {
     }
 
     public void init() {
@@ -133,9 +99,20 @@ public class AlternateAppearanceBoundsTest extends JApplet
         // SimpleUniverse is a Convenience Utility class
         u = new SimpleUniverse(c);
 
+        // add mouse behaviors to the viewingPlatform
+        ViewingPlatform viewingPlatform = u.getViewingPlatform();
+
         // This will move the ViewPlatform back a bit so the
         // objects in the scene can be viewed.
-        u.getViewingPlatform().setNominalViewingTransform();
+        viewingPlatform.setNominalViewingTransform();
+
+        OrbitBehavior orbit = new OrbitBehavior(c,
+                OrbitBehavior.REVERSE_ALL);
+        BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
+                100.0);
+        orbit.setSchedulingBounds(bounds);
+        viewingPlatform.setViewPlatformBehavior(orbit);
+
         u.addBranchGraph(scene);
 
 
@@ -143,7 +120,7 @@ public class AlternateAppearanceBoundsTest extends JApplet
         JPanel p = new JPanel();
         BoxLayout boxlayout = new BoxLayout(p,
                 BoxLayout.Y_AXIS);
-        p.add(createBoundsPanel());
+        p.add(createScopingPanel());
         p.add(createMaterialPanel());
         p.setLayout(boxlayout);
 
@@ -157,7 +134,22 @@ public class AlternateAppearanceBoundsTest extends JApplet
     BranchGroup createSceneGraph() {
         BranchGroup objRoot = new BranchGroup();
 
-        // Create an alternate appearance
+        // Create influencing bounds
+        worldBounds = new BoundingSphere(
+                new Point3d(0.0, 0.0, 0.0),  // Center
+                1000.0);                      // Extent
+
+        Transform3D t = new Transform3D();
+        // move the object upwards
+        t.set(new Vector3f(0.0f, 0.1f, 0.0f));
+        // Shrink the object
+        t.setScale(0.8);
+
+        TransformGroup trans = new TransformGroup(t);
+        trans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        trans.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+
+
         otherApp = new Appearance();
         altMat = new Material();
         altMat.setCapability(Material.ALLOW_COMPONENT_WRITE);
@@ -166,12 +158,15 @@ public class AlternateAppearanceBoundsTest extends JApplet
 
         altApp = new AlternateAppearance();
         altApp.setAppearance(otherApp);
-        altApp.setCapability(AlternateAppearance.ALLOW_BOUNDS_WRITE);
-        altApp.setCapability(AlternateAppearance.ALLOW_INFLUENCING_BOUNDS_WRITE);
+        altApp.setCapability(AlternateAppearance.ALLOW_SCOPE_WRITE);
+        altApp.setCapability(AlternateAppearance.ALLOW_SCOPE_READ);
         altApp.setInfluencingBounds(worldBounds);
         objRoot.addChild(altApp);
 
-        // Build foreground geometry
+        // Build foreground geometry into two groups.  We'll
+        // create three directional lights below, one each with
+        // scope to cover the first geometry group only, the
+        // second geometry group only, or both geometry groups.
         Appearance app1 = new Appearance();
         mat1 = new Material();
         mat1.setCapability(Material.ALLOW_COMPONENT_WRITE);
@@ -179,27 +174,42 @@ public class AlternateAppearanceBoundsTest extends JApplet
         app1.setMaterial(mat1);
         content1 = new SphereGroup(
                 0.05f,   // radius of spheres
-                0.15f,    // x spacing
-                0.15f,   // y spacing
-                5,       // number of spheres in X
+                0.4f,    // x spacing
+                0.2f,   // y spacing
+                3,       // number of spheres in X
                 5,       // number of spheres in Y
                 app1, // appearance
                 true);  // alt app override = true
-        objRoot.addChild(content1);
+        trans.addChild(content1);
         shapes1 = ((SphereGroup) content1).getShapes();
+
+        content2 = new SphereGroup(
+                0.05f,   // radius of spheres
+                .4f,    // x spacing
+                0.2f,   // y spacing
+                2,       // number of spheres in X
+                5,       // number of spheres in Y
+                app1,   // appearance
+                true); // alt app override = true
+        trans.addChild(content2);
+        shapes2 = ((SphereGroup) content2).getShapes();
 
 
         // Add lights
+        DirectionalLight light1 = null;
         light1 = new DirectionalLight();
         light1.setEnable(true);
         light1.setColor(new Color3f(0.2f, 0.2f, 0.2f));
         light1.setDirection(new Vector3f(1.0f, 0.0f, -1.0f));
         light1.setInfluencingBounds(worldBounds);
-        light1.setCapability(
-                DirectionalLight.ALLOW_INFLUENCING_BOUNDS_WRITE);
-        light1.setCapability(
-                DirectionalLight.ALLOW_BOUNDS_WRITE);
         objRoot.addChild(light1);
+
+        DirectionalLight light2 = new DirectionalLight();
+        light2.setEnable(true);
+        light2.setColor(new Color3f(0.2f, 0.2f, 0.2f));
+        light2.setDirection(new Vector3f(-1.0f, 0.0f, 1.0f));
+        light2.setInfluencingBounds(worldBounds);
+        objRoot.addChild(light2);
 
         // Add an ambient light to dimly illuminate the rest of
         // the shapes in the scene to help illustrate that the
@@ -212,41 +222,29 @@ public class AlternateAppearanceBoundsTest extends JApplet
         objRoot.addChild(ambient);
 
 
-        // Define a bounding leaf
-        leafBounds = new BoundingLeaf(allBounds[currentBounds]);
-        leafBounds.setCapability(BoundingLeaf.ALLOW_REGION_WRITE);
-        objRoot.addChild(leafBounds);
-        if (boundingLeafOn) {
-            altApp.setInfluencingBoundingLeaf(leafBounds);
-        } else {
-            altApp.setInfluencingBounds(allBounds[currentBounds]);
-        }
-
+        objRoot.addChild(trans);
 
         return objRoot;
     }
 
-    JPanel createBoundsPanel() {
+    JPanel createScopingPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(new TitledBorder("Scopes"));
 
+        String[] values = {"Scoped Set1", "Scoped Set2", "Universal Scope"};
+        altAppScoping = new JComboBox(values);
+        altAppScoping.addActionListener(this);
+        altAppScoping.setSelectedIndex(2);
+        panel.add(new JLabel("Scoping"));
+        panel.add(altAppScoping);
 
-        String boundsValues[] = {"Tiny Bounds", "Small Bounds", "Big Bounds"};
 
-        boundsType = new JComboBox(boundsValues);
-        boundsType.addActionListener(this);
-        boundsType.setSelectedIndex(2);
-        panel.add(new JLabel("Bounds"));
-        panel.add(boundsType);
+        String[] enables = {"Enabled Set1", "Enabled Set2", "Enabled set1&2", "Disabled set1&2"};
 
-        useBoundingLeaf = new JCheckBox("Enable BoundingLeaf",
-                boundingLeafOn);
-        useBoundingLeaf.addActionListener(this);
-        panel.add(useBoundingLeaf);
-
-        override = new JCheckBox("Enable App Override",
-                false);
+        override = new JComboBox(enables);
         override.addActionListener(this);
+        override.setSelectedIndex(3);
+        panel.add(new JLabel("Alternate Appearance Override"));
         panel.add(override);
 
         return panel;
@@ -257,7 +255,7 @@ public class AlternateAppearanceBoundsTest extends JApplet
         JPanel panel = new JPanel();
         panel.setBorder(new TitledBorder("Appearance Attributes"));
 
-        String colorVals[] = {"WHITE", "RED", "GREEN", "BLUE"};
+        String[] colorVals = {"WHITE", "RED", "GREEN", "BLUE"};
 
         altAppMaterialColor = new JComboBox(colorVals);
         altAppMaterialColor.addActionListener(this);
@@ -278,34 +276,69 @@ public class AlternateAppearanceBoundsTest extends JApplet
     }
 
     public void actionPerformed(ActionEvent e) {
-        int i;
-
         Object target = e.getSource();
         if (target == altAppMaterialColor) {
             altMat.setDiffuseColor(colors[altAppMaterialColor.getSelectedIndex()]);
-        } else if (target == useBoundingLeaf) {
-            boundingLeafOn = useBoundingLeaf.isSelected();
-            if (boundingLeafOn) {
-                leafBounds.setRegion(allBounds[currentBounds]);
-                altApp.setInfluencingBoundingLeaf(leafBounds);
-            } else {
-                altApp.setInfluencingBoundingLeaf(null);
-                altApp.setInfluencingBounds(allBounds[currentBounds]);
+        } else if (target == altAppScoping) {
+            for (int i = 0; i < altApp.numScopes(); i++) {
+                altApp.removeScope(0);
             }
-
-        } else if (target == boundsType) {
-            currentBounds = boundsType.getSelectedIndex();
-            if (boundingLeafOn) {
-                leafBounds.setRegion(allBounds[currentBounds]);
-                altApp.setInfluencingBoundingLeaf(leafBounds);
-            } else {
-                altApp.setInfluencingBoundingLeaf(null);
-                altApp.setInfluencingBounds(allBounds[currentBounds]);
+            if (altAppScoping.getSelectedIndex() == 0) {
+                altApp.addScope(content1);
+            } else if (altAppScoping.getSelectedIndex() == 1) {
+                altApp.addScope(content2);
             }
-
         } else if (target == override) {
-            for (i = 0; i < shapes1.length; i++)
-                shapes1[i].setAppearanceOverrideEnable(override.isSelected());
+            int i;
+            if (override.getSelectedIndex() == 0) {
+                if (!shape1Enabled) {
+                    for (i = 0; i < shapes1.length; i++)
+                        shapes1[i].setAppearanceOverrideEnable(true);
+                    shape1Enabled = true;
+                }
+
+                if (shape2Enabled) {
+                    for (i = 0; i < shapes2.length; i++)
+                        shapes2[i].setAppearanceOverrideEnable(false);
+                    shape2Enabled = false;
+                }
+            } else if (override.getSelectedIndex() == 1) {
+                if (!shape2Enabled) {
+                    for (i = 0; i < shapes2.length; i++)
+                        shapes2[i].setAppearanceOverrideEnable(true);
+                    shape2Enabled = true;
+                }
+
+                if (shape1Enabled) {
+                    for (i = 0; i < shapes1.length; i++)
+                        shapes1[i].setAppearanceOverrideEnable(false);
+                    shape1Enabled = false;
+                }
+            } else if (override.getSelectedIndex() == 2) {
+                if (!shape1Enabled) {
+                    for (i = 0; i < shapes1.length; i++)
+                        shapes1[i].setAppearanceOverrideEnable(true);
+                    shape1Enabled = true;
+                }
+                if (!shape2Enabled) {
+                    for (i = 0; i < shapes2.length; i++)
+                        shapes2[i].setAppearanceOverrideEnable(true);
+                    shape2Enabled = true;
+                }
+            } else {
+                if (shape1Enabled) {
+                    for (i = 0; i < shapes1.length; i++)
+                        shapes1[i].setAppearanceOverrideEnable(false);
+                    shape1Enabled = false;
+                }
+
+                if (shape2Enabled) {
+                    for (i = 0; i < shapes2.length; i++)
+                        shapes2[i].setAppearanceOverrideEnable(false);
+                    shape2Enabled = false;
+                }
+            }
+
         } else if (target == appMaterialColor) {
             mat1.setDiffuseColor(colors[appMaterialColor.getSelectedIndex()]);
         }
@@ -315,7 +348,7 @@ public class AlternateAppearanceBoundsTest extends JApplet
 
     public static void main(String[] args) {
         System.setProperty("sun.awt.noerasebackground", "true");
-        Frame frame = new MainFrame(new AlternateAppearanceBoundsTest(), 800, 800);
+        Frame frame = new MainFrame(new AlternateAppearanceScopeTest(), 800, 800);
     }
 
 }			   
