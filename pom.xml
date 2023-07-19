@@ -49,7 +49,12 @@
 			<groupId>org.jogamp.java3d</groupId>
 			<artifactId>java3d-utils</artifactId>
 			<version>1.7.0</version>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.21</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -44,35 +44,18 @@
 
 package com.moondance.nettty.graphics;
 
+import com.moondance.nettty.model.Nett;
+import com.moondance.nettty.model.Particle;
+import com.moondance.nettty.model.Spin;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.geometry.Primitive;
 import org.jogamp.java3d.utils.geometry.Sphere;
 import org.jogamp.vecmath.Color3f;
 import org.jogamp.vecmath.Vector3d;
 
-public class SphereGroup
+public class ParticleGroup
         extends Group {
-    Shape3D[] shapes;
-    int numShapes = 0;
-
-    //  Constructors
-    public SphereGroup() {
-        //    radius   x,y spacing   x,y count  appearance
-        this(0.25f, 0.75f, 0.75f, 5, 5, null, false);
-    }
-
-    public SphereGroup(Appearance app) {
-        //    radius   x,y spacing   x,y count  appearance
-        this(0.25f, 0.75f, 0.75f, 5, 5, app, false);
-    }
-
-    public SphereGroup(float radius, float xSpacing, float ySpacing,
-                       int xCount, int yCount, boolean overrideflag) {
-        this(radius, xSpacing, ySpacing, xCount, yCount, null, overrideflag);
-    }
-
-    public SphereGroup(float radius, float xSpacing, float ySpacing,
-                       int xCount, int yCount, Appearance app, boolean overrideflag) {
+    public ParticleGroup(Particle particle,Appearance app) {
         if (app == null) {
             app = new Appearance();
             Material material = new Material();
@@ -80,43 +63,28 @@ public class SphereGroup
             material.setSpecularColor(new Color3f(0.0f, 0.0f, 0.0f));
             material.setShininess(0.0f);
             app.setMaterial(material);
+            TransparencyAttributes opacity = new TransparencyAttributes();
+            opacity.setTransparency(0.4f);
+            app.setTransparencyAttributes(opacity);
         }
 
-        double xStart = -xSpacing * (double) (xCount - 1) / 2.0;
-        double yStart = -ySpacing * (double) (yCount - 1) / 2.0;
-
-        Sphere sphere = null;
-        TransformGroup trans = null;
-        Transform3D t3d = new Transform3D();
+        Sphere sphere;
+        TransformGroup trans;
         Vector3d vec = new Vector3d();
-        double x, y = yStart, z = 0.0;
-        shapes = new Shape3D[xCount * yCount];
-        for (int i = 0; i < yCount; i++) {
-            x = xStart;
-            for (int j = 0; j < xCount; j++) {
-                vec.set(x, y, z);
-                t3d.setTranslation(vec);
-                trans = new TransformGroup(t3d);
-                addChild(trans);
+        vec.set(particle.getPosition());
+        Transform3D t3d = new Transform3D();
+        t3d.setTranslation(vec);
+        for (Spin spin : particle.getSpins()) {
+            trans = new TransformGroup(t3d);
+            addChild(trans);
 
-                sphere = new Sphere(
-                        radius,     // sphere radius
-                        Primitive.GENERATE_NORMALS,  // generate normals
-                        16,         // 16 divisions radially
-                        app);      // it's appearance
-                trans.addChild(sphere);
-                x += xSpacing;
-                shapes[numShapes] = sphere.getShape();
-                if (overrideflag)
-                    shapes[numShapes].setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
-                numShapes++;
-            }
-            y += ySpacing;
+            sphere = new Sphere(
+                    spin.getShell(),     // sphere radius
+                    Primitive.GENERATE_NORMALS,  // generate normals
+                    8,         // 16 divisions radially
+                    app);      // it's appearance
+            trans.addChild(sphere);
+            sphere.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         }
     }
-
-    public Shape3D[] getShapes() {
-        return shapes;
-    }
-
 }

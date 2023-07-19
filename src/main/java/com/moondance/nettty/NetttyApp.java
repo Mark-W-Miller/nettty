@@ -44,7 +44,13 @@
 
 package com.moondance.nettty;
 
-import com.moondance.nettty.graphics.SphereGroup;
+import com.moondance.nettty.graphics.NettGroup;
+
+import static com.moondance.nettty.Script.loadNett;
+import static com.moondance.nettty.model.Nett.*;
+
+import com.moondance.nettty.model.Nett;
+import lombok.SneakyThrows;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.applet.MainFrame;
 import org.jogamp.java3d.utils.behaviors.vp.OrbitBehavior;
@@ -59,23 +65,20 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
-public class AlternateAppearanceScopeTest extends JApplet
+public class NetttyApp extends JApplet
         implements ActionListener {
 
 
-    Material mat1, altMat;
-    Appearance app, otherApp;
+    Material material;
+    Appearance app;
     JComboBox altAppMaterialColor;
     JComboBox appMaterialColor;
     JComboBox altAppScoping;
     JComboBox override;
-    private Group content1 = null;
-    private Group content2 = null;
+    private NettGroup content = null;
     BoundingSphere worldBounds;
-    AlternateAppearance altApp;
-    Shape3D[] shapes1, shapes2;
-    boolean shape1Enabled = false, shape2Enabled = false;
     // Globally used colors
     Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
     Color3f red = new Color3f(1.0f, 0.0f, 0.0f);
@@ -85,9 +88,10 @@ public class AlternateAppearanceScopeTest extends JApplet
 
     private SimpleUniverse u;
 
-    public AlternateAppearanceScopeTest() {
+    public NetttyApp() {
     }
 
+    @SneakyThrows
     public void init() {
         System.setProperty("sun.awt.noerasebackground", "true");
         Container contentPane = getContentPane();
@@ -96,7 +100,26 @@ public class AlternateAppearanceScopeTest extends JApplet
         contentPane.add("Center", c);
 
         BranchGroup scene = createSceneGraph();
-        // SimpleUniverse is a Convenience Utility class
+
+        configureSimpleUniverse(c);
+
+        u.addBranchGraph(scene);
+
+        buildUI(contentPane);
+    }
+
+    private void buildUI(Container contentPane) {
+        JPanel p = new JPanel();
+        BoxLayout boxlayout = new BoxLayout(p,
+                BoxLayout.Y_AXIS);
+        p.add(createScopingPanel());
+        p.add(createMaterialPanel());
+        p.setLayout(boxlayout);
+
+        contentPane.add("South", p);
+    }
+
+    private void configureSimpleUniverse(Canvas3D c) {
         u = new SimpleUniverse(c);
 
         // add mouse behaviors to the viewingPlatform
@@ -112,26 +135,13 @@ public class AlternateAppearanceScopeTest extends JApplet
                 100.0);
         orbit.setSchedulingBounds(bounds);
         viewingPlatform.setViewPlatformBehavior(orbit);
-
-        u.addBranchGraph(scene);
-
-
-        // Create GUI
-        JPanel p = new JPanel();
-        BoxLayout boxlayout = new BoxLayout(p,
-                BoxLayout.Y_AXIS);
-        p.add(createScopingPanel());
-        p.add(createMaterialPanel());
-        p.setLayout(boxlayout);
-
-        contentPane.add("South", p);
     }
 
     public void destroy() {
         u.cleanup();
     }
 
-    BranchGroup createSceneGraph() {
+    BranchGroup createSceneGraph() throws IOException {
         BranchGroup objRoot = new BranchGroup();
 
         // Create influencing bounds
@@ -149,52 +159,22 @@ public class AlternateAppearanceScopeTest extends JApplet
         trans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         trans.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 
-
-        otherApp = new Appearance();
-        altMat = new Material();
-        altMat.setCapability(Material.ALLOW_COMPONENT_WRITE);
-        altMat.setDiffuseColor(new Color3f(0.0f, 1.0f, 0.0f));
-        otherApp.setMaterial(altMat);
-
-        altApp = new AlternateAppearance();
-        altApp.setAppearance(otherApp);
-        altApp.setCapability(AlternateAppearance.ALLOW_SCOPE_WRITE);
-        altApp.setCapability(AlternateAppearance.ALLOW_SCOPE_READ);
-        altApp.setInfluencingBounds(worldBounds);
-        objRoot.addChild(altApp);
-
-        // Build foreground geometry into two groups.  We'll
-        // create three directional lights below, one each with
-        // scope to cover the first geometry group only, the
-        // second geometry group only, or both geometry groups.
         Appearance app1 = new Appearance();
-        mat1 = new Material();
-        mat1.setCapability(Material.ALLOW_COMPONENT_WRITE);
-        mat1.setDiffuseColor(new Color3f(1.0f, 0.0f, 0.0f));
-        app1.setMaterial(mat1);
-        content1 = new SphereGroup(
-                0.05f,   // radius of spheres
-                0.4f,    // x spacing
-                0.2f,   // y spacing
-                3,       // number of spheres in X
-                5,       // number of spheres in Y
-                app1, // appearance
-                true);  // alt app override = true
-        trans.addChild(content1);
-        shapes1 = ((SphereGroup) content1).getShapes();
+        material = new Material();
+        material.setCapability(Material.ALLOW_COMPONENT_WRITE);
+        material.setDiffuseColor(new Color3f(1.0f, 0.0f, 0.0f));
+        app1.setMaterial(material);
+        Nett nett = loadNett("NetttyTest.yaml") ;
+        content = new NettGroup(Nettty,null);
+        trans.addChild(content);
 
-        content2 = new SphereGroup(
-                0.05f,   // radius of spheres
-                .4f,    // x spacing
-                0.2f,   // y spacing
-                2,       // number of spheres in X
-                5,       // number of spheres in Y
-                app1,   // appearance
-                true); // alt app override = true
-        trans.addChild(content2);
-        shapes2 = ((SphereGroup) content2).getShapes();
+        addLights(objRoot);
+        objRoot.addChild(trans);
 
+        return objRoot;
+    }
 
+    private void addLights(BranchGroup objRoot) {
         // Add lights
         DirectionalLight light1 = null;
         light1 = new DirectionalLight();
@@ -220,11 +200,6 @@ public class AlternateAppearanceScopeTest extends JApplet
         ambient.setColor(new Color3f(1.0f, 1.0f, 1.0f));
         ambient.setInfluencingBounds(worldBounds);
         objRoot.addChild(ambient);
-
-
-        objRoot.addChild(trans);
-
-        return objRoot;
     }
 
     JPanel createScopingPanel() {
@@ -278,69 +253,18 @@ public class AlternateAppearanceScopeTest extends JApplet
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
         if (target == altAppMaterialColor) {
-            altMat.setDiffuseColor(colors[altAppMaterialColor.getSelectedIndex()]);
         } else if (target == altAppScoping) {
-            for (int i = 0; i < altApp.numScopes(); i++) {
-                altApp.removeScope(0);
-            }
-            if (altAppScoping.getSelectedIndex() == 0) {
-                altApp.addScope(content1);
-            } else if (altAppScoping.getSelectedIndex() == 1) {
-                altApp.addScope(content2);
-            }
+
         } else if (target == override) {
             int i;
             if (override.getSelectedIndex() == 0) {
-                if (!shape1Enabled) {
-                    for (i = 0; i < shapes1.length; i++)
-                        shapes1[i].setAppearanceOverrideEnable(true);
-                    shape1Enabled = true;
-                }
-
-                if (shape2Enabled) {
-                    for (i = 0; i < shapes2.length; i++)
-                        shapes2[i].setAppearanceOverrideEnable(false);
-                    shape2Enabled = false;
-                }
             } else if (override.getSelectedIndex() == 1) {
-                if (!shape2Enabled) {
-                    for (i = 0; i < shapes2.length; i++)
-                        shapes2[i].setAppearanceOverrideEnable(true);
-                    shape2Enabled = true;
-                }
-
-                if (shape1Enabled) {
-                    for (i = 0; i < shapes1.length; i++)
-                        shapes1[i].setAppearanceOverrideEnable(false);
-                    shape1Enabled = false;
-                }
             } else if (override.getSelectedIndex() == 2) {
-                if (!shape1Enabled) {
-                    for (i = 0; i < shapes1.length; i++)
-                        shapes1[i].setAppearanceOverrideEnable(true);
-                    shape1Enabled = true;
-                }
-                if (!shape2Enabled) {
-                    for (i = 0; i < shapes2.length; i++)
-                        shapes2[i].setAppearanceOverrideEnable(true);
-                    shape2Enabled = true;
-                }
             } else {
-                if (shape1Enabled) {
-                    for (i = 0; i < shapes1.length; i++)
-                        shapes1[i].setAppearanceOverrideEnable(false);
-                    shape1Enabled = false;
-                }
-
-                if (shape2Enabled) {
-                    for (i = 0; i < shapes2.length; i++)
-                        shapes2[i].setAppearanceOverrideEnable(false);
-                    shape2Enabled = false;
-                }
             }
 
         } else if (target == appMaterialColor) {
-            mat1.setDiffuseColor(colors[appMaterialColor.getSelectedIndex()]);
+            material.setDiffuseColor(colors[appMaterialColor.getSelectedIndex()]);
         }
 
     }
@@ -348,7 +272,7 @@ public class AlternateAppearanceScopeTest extends JApplet
 
     public static void main(String[] args) {
         System.setProperty("sun.awt.noerasebackground", "true");
-        Frame frame = new MainFrame(new AlternateAppearanceScopeTest(), 800, 800);
+        Frame frame = new MainFrame(new NetttyApp(), 800, 800);
     }
 
 }			   
