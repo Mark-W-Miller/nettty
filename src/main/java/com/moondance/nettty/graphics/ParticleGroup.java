@@ -64,6 +64,7 @@ public class ParticleGroup
             material.setShininess(0.0f);
             app.setMaterial(material);
             TransparencyAttributes opacity = new TransparencyAttributes();
+            opacity.setTransparencyMode(TransparencyAttributes.NICEST);
             opacity.setTransparency(0.4f);
             app.setTransparencyAttributes(opacity);
         }

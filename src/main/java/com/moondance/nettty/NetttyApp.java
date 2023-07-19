@@ -86,7 +86,7 @@ public class NetttyApp extends JApplet
     Color3f blue = new Color3f(0.0f, 0.0f, 1.0f);
     Color3f[] colors = {white, red, green, blue};
 
-    private SimpleUniverse u;
+    private SimpleUniverse universe;
 
     public NetttyApp() {
     }
@@ -96,14 +96,11 @@ public class NetttyApp extends JApplet
         System.setProperty("sun.awt.noerasebackground", "true");
         Container contentPane = getContentPane();
 
-        Canvas3D c = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
-        contentPane.add("Center", c);
+        Canvas3D canvas3D = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
+        contentPane.add("Center", canvas3D);
 
-        BranchGroup scene = createSceneGraph();
+        configureSimpleUniverse(canvas3D);
 
-        configureSimpleUniverse(c);
-
-        u.addBranchGraph(scene);
 
         buildUI(contentPane);
     }
@@ -119,26 +116,26 @@ public class NetttyApp extends JApplet
         contentPane.add("South", p);
     }
 
-    private void configureSimpleUniverse(Canvas3D c) {
-        u = new SimpleUniverse(c);
+    private void configureSimpleUniverse(Canvas3D canvas3D) throws IOException {
+        universe = new SimpleUniverse(canvas3D);
 
         // add mouse behaviors to the viewingPlatform
-        ViewingPlatform viewingPlatform = u.getViewingPlatform();
+        ViewingPlatform viewingPlatform = universe.getViewingPlatform();
 
         // This will move the ViewPlatform back a bit so the
         // objects in the scene can be viewed.
         viewingPlatform.setNominalViewingTransform();
 
-        OrbitBehavior orbit = new OrbitBehavior(c,
-                OrbitBehavior.REVERSE_ALL);
+        OrbitBehavior orbit = new OrbitBehavior(canvas3D, OrbitBehavior.REVERSE_ALL);
         BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
                 100.0);
         orbit.setSchedulingBounds(bounds);
         viewingPlatform.setViewPlatformBehavior(orbit);
+        universe.addBranchGraph(createSceneGraph());
     }
 
     public void destroy() {
-        u.cleanup();
+        universe.cleanup();
     }
 
     BranchGroup createSceneGraph() throws IOException {
@@ -165,7 +162,7 @@ public class NetttyApp extends JApplet
         material.setDiffuseColor(new Color3f(1.0f, 0.0f, 0.0f));
         app1.setMaterial(material);
         Nett nett = loadNett("NetttyTest.yaml") ;
-        content = new NettGroup(Nettty,null);
+        content = new NettGroup(nett,null);
         trans.addChild(content);
 
         addLights(objRoot);
