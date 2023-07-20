@@ -1,0 +1,52 @@
+particles:
+  - id: 0
+    motionVectorStr: "0 1 0"
+    positionStr: "0 0 0"
+    spins:
+      - id: 0
+        shell: 1
+        rotationAxisStr: "0 1 0"
+  - id: 1
+    motionVectorStr: "0 1 0"
+    positionStr: "5 0 0"
+    spins:
+      - id: 0
+        shell: 2
+        rotationAxisStr: "0 -1 0"
+  - id: 2
+    motionVectorStr: "20 0 0"
+    positionStr: "10 0 0"
+    spins:
+      - id: 0
+        shell: 3
+        rotationAxisStr: "0 0 1"
+  - id: 3
+    motionVectorStr: "20 0 0"
+    positionStr: "15 0 0"
+    spins:
+      - id: 0
+        shell: 2
+        rotationAxisStr: "1 1 1"
+  - id: 4
+    motionVectorStr: "20 0 0"
+    positionStr: "20 0 0"
+    spins:
+      - id: 0
+        shell: 1
+        rotationAxisStr: "1 1 0"
+  - id: 5
+    motionVectorStr: "20 0 0"
+    positionStr: "25 0 0"
+    spins:
+      - id: 0
+        shell: 1
+        rotationAxisStr: "0 1 1"
+  - id: 5
+    motionVectorStr: "20 0 0"
+    positionStr: "100 0 0"
+    spins:
+      - id: 0
+        shell: 8
+        rotationAxisStr: "1 1 1"
+
+

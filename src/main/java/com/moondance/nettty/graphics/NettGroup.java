@@ -88,7 +88,7 @@ public class NettGroup
     public static Appearance makeShaderAppearance(){
 //        TextureLoader loader = new TextureLoader("K:\\3d\\Arizona.jpg",
 //                "LUMINANCE", new Container());
-        Texture texture = Images.spinTexture;
+        Texture texture = Images.getSpinTexture();
         texture.setBoundaryModeS(Texture.WRAP);
         texture.setBoundaryModeT(Texture.WRAP);
         texture.setBoundaryColor(new Color4f(0.0f, 1.0f, 0.0f, 0.0f));

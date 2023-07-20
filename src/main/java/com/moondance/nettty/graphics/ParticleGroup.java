@@ -94,7 +94,7 @@ public class ParticleGroup
             TransformGroup rotatorTransform = new TransformGroup();
             rotatorTransform.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             Transform3D yAxis = new Transform3D();
-            AxisAngle4d aa = new AxisAngle4d(spin.getRotationAxis(),0*Math.PI);
+            AxisAngle4d aa = new AxisAngle4d(spin.getRotationAxis(),Math.PI);
             yAxis.setRotation(aa);
             Alpha rotor1Alpha = new Alpha(-1, Alpha.INCREASING_ENABLE,
                     0, 0,

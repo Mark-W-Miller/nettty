@@ -45,15 +45,8 @@
 package com.moondance.nettty;
 
 import com.moondance.nettty.graphics.NettGroup;
-
-import static com.moondance.nettty.Script.loadNett;
-import static com.moondance.nettty.model.Nett.*;
-
 import com.moondance.nettty.model.Nett;
-import lombok.SneakyThrows;
-import org.jdesktop.j3d.examples.Resources;
 import org.jogamp.java3d.*;
-import org.jogamp.java3d.utils.applet.MainFrame;
 import org.jogamp.java3d.utils.behaviors.vp.OrbitBehavior;
 import org.jogamp.java3d.utils.universe.SimpleUniverse;
 import org.jogamp.java3d.utils.universe.ViewingPlatform;
@@ -68,12 +61,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import static com.moondance.nettty.Script.loadNett;
+
 public class NetttyApp extends JFrame
         implements ActionListener {
 
-
+    BranchGroup contentBranchGroup ;
     Material material;
     Appearance app;
+    JButton reloadScript;
     JComboBox altAppMaterialColor;
     JComboBox appMaterialColor;
     JComboBox altAppScoping;
@@ -86,6 +82,7 @@ public class NetttyApp extends JFrame
     Color3f green = new Color3f(0.0f, 1.0f, 0.0f);
     Color3f blue = new Color3f(0.0f, 0.0f, 1.0f);
     Color3f[] colors = {white, red, green, blue};
+    String CURRENT_SCRIPT = "Simple.yaml";
 
     private SimpleUniverse universe;
 
@@ -134,10 +131,15 @@ public class NetttyApp extends JFrame
 
         OrbitBehavior orbit = new OrbitBehavior(canvas3D, OrbitBehavior.REVERSE_ALL);
         BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
-                500.0);
+                10500.0);
         orbit.setSchedulingBounds(bounds);
+        orbit.setZoomFactor(5);
+        orbit.setTransFactors(3,3);
         viewingPlatform.setViewPlatformBehavior(orbit);
+
         universe.addBranchGraph(createSceneGraph());
+        View view = universe.getViewer().getView();
+        view.setBackClipDistance (100000);
     }
 
     public void destroy() {
@@ -145,9 +147,12 @@ public class NetttyApp extends JFrame
     }
 
     BranchGroup createSceneGraph() throws IOException {
+        if (contentBranchGroup != null) {
+            contentBranchGroup.detach();
+        }
         Images.initTextures(this);
         BranchGroup objRoot = new BranchGroup();
-
+        objRoot.setCapability(BranchGroup.ALLOW_DETACH);
         // Create influencing bounds
         worldBounds = new BoundingSphere(
                 new Point3d(0.0, 0.0, 0.0),  // Center
@@ -168,14 +173,20 @@ public class NetttyApp extends JFrame
         material.setCapability(Material.ALLOW_COMPONENT_WRITE);
         material.setDiffuseColor(new Color3f(1.0f, 0.0f, 0.0f));
         app1.setMaterial(material);
-        Nett nett = loadNett("NetttyTest.yaml") ;
+        Nett nett = loadNett(CURRENT_SCRIPT);
         content = new NettGroup(nett);
         trans.addChild(content);
 
         addLights(objRoot);
         objRoot.addChild(trans);
-
+        contentBranchGroup = objRoot;
         return objRoot;
+    }
+
+    private void reloadScript() throws IOException {
+        Nett nett = loadNett(CURRENT_SCRIPT) ;
+        content = new NettGroup(nett);
+        universe.addBranchGraph(createSceneGraph());
     }
 
     private void addLights(BranchGroup objRoot) {
@@ -235,12 +246,14 @@ public class NetttyApp extends JFrame
         panel.setBorder(new TitledBorder("Appearance Attributes"));
 
         String[] colorVals = {"WHITE", "RED", "GREEN", "BLUE"};
-
+        reloadScript = new JButton("Reload Script:+" + CURRENT_SCRIPT);
+        reloadScript.addActionListener(this);
         altAppMaterialColor = new JComboBox(colorVals);
         altAppMaterialColor.addActionListener(this);
         altAppMaterialColor.setSelectedIndex(2);
         panel.add(new JLabel("Alternate Appearance MaterialColor"));
         panel.add(altAppMaterialColor);
+        panel.add(reloadScript);
 
 
         appMaterialColor = new JComboBox(colorVals);
@@ -256,7 +269,12 @@ public class NetttyApp extends JFrame
 
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
-        if (target == altAppMaterialColor) {
+        if (target == reloadScript) {
+            try {
+                reloadScript();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         } else if (target == altAppScoping) {
 
         } else if (target == override) {
