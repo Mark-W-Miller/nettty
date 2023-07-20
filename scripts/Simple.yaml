@@ -43,10 +43,16 @@ particles:
         rotationAxisStr: "0 1 1"
   - id: 5
     motionVectorStr: "20 0 0"
-    positionStr: "100 0 0"
+    positionStr: "60 0 0"
     spins:
       - id: 0
         shell: 8
+        rotationAxisStr: "0 0 1"
+      - id: 1
+        shell: 4
+        rotationAxisStr: "1 1 0"
+      - id: 1
+        shell: 2
         rotationAxisStr: "1 1 1"
 
 

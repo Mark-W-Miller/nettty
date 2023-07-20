@@ -47,6 +47,7 @@ package com.moondance.nettty.graphics;
 import com.moondance.nettty.Images;
 import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.model.Particle;
+import com.moondance.nettty.model.Spin;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.image.TextureLoader;
 import org.jogamp.java3d.utils.shader.StringIO;
@@ -62,9 +63,9 @@ import static com.moondance.nettty.utils.VecUtils.ORIGIN;
 
 public class NettGroup
         extends Group {
-
+    Nett nett ;
     public NettGroup(Nett nett) {
-
+        this.nett = nett ;
         TransformGroup trans ;
         Vector3d vec = new Vector3d();
         vec.set(ORIGIN);
@@ -73,6 +74,7 @@ public class NettGroup
         Appearance shaderApp = makeShaderAppearance();
         for (Particle particle: nett.getParticles()) {
             trans = new TransformGroup(t3d);
+            particle.setCurrentParticleTransform(trans);
             addChild(trans);
 
             ParticleGroup particleGroup = new ParticleGroup(particle,shaderApp);

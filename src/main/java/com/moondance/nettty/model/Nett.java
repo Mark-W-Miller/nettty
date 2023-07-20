@@ -17,4 +17,17 @@ public class Nett {
     public Nett() {
         Nettty = this ;
     }
+
+    public void GodPulse(int number) {
+        for(int ix=0;ix<number;ix++){
+            particles.stream().forEach(particle->particle.GodPulse(1));
+        }
+    }
+
+    public void updateTransforms() {
+        for (Particle particle : particles) {
+            particle.updateTransforms();
+        }
+    }
+
 }

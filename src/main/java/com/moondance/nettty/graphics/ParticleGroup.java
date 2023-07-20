@@ -50,6 +50,7 @@ import com.moondance.nettty.model.Particle;
 import com.moondance.nettty.model.Spin;
 import org.jdesktop.j3d.examples.Resources;
 import org.jogamp.java3d.*;
+import org.jogamp.java3d.utils.geometry.Cylinder;
 import org.jogamp.java3d.utils.geometry.Primitive;
 import org.jogamp.java3d.utils.geometry.Sphere;
 import org.jogamp.java3d.utils.image.TextureLoader;
@@ -60,57 +61,71 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class ParticleGroup
-        extends Group {
-
+public class ParticleGroup  extends Group {
+    Particle particle ;
     public ParticleGroup(Particle particle, Appearance app) {
+        this.particle = particle;
         if (app == null) {
-            app = new Appearance();
-            Material material = new Material();
-            material.setDiffuseColor(new Color3f(0.8f, 0.8f, 0.8f));
-            material.setSpecularColor(new Color3f(0.0f, 0.0f, 0.0f));
-            material.setShininess(0.0f);
-            app.setMaterial(material);
-            TransparencyAttributes opacity = new TransparencyAttributes();
-            opacity.setTransparencyMode(TransparencyAttributes.NICEST);
-            opacity.setTransparency(0.4f);
-            app.setTransparencyAttributes(opacity);
+            app = getAppearance();
         }
         BoundingSphere bounds =
                 new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
 
         Sphere sphere;
+        Cylinder cylinder;
         TransformGroup trans;
         Vector3d vec = new Vector3d();
         vec.set(particle.getPosition());
         Transform3D t3d = new Transform3D();
         t3d.setTranslation(vec);
+        trans = new TransformGroup(t3d);
+        trans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        addChild(trans);
+        particle.setCurrentParticleTransform(trans);
         for (Spin spin : particle.getSpins()) {
-            trans = new TransformGroup(t3d);
-            addChild(trans);
 
             sphere = makeSpinSphere(app, spin);
+            cylinder = makeSpinAxis(getAppearance(), spin);
 
-            TransformGroup rotatorTransform = new TransformGroup();
-            rotatorTransform.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             Transform3D yAxis = new Transform3D();
             AxisAngle4d aa = new AxisAngle4d(spin.getRotationAxis(),Math.PI);
             yAxis.setRotation(aa);
             Alpha rotor1Alpha = new Alpha(-1, Alpha.INCREASING_ENABLE,
                     0, 0,
-                    20000, 0, 0,
+                    spin.getSpinSpeed(), 0, 0,
                     0, 0, 0);
-            RotationInterpolator rotator1 =
+
+            TransformGroup rotatorTransform = new TransformGroup();
+            rotatorTransform.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+            RotationInterpolator rotator =
                     new RotationInterpolator(rotor1Alpha,
                             rotatorTransform,
                             yAxis,
                             0.0f, (float) Math.PI * 2.0f);
-            rotator1.setSchedulingBounds(bounds);
-            rotatorTransform.addChild(rotator1);
+            rotator.setSchedulingBounds(bounds);
+            rotatorTransform.addChild(rotator);
             trans.addChild(rotatorTransform);
-
             rotatorTransform.addChild(sphere);
+            rotatorTransform.addChild(cylinder);
+            spin.setCurrentSpinTransform(rotatorTransform);
+            spin.setRotationAlpha(rotor1Alpha);
+            spin.setRotator(rotator);
         }
+    }
+
+    private static Appearance getAppearance() {
+        Appearance app;
+        app = new Appearance();
+        Material material = new Material();
+        material.setDiffuseColor(new Color3f(0.8f, 0.8f, 0.8f));
+        material.setSpecularColor(new Color3f(0.0f, 0.0f, 0.0f));
+        material.setShininess(0.0f);
+        app.setMaterial(material);
+        TransparencyAttributes opacity = new TransparencyAttributes();
+        opacity.setTransparencyMode(TransparencyAttributes.NICEST);
+        opacity.setTransparency(0.4f);
+        app.setTransparencyAttributes(opacity);
+        return app;
     }
 
     private static Sphere makeSpinSphere(Appearance app, Spin spin) {
@@ -122,5 +137,10 @@ public class ParticleGroup
                 app);      // it's appearance
         sphere.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         return sphere;
+    }
+    private static Cylinder makeSpinAxis(Appearance app, Spin spin) {
+        Cylinder cylinder = new Cylinder(0.1f, 2*spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
+        cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
+        return cylinder;
     }
 }

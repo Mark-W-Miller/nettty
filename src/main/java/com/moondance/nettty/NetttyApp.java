@@ -70,6 +70,8 @@ public class NetttyApp extends JFrame
     Material material;
     Appearance app;
     JButton reloadScript;
+    JButton saveScript;
+    JButton GodPulse;
     JComboBox altAppMaterialColor;
     JComboBox appMaterialColor;
     JComboBox altAppScoping;
@@ -112,7 +114,7 @@ public class NetttyApp extends JFrame
         JPanel p = new JPanel();
         BoxLayout boxlayout = new BoxLayout(p,
                 BoxLayout.Y_AXIS);
-        p.add(createScopingPanel());
+//        p.add(createScopingPanel());
         p.add(createMaterialPanel());
         p.setLayout(boxlayout);
 
@@ -136,7 +138,7 @@ public class NetttyApp extends JFrame
         orbit.setZoomFactor(5);
         orbit.setTransFactors(3,3);
         viewingPlatform.setViewPlatformBehavior(orbit);
-
+        viewingPlatform.setNominalViewingTransform();
         universe.addBranchGraph(createSceneGraph());
         View view = universe.getViewer().getView();
         view.setBackClipDistance (100000);
@@ -246,15 +248,15 @@ public class NetttyApp extends JFrame
         panel.setBorder(new TitledBorder("Appearance Attributes"));
 
         String[] colorVals = {"WHITE", "RED", "GREEN", "BLUE"};
-        reloadScript = new JButton("Reload Script:+" + CURRENT_SCRIPT);
+        reloadScript = new JButton("Reload Script:" + CURRENT_SCRIPT);
         reloadScript.addActionListener(this);
-        altAppMaterialColor = new JComboBox(colorVals);
-        altAppMaterialColor.addActionListener(this);
-        altAppMaterialColor.setSelectedIndex(2);
-        panel.add(new JLabel("Alternate Appearance MaterialColor"));
-        panel.add(altAppMaterialColor);
+        saveScript = new JButton("Save Script:" + CURRENT_SCRIPT);
+        saveScript.addActionListener(this);
+        GodPulse = new JButton("God Pulse:");
+        GodPulse.addActionListener(this);
         panel.add(reloadScript);
-
+        panel.add(saveScript);
+        panel.add(GodPulse);
 
         appMaterialColor = new JComboBox(colorVals);
         appMaterialColor.addActionListener(this);
@@ -275,8 +277,9 @@ public class NetttyApp extends JFrame
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-        } else if (target == altAppScoping) {
-
+        } else if (target == GodPulse) {
+            Nett.Nettty.GodPulse(1);
+            Nett.Nettty.updateTransforms();
         } else if (target == override) {
             int i;
             if (override.getSelectedIndex() == 0) {
