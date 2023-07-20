@@ -70,7 +70,7 @@ public class TextureControlPanel extends JDialog implements ChangeListener,
     /** a slider to change Z light direction, i.e, blue channel */
     private JSlider sliderZ = new JSlider(JSlider.HORIZONTAL, 1, 255, 142);
     /** target demo instance to be controled **/
-    private NetttyAppOld netttyFrame;
+    private NetttyApp netttyFrame;
     
     // some checkboxes for user interaction
     private JCheckBox cbWireframe = new JCheckBox("Show as Wireframe", false);
@@ -82,7 +82,7 @@ public class TextureControlPanel extends JDialog implements ChangeListener,
     private JLabel lbSliderZ = new JLabel();
     private JLabel lbMessage = new JLabel();
     
-    public TextureControlPanel(NetttyAppOld owner) {
+    public TextureControlPanel(NetttyApp owner) {
         super(owner);
         netttyFrame = owner;
         try {
@@ -171,21 +171,16 @@ public class TextureControlPanel extends JDialog implements ChangeListener,
     private void updateLightMap(Color ligtDir) {
         canvas.setBgColor(ligtDir);
         canvas.repaint();
-        netttyFrame.updateLighMap(canvas.getTextureImage());
     }
     
     
     public void actionPerformed(ActionEvent ev) {
         JComponent source = (JComponent)ev.getSource();
         if (cbWireframe.equals(source)) {
-            netttyFrame.setWireframeMode(cbWireframe.isSelected());
         } else
             if (cbDot3.equals(source)
             || cbShowColor.equals(source)
             || cbShowLightMap.equals(source)) {
-            netttyFrame.showTextures(cbShowLightMap.isSelected(),
-                    cbDot3.isSelected(),
-                    cbShowColor.isSelected());
             } else if (cbDragLightMask.equals(source)) {
             canvas.dragMask = cbDragLightMask.isSelected();
             }

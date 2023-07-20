@@ -51,6 +51,7 @@ import static com.moondance.nettty.model.Nett.*;
 
 import com.moondance.nettty.model.Nett;
 import lombok.SneakyThrows;
+import org.jdesktop.j3d.examples.Resources;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.applet.MainFrame;
 import org.jogamp.java3d.utils.behaviors.vp.OrbitBehavior;
@@ -67,7 +68,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class NetttyApp extends JApplet
+public class NetttyApp extends JFrame
         implements ActionListener {
 
 
@@ -89,10 +90,16 @@ public class NetttyApp extends JApplet
     private SimpleUniverse universe;
 
     public NetttyApp() {
+        super("Nettty");
+        try {
+            init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @SneakyThrows
-    public void init() {
+    public void init() throws IOException {
+        this.setSize(new Dimension(1000, 600));
         System.setProperty("sun.awt.noerasebackground", "true");
         Container contentPane = getContentPane();
 
@@ -100,9 +107,8 @@ public class NetttyApp extends JApplet
         contentPane.add("Center", canvas3D);
 
         configureSimpleUniverse(canvas3D);
-
-
         buildUI(contentPane);
+        this.setVisible(true);
     }
 
     private void buildUI(Container contentPane) {
@@ -128,7 +134,7 @@ public class NetttyApp extends JApplet
 
         OrbitBehavior orbit = new OrbitBehavior(canvas3D, OrbitBehavior.REVERSE_ALL);
         BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
-                100.0);
+                500.0);
         orbit.setSchedulingBounds(bounds);
         viewingPlatform.setViewPlatformBehavior(orbit);
         universe.addBranchGraph(createSceneGraph());
@@ -139,6 +145,7 @@ public class NetttyApp extends JApplet
     }
 
     BranchGroup createSceneGraph() throws IOException {
+        Images.initTextures(this);
         BranchGroup objRoot = new BranchGroup();
 
         // Create influencing bounds
@@ -162,7 +169,7 @@ public class NetttyApp extends JApplet
         material.setDiffuseColor(new Color3f(1.0f, 0.0f, 0.0f));
         app1.setMaterial(material);
         Nett nett = loadNett("NetttyTest.yaml") ;
-        content = new NettGroup(nett,null);
+        content = new NettGroup(nett);
         trans.addChild(content);
 
         addLights(objRoot);
@@ -269,7 +276,12 @@ public class NetttyApp extends JApplet
 
     public static void main(String[] args) {
         System.setProperty("sun.awt.noerasebackground", "true");
-        Frame frame = new MainFrame(new NetttyApp(), 800, 800);
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new NetttyApp();
+            }
+        });
     }
 
 }			   

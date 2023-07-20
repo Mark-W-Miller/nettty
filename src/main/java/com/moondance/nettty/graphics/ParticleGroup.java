@@ -44,18 +44,26 @@
 
 package com.moondance.nettty.graphics;
 
+import com.moondance.nettty.Images;
 import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.model.Particle;
 import com.moondance.nettty.model.Spin;
+import org.jdesktop.j3d.examples.Resources;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.geometry.Primitive;
 import org.jogamp.java3d.utils.geometry.Sphere;
-import org.jogamp.vecmath.Color3f;
-import org.jogamp.vecmath.Vector3d;
+import org.jogamp.java3d.utils.image.TextureLoader;
+import org.jogamp.java3d.utils.shader.StringIO;
+import org.jogamp.vecmath.*;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class ParticleGroup
         extends Group {
-    public ParticleGroup(Particle particle,Appearance app) {
+
+    public ParticleGroup(Particle particle, Appearance app) {
         if (app == null) {
             app = new Appearance();
             Material material = new Material();
@@ -68,6 +76,8 @@ public class ParticleGroup
             opacity.setTransparency(0.4f);
             app.setTransparencyAttributes(opacity);
         }
+        BoundingSphere bounds =
+                new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
 
         Sphere sphere;
         TransformGroup trans;
@@ -79,13 +89,38 @@ public class ParticleGroup
             trans = new TransformGroup(t3d);
             addChild(trans);
 
-            sphere = new Sphere(
-                    spin.getShell(),     // sphere radius
-                    Primitive.GENERATE_NORMALS,  // generate normals
-                    8,         // 16 divisions radially
-                    app);      // it's appearance
-            trans.addChild(sphere);
-            sphere.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
+            sphere = makeSpinSphere(app, spin);
+
+            TransformGroup rotatorTransform = new TransformGroup();
+            rotatorTransform.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+            Transform3D yAxis = new Transform3D();
+            AxisAngle4d aa = new AxisAngle4d(spin.getRotationAxis(),0*Math.PI);
+            yAxis.setRotation(aa);
+            Alpha rotor1Alpha = new Alpha(-1, Alpha.INCREASING_ENABLE,
+                    0, 0,
+                    20000, 0, 0,
+                    0, 0, 0);
+            RotationInterpolator rotator1 =
+                    new RotationInterpolator(rotor1Alpha,
+                            rotatorTransform,
+                            yAxis,
+                            0.0f, (float) Math.PI * 2.0f);
+            rotator1.setSchedulingBounds(bounds);
+            rotatorTransform.addChild(rotator1);
+            trans.addChild(rotatorTransform);
+
+            rotatorTransform.addChild(sphere);
         }
+    }
+
+    private static Sphere makeSpinSphere(Appearance app, Spin spin) {
+        Sphere sphere;
+        sphere = new Sphere(
+                spin.getShell(),     // sphere radius
+                Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
+                16,         // 16 divisions radially
+                app);      // it's appearance
+        sphere.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
+        return sphere;
     }
 }

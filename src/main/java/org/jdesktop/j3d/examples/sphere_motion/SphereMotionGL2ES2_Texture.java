@@ -118,9 +118,9 @@ public class SphereMotionGL2ES2_Texture extends javax.swing.JFrame
 
 		// Create a Sphere object, generate one copy of the sphere,
 		// and add it into the scene graph.
-		ShaderAppearance a = new ShaderAppearance();
-		Material m = new Material(objColor, eColor, objColor, sColor, 100.0f);
-		m.setLightingEnable(true);
+		ShaderAppearance shaderAppearance = new ShaderAppearance();
+		Material material = new Material(objColor, eColor, objColor, sColor, 100.0f);
+		material.setLightingEnable(true);
 		String vertexProgram = null;
 		String fragmentProgram = null;
 		try
@@ -141,17 +141,17 @@ public class SphereMotionGL2ES2_Texture extends javax.swing.JFrame
 		shaderProgram.setShaders(shaders);
 		shaderProgram.setShaderAttrNames(new String[] { "BaseMap" });
 
-		a.setShaderProgram(shaderProgram);
+		shaderAppearance.setShaderProgram(shaderProgram);
 
 		ShaderAttributeSet shaderAttributeSet = new ShaderAttributeSet();
 		shaderAttributeSet.put(new ShaderAttributeValue("BaseMap", new Integer(0)));
-		a.setShaderAttributeSet(shaderAttributeSet);
+		shaderAppearance.setShaderAttributeSet(shaderAttributeSet);
 
 		
-		a.setMaterial(m);
+		shaderAppearance.setMaterial(material);
 		Texture txtr = new TextureLoader(Resources.getResource("main/resources/images/earth.jpg"), this).getTexture();
-		a.setTexture(txtr);
-		Sphere sph = new Sphere(1.0f, Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS, 200, a);
+		shaderAppearance.setTexture(txtr);
+		Sphere sph = new Sphere(1.0f, Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS, 200, shaderAppearance);
 		objScale.addChild(sph);
 
 		// Create the transform group node for the each light and initialize

@@ -160,9 +160,9 @@ public class NetttyAppOld extends JFrame {
         mainPanel.add(canvas, BorderLayout.CENTER);
         this.setVisible(true);
         //create a control panel to user interaction
-        ctrlPanel = new TextureControlPanel(this);
-        ctrlPanel.setVisible(true);
-        ctrlPanel.setLocation(1000,10);
+//        ctrlPanel = new TextureControlPanel(this);
+//        ctrlPanel.setVisible(true);
+//        ctrlPanel.setLocation(1000,10);
     }
     
     /**
@@ -491,7 +491,8 @@ public class NetttyAppOld extends JFrame {
      * main method
      * @param args
      */
-    public static void main(String[] args) {System.setProperty("sun.awt.noerasebackground", "true"); 
+    public static void main(String[] args) {
+        System.setProperty("sun.awt.noerasebackground", "true");
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
 			public void run() {

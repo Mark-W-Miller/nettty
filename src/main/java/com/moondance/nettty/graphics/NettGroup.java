@@ -44,32 +44,71 @@
 
 package com.moondance.nettty.graphics;
 
+import com.moondance.nettty.Images;
 import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.model.Particle;
 import org.jogamp.java3d.*;
-import org.jogamp.java3d.utils.geometry.Sphere;
+import org.jogamp.java3d.utils.image.TextureLoader;
+import org.jogamp.java3d.utils.shader.StringIO;
+import org.jogamp.vecmath.Color3f;
+import org.jogamp.vecmath.Color4f;
 import org.jogamp.vecmath.Vector3d;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 import static com.moondance.nettty.utils.VecUtils.ORIGIN;
 
 public class NettGroup
         extends Group {
 
-    public NettGroup(Nett nett, Appearance app) {
+    public NettGroup(Nett nett) {
 
         TransformGroup trans ;
         Vector3d vec = new Vector3d();
         vec.set(ORIGIN);
         Transform3D t3d = new Transform3D();
         t3d.setTranslation(vec);
-
+        Appearance shaderApp = makeShaderAppearance();
         for (Particle particle: nett.getParticles()) {
             trans = new TransformGroup(t3d);
             addChild(trans);
 
-            ParticleGroup particleGroup = new ParticleGroup(particle,app);
+            ParticleGroup particleGroup = new ParticleGroup(particle,shaderApp);
             particleGroup.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
             trans.addChild(particleGroup);
         }
+    }
+
+    static Color3f eColor = new Color3f(0.0f, 0.0f, 0.0f);
+    static Color3f sColor = new Color3f(1.0f, 1.0f, 1.0f);
+    static Color3f objColor = new Color3f(0.6f, 0.6f, 0.6f);
+
+    public static Appearance makeShaderAppearance(){
+//        TextureLoader loader = new TextureLoader("K:\\3d\\Arizona.jpg",
+//                "LUMINANCE", new Container());
+        Texture texture = Images.spinTexture;
+        texture.setBoundaryModeS(Texture.WRAP);
+        texture.setBoundaryModeT(Texture.WRAP);
+        texture.setBoundaryColor(new Color4f(0.0f, 1.0f, 0.0f, 0.0f));
+
+        // Set up the texture attributes
+        //could be REPLACE, BLEND or DECAL instead of MODULATE
+        TextureAttributes texAttr = new TextureAttributes();
+        texAttr.setTextureMode(TextureAttributes.MODULATE);
+        Appearance app = new Appearance();
+        app.setTexture(texture);
+        app.setTextureAttributes(texAttr);
+
+        //set up the material
+        app.setMaterial(new Material(objColor, eColor, objColor, sColor, 1.0f));
+
+
+        TransparencyAttributes opacity = new TransparencyAttributes();
+        opacity.setTransparencyMode(TransparencyAttributes.NICEST);
+        opacity.setTransparency(0.4f);
+        app.setTransparencyAttributes(opacity);
+        return app ;
     }
 }

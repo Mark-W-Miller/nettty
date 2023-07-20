@@ -44,26 +44,16 @@
 
 package org.jdesktop.j3d.examples.texture;
 
-import java.applet.Applet;
-import java.awt.BorderLayout;
-import java.awt.GraphicsConfiguration;
-
 import org.jdesktop.j3d.examples.Resources;
-import org.jogamp.java3d.Alpha;
-import org.jogamp.java3d.Appearance;
-import org.jogamp.java3d.BoundingSphere;
-import org.jogamp.java3d.BranchGroup;
-import org.jogamp.java3d.Canvas3D;
-import org.jogamp.java3d.RotationInterpolator;
-import org.jogamp.java3d.Texture;
-import org.jogamp.java3d.TextureAttributes;
-import org.jogamp.java3d.Transform3D;
-import org.jogamp.java3d.TransformGroup;
+import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.applet.MainFrame;
 import org.jogamp.java3d.utils.geometry.Box;
 import org.jogamp.java3d.utils.image.TextureLoader;
 import org.jogamp.java3d.utils.universe.SimpleUniverse;
 import org.jogamp.vecmath.Point3d;
+
+import java.applet.Applet;
+import java.awt.*;
 
 public class TextureImage extends Applet {
 
@@ -73,54 +63,54 @@ public class TextureImage extends Applet {
     private SimpleUniverse u = null;
 
     public BranchGroup createSceneGraph() {
-	// Create the root of the branch graph
-	BranchGroup objRoot = new BranchGroup();
+        // Create the root of the branch graph
+        BranchGroup objRoot = new BranchGroup();
 
-	// Create the transform group node and initialize it to the
-	// identity.  Enable the TRANSFORM_WRITE capability so that
-	// our behavior code can modify it at runtime.  Add it to the
-	// root of the subgraph.
-	TransformGroup objTrans = new TransformGroup();
-	objTrans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	objRoot.addChild(objTrans);
+        // Create the transform group node and initialize it to the
+        // identity.  Enable the TRANSFORM_WRITE capability so that
+        // our behavior code can modify it at runtime.  Add it to the
+        // root of the subgraph.
+        TransformGroup objTrans = new TransformGroup();
+        objTrans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        objRoot.addChild(objTrans);
 
-	// Create appearance object for textured cube
-	Appearance app = new Appearance();
+        // Create appearance object for textured cube
+        Appearance app = new Appearance();
         Texture tex = new TextureLoader(texImage,
                 TextureLoader.BY_REFERENCE | TextureLoader.Y_UP,
                 this).getTexture();
-	app.setTexture(tex);
-	TextureAttributes texAttr = new TextureAttributes();
-	texAttr.setTextureMode(TextureAttributes.MODULATE);
-	app.setTextureAttributes(texAttr);
+        app.setTexture(tex);
+        TextureAttributes texAttr = new TextureAttributes();
+        texAttr.setTextureMode(TextureAttributes.MODULATE);
+        app.setTextureAttributes(texAttr);
 
-	// Create textured cube and add it to the scene graph.
-	Box textureCube = new Box(0.4f, 0.4f, 0.4f,
+        // Create textured cube and add it to the scene graph.
+        Box textureCube = new Box(0.4f, 0.4f, 0.4f,
                 Box.GENERATE_TEXTURE_COORDS |
-                Box.GENERATE_TEXTURE_COORDS_Y_UP, app);
-	objTrans.addChild(textureCube);
+                        Box.GENERATE_TEXTURE_COORDS_Y_UP, app);
+        objTrans.addChild(textureCube);
 
-	// Create a new Behavior object that will perform the desired
-	// operation on the specified transform object and add it into
-	// the scene graph.
-	Transform3D yAxis = new Transform3D();
-	Alpha rotationAlpha = new Alpha(-1, Alpha.INCREASING_ENABLE,
-					0, 0,
-					4000, 0, 0,
-					0, 0, 0);
+        // Create a new Behavior object that will perform the desired
+        // operation on the specified transform object and add it into
+        // the scene graph.
+        Transform3D yAxis = new Transform3D();
+        Alpha rotationAlpha = new Alpha(-1, Alpha.INCREASING_ENABLE,
+                0, 0,
+                4000, 0, 0,
+                0, 0, 0);
 
-	RotationInterpolator rotator =
-	    new RotationInterpolator(rotationAlpha, objTrans, yAxis,
-				     0.0f, (float) Math.PI*2.0f);
-	BoundingSphere bounds =
-	    new BoundingSphere(new Point3d(0.0,0.0,0.0), 100.0);
-	rotator.setSchedulingBounds(bounds);
-	objTrans.addChild(rotator);
+        RotationInterpolator rotator =
+                new RotationInterpolator(rotationAlpha, objTrans, yAxis,
+                        0.0f, (float) Math.PI * 2.0f);
+        BoundingSphere bounds =
+                new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
+        rotator.setSchedulingBounds(bounds);
+        objTrans.addChild(rotator);
 
         // Have Java 3D perform optimizations on this scene graph.
         objRoot.compile();
 
-	return objRoot;
+        return objRoot;
     }
 
     public TextureImage() {
@@ -130,42 +120,44 @@ public class TextureImage extends Applet {
         texImage = url;
     }
 
-    public void init() {System.setProperty("sun.awt.noerasebackground", "true"); 
+    public void init() {
+        System.setProperty("sun.awt.noerasebackground", "true");
         if (texImage == null) {
-  	    // the path to the image for an applet
+            // the path to the image for an applet
             texImage = Resources.getResource(defaultFileName);
             if (texImage == null) {
                 System.err.println(defaultFileName + " not found");
                 System.exit(1);
             }
-	}
-	setLayout(new BorderLayout());
+        }
+        setLayout(new BorderLayout());
         GraphicsConfiguration config =
-           SimpleUniverse.getPreferredConfiguration();
+                SimpleUniverse.getPreferredConfiguration();
 
         Canvas3D c = new Canvas3D(config);
-	add("Center", c);
+        add("Center", c);
 
-	// Create a simple scene and attach it to the virtual universe
-	BranchGroup scene = createSceneGraph();
-	u = new SimpleUniverse(c);
+        // Create a simple scene and attach it to the virtual universe
+        BranchGroup scene = createSceneGraph();
+        u = new SimpleUniverse(c);
 
         // This will move the ViewPlatform back a bit so the
         // objects in the scene can be viewed.
-	u.getViewingPlatform().setNominalViewingTransform();
+        u.getViewingPlatform().setNominalViewingTransform();
 
-	u.addBranchGraph(scene);
+        u.addBranchGraph(scene);
     }
 
     public void destroy() {
-	u.cleanup();
+        u.cleanup();
     }
 
     //
     // The following allows TextureImage to be run as an application
     // as well as an applet
     //
-    public static void main(String[] args) {System.setProperty("sun.awt.noerasebackground", "true"); 
+    public static void main(String[] args) {
+        System.setProperty("sun.awt.noerasebackground", "true");
         java.net.URL url = null;
         if (args.length > 0) {
             try {
