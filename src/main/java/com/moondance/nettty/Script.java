@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import com.moondance.nettty.utils.Handy.*;
 
+import static com.moondance.nettty.NetttyApp.CURRENT_SCRIPT;
 import static com.moondance.nettty.utils.Handy.out;
 
 public class Script {
@@ -25,6 +26,7 @@ public class Script {
     }
     public static Nett loadNett(String fileName) throws IOException {
 
+        out("NetttyApp loadNett:" + fileName);
         String yamlFile = new String(Files.readAllBytes(scriptsDirectory.resolve(fileName)));
         Yaml yaml = new Yaml(new Constructor(Nett.class));
         for (Object details : yaml.loadAll(yamlFile)) {

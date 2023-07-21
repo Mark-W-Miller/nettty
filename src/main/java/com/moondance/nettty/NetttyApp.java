@@ -60,8 +60,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Arrays;
 
 import static com.moondance.nettty.Script.loadNett;
+import static com.moondance.nettty.utils.Handy.out;
 
 public class NetttyApp extends JFrame
         implements ActionListener {
@@ -84,7 +86,7 @@ public class NetttyApp extends JFrame
     Color3f green = new Color3f(0.0f, 1.0f, 0.0f);
     Color3f blue = new Color3f(0.0f, 0.0f, 1.0f);
     Color3f[] colors = {white, red, green, blue};
-    String CURRENT_SCRIPT = "Simple.yaml";
+    static String CURRENT_SCRIPT = "TwoParticlesNear.yaml";
 
     private SimpleUniverse universe;
 
@@ -296,7 +298,12 @@ public class NetttyApp extends JFrame
 
 
     public static void main(String[] args) {
+        out("args:" + Arrays.toString(args));
         System.setProperty("sun.awt.noerasebackground", "true");
+        if(args.length > 0){
+            CURRENT_SCRIPT = args[0];
+            out("CURRENT_SCRIPT:" + CURRENT_SCRIPT);
+        }
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

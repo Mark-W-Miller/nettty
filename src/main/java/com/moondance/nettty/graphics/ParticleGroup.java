@@ -61,6 +61,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+import static com.moondance.nettty.utils.VecUtils.makeRotationGroup;
+import static com.moondance.nettty.utils.VecUtils.makeTranslationGroup;
+
 public class ParticleGroup  extends Group {
     Particle particle ;
     public ParticleGroup(Particle particle, Appearance app) {
@@ -76,17 +79,17 @@ public class ParticleGroup  extends Group {
         TransformGroup trans;
         Vector3d vec = new Vector3d();
         vec.set(particle.getPosition());
-        Transform3D t3d = new Transform3D();
-        t3d.setTranslation(vec);
-        trans = new TransformGroup(t3d);
+        trans = makeTranslationGroup(vec);
         trans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         addChild(trans);
         particle.setCurrentParticleTransform(trans);
         for (Spin spin : particle.getSpins()) {
 
             sphere = makeSpinSphere(app, spin);
-            cylinder = makeSpinAxis(getAppearance(), spin);
 
+            TransformGroup cylinderXForm = makeSpinAxis(getAppearance(), spin);
+            TransformGroup fixedXForm = makeFixedSpinAxis(getAppearanceTwo(), spin);
+            trans.addChild(fixedXForm);
             Transform3D yAxis = new Transform3D();
             AxisAngle4d aa = new AxisAngle4d(spin.getRotationAxis(),Math.PI);
             yAxis.setRotation(aa);
@@ -106,11 +109,51 @@ public class ParticleGroup  extends Group {
             rotatorTransform.addChild(rotator);
             trans.addChild(rotatorTransform);
             rotatorTransform.addChild(sphere);
-            rotatorTransform.addChild(cylinder);
+            rotatorTransform.addChild(cylinderXForm);
             spin.setCurrentSpinTransform(rotatorTransform);
             spin.setRotationAlpha(rotor1Alpha);
             spin.setRotator(rotator);
         }
+    }
+
+    private static Sphere makeSpinSphere(Appearance app, Spin spin) {
+        Sphere sphere;
+        sphere = new Sphere(
+                spin.getShell(),     // sphere radius
+                Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
+                16,         // 16 divisions radially
+                app);      // it's appearance
+        sphere.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
+        return sphere;
+    }
+
+
+    private TransformGroup makeFixedSpinAxis(Appearance appearance, Spin spin) {
+        TransformGroup group = makeRotationGroup( spin.getRotationAxis());
+        Cylinder cylinder = new Cylinder(0.05f, spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, appearance);
+        cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
+        group.addChild(cylinder);
+        return group ;
+    }
+
+    private static TransformGroup makeSpinAxis(Appearance app, Spin spin) {
+        TransformGroup group = makeTranslationGroup(new Vector3d(0,0,0));
+        TransformGroup cylinderXForm = makeTranslationGroup(new Vector3d(0,0.5,0));
+        group.addChild(cylinderXForm);
+        Cylinder cylinder = new Cylinder(0.1f, spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
+        cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
+        cylinderXForm.addChild(cylinder);
+
+        TransformGroup ballXForm = makeTranslationGroup(new Vector3d(0,1,0));
+        group.addChild(ballXForm);
+
+        Sphere sphere = new Sphere(
+                0.2f,     // sphere radius
+                Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
+                8,         // 16 divisions radially
+                app);      // it's appearance
+        ballXForm.addChild(sphere);
+        return group;
     }
 
     private static Appearance getAppearance() {
@@ -128,19 +171,19 @@ public class ParticleGroup  extends Group {
         return app;
     }
 
-    private static Sphere makeSpinSphere(Appearance app, Spin spin) {
-        Sphere sphere;
-        sphere = new Sphere(
-                spin.getShell(),     // sphere radius
-                Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
-                16,         // 16 divisions radially
-                app);      // it's appearance
-        sphere.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
-        return sphere;
+    private static Appearance getAppearanceTwo() {
+        Appearance app;
+        app = new Appearance();
+        Material material = new Material();
+        material.setDiffuseColor(new Color3f(1f, 0.1f, 0.9f));
+        material.setSpecularColor(new Color3f(0.0f, 1.0f, 0.0f));
+        material.setShininess(1.0f);
+        app.setMaterial(material);
+        TransparencyAttributes opacity = new TransparencyAttributes();
+        opacity.setTransparencyMode(TransparencyAttributes.NICEST);
+        opacity.setTransparency(0f);
+        app.setTransparencyAttributes(opacity);
+        return app;
     }
-    private static Cylinder makeSpinAxis(Appearance app, Spin spin) {
-        Cylinder cylinder = new Cylinder(0.1f, 2*spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
-        cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
-        return cylinder;
-    }
+
 }

@@ -1,5 +1,8 @@
 package com.moondance.nettty.utils;
 
+import org.jogamp.java3d.Transform3D;
+import org.jogamp.java3d.TransformGroup;
+import org.jogamp.vecmath.AxisAngle4d;
 import org.jogamp.vecmath.Point3d;
 import org.jogamp.vecmath.Tuple3d;
 import org.jogamp.vecmath.Vector3d;
@@ -15,7 +18,9 @@ public class VecUtils {
     }
     public static Vector3d parseVector3d(String tripleStr){
         double[] dThree = parseThreeD(tripleStr);
-        return new Vector3d(dThree[0],dThree[1],dThree[2]);
+        Vector3d vec3d = new Vector3d(dThree[0],dThree[1],dThree[2]);
+        vec3d.normalize();
+        return vec3d ;
     }
 
     static double[] parseThreeD(String tripleStr){
@@ -33,5 +38,17 @@ public class VecUtils {
         double z = Double.parseDouble(bits[2]);
         double[] dThree = {x,y,z};
         return dThree;
+    }
+
+    public static TransformGroup makeTranslationGroup(Vector3d vec){
+        Transform3D t3d = new Transform3D();
+        t3d.setTranslation(vec);
+        return new TransformGroup(t3d);
+    }
+    public static TransformGroup makeRotationGroup(Vector3d vec){
+        AxisAngle4d aa = new AxisAngle4d(vec,0);
+        Transform3D t3d = new Transform3D();
+        t3d.setRotation(aa);
+        return new TransformGroup(t3d);
     }
 }
