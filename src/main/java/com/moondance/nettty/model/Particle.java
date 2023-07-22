@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.moondance.nettty.utils.Handy.out;
-import static com.moondance.nettty.utils.VecUtils.parsePoint3d;
-import static com.moondance.nettty.utils.VecUtils.parseVector3d;
+import static com.moondance.nettty.utils.VecUtils.*;
 
 @Getter
 @Setter
@@ -22,11 +21,12 @@ import static com.moondance.nettty.utils.VecUtils.parseVector3d;
 public class Particle implements Comparable{
     private static int nextId = 0 ;
     int id ;
+    Nett nett ;
     List<Spin> spins = new ArrayList<>();
     Vector3d motionVector = new Vector3d(0,0,0);
     Point3d position = new Point3d();
     TransformGroup currentParticleTransform ;
-
+    boolean wiggleWhenWalking = false ;
     public Particle() {
         id = nextId++;
     }
@@ -57,9 +57,16 @@ public class Particle implements Comparable{
     }
 
     public void GodPulse(int i) {
-        position.x += 0.5 - Math.random();
-        position.y += 0.5 - Math.random();
-        position.z += 0.5 - Math.random();
+        if(motionVector != null){
+            position.add(motionVector);
+            if(wiggleWhenWalking){
+                randomize(position,0.5d);
+            }
+        } else {
+            position.x += 0.5 - Math.random();
+            position.y += 0.5 - Math.random();
+            position.z += 0.5 - Math.random();
+        }
         spins.stream().forEach(spin->spin.GodPulse());
     }
 }

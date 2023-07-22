@@ -73,6 +73,7 @@ public class NettGroup
         t3d.setTranslation(vec);
         Appearance shaderApp = makeShaderAppearance();
         for (Particle particle: nett.getParticles()) {
+            particle.setNett(nett);
             trans = new TransformGroup(t3d);
             particle.setCurrentParticleTransform(trans);
             addChild(trans);

@@ -44,38 +44,27 @@
 
 package com.moondance.nettty.graphics;
 
-import com.moondance.nettty.Images;
-import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.model.Particle;
 import com.moondance.nettty.model.Spin;
-import org.jdesktop.j3d.examples.Resources;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.geometry.Cylinder;
-import org.jogamp.java3d.utils.geometry.Primitive;
 import org.jogamp.java3d.utils.geometry.Sphere;
-import org.jogamp.java3d.utils.image.TextureLoader;
-import org.jogamp.java3d.utils.shader.StringIO;
 import org.jogamp.vecmath.*;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 import static com.moondance.nettty.utils.VecUtils.makeRotationGroup;
 import static com.moondance.nettty.utils.VecUtils.makeTranslationGroup;
 
 public class ParticleGroup  extends Group {
     Particle particle ;
-    public ParticleGroup(Particle particle, Appearance app) {
+    public ParticleGroup(Particle particle, Appearance appearence) {
         this.particle = particle;
-        if (app == null) {
-            app = getAppearance();
+        if (appearence == null) {
+            appearence = getAppearance();
         }
         BoundingSphere bounds =
                 new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
 
         Sphere sphere;
-        Cylinder cylinder;
         TransformGroup trans;
         Vector3d vec = new Vector3d();
         vec.set(particle.getPosition());
@@ -85,26 +74,29 @@ public class ParticleGroup  extends Group {
         particle.setCurrentParticleTransform(trans);
         for (Spin spin : particle.getSpins()) {
 
-            sphere = makeSpinSphere(app, spin);
-
+            spin.setParticle(particle);
+            sphere = makeSpinSphere(appearence, spin);
             TransformGroup cylinderXForm = makeSpinAxis(getAppearance(), spin);
-            TransformGroup fixedXForm = makeFixedSpinAxis(getAppearanceTwo(), spin);
+            TransformGroup fixedXForm = makeFixedSpinAxis(getAppearanceYPointer(), spin);
+            spin.setFixedXForm(fixedXForm);
             trans.addChild(fixedXForm);
             Transform3D yAxis = new Transform3D();
-            AxisAngle4d aa = new AxisAngle4d(spin.getRotationAxis(),Math.PI);
+            AxisAngle4d aa = new AxisAngle4d(spin.getRotationAxis(),spin.getRotationAngle());
             yAxis.setRotation(aa);
-            Alpha rotor1Alpha = new Alpha(-1, Alpha.INCREASING_ENABLE,
+            Alpha rotor1Alpha = new Alpha(spin.getSpinSpeed()==0 ? 0 : -1, Alpha.INCREASING_ENABLE,
                     0, 0,
                     spin.getSpinSpeed(), 0, 0,
                     0, 0, 0);
 
             TransformGroup rotatorTransform = new TransformGroup();
             rotatorTransform.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-            RotationInterpolator rotator =
-                    new RotationInterpolator(rotor1Alpha,
-                            rotatorTransform,
-                            yAxis,
-                            0.0f, (float) Math.PI * 2.0f);
+            float min = 0.0f ;
+            float max = (float) (Math.PI * 2.0f);
+            if(spin.getRotationAngle() < 0){
+                min = (float) (Math.PI * 2.0f) ;
+                max =  0.0f  ;
+            }
+            RotationInterpolator rotator = new RotationInterpolator(rotor1Alpha, rotatorTransform, yAxis, min, max);
             rotator.setSchedulingBounds(bounds);
             rotatorTransform.addChild(rotator);
             trans.addChild(rotatorTransform);
@@ -124,27 +116,29 @@ public class ParticleGroup  extends Group {
                 16,         // 16 divisions radially
                 app);      // it's appearance
         sphere.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
+        sphere.setUserData(spin);
         return sphere;
     }
 
 
     private TransformGroup makeFixedSpinAxis(Appearance appearance, Spin spin) {
-        TransformGroup group = makeRotationGroup( spin.getRotationAxis());
-        Cylinder cylinder = new Cylinder(0.05f, spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, appearance);
+        TransformGroup group = makeRotationGroup( spin.getRotationAxis(),spin.getRotationAngle());
+        Cylinder cylinder = new Cylinder(0.05f, 2*spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, appearance);
         cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
+        group.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         group.addChild(cylinder);
         return group ;
     }
 
     private static TransformGroup makeSpinAxis(Appearance app, Spin spin) {
         TransformGroup group = makeTranslationGroup(new Vector3d(0,0,0));
-        TransformGroup cylinderXForm = makeTranslationGroup(new Vector3d(0,0.5,0));
+        TransformGroup cylinderXForm = makeTranslationGroup(new Vector3d(0,((float) spin.getShell())/2,0));
         group.addChild(cylinderXForm);
         Cylinder cylinder = new Cylinder(0.1f, spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
         cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         cylinderXForm.addChild(cylinder);
 
-        TransformGroup ballXForm = makeTranslationGroup(new Vector3d(0,1,0));
+        TransformGroup ballXForm = makeTranslationGroup(new Vector3d(0,spin.getShell(),0));
         group.addChild(ballXForm);
 
         Sphere sphere = new Sphere(
@@ -171,7 +165,7 @@ public class ParticleGroup  extends Group {
         return app;
     }
 
-    private static Appearance getAppearanceTwo() {
+    private static Appearance getAppearanceYPointer() {
         Appearance app;
         app = new Appearance();
         Material material = new Material();
@@ -183,6 +177,9 @@ public class ParticleGroup  extends Group {
         opacity.setTransparencyMode(TransparencyAttributes.NICEST);
         opacity.setTransparency(0f);
         app.setTransparencyAttributes(opacity);
+        ColoringAttributes ca = new ColoringAttributes();
+        ca.setColor(0.6f, 0.3f, 0.0f);
+        app.setCapability(app.ALLOW_COLORING_ATTRIBUTES_WRITE);
         return app;
     }
 

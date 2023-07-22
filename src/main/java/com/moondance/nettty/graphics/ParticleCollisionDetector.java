@@ -42,14 +42,18 @@
  * $State$
  */
 
-package org.jdesktop.j3d.examples.collision;
+package com.moondance.nettty.graphics;
 
+import com.moondance.nettty.model.Particle;
 import org.jogamp.java3d.*;
+import org.jogamp.java3d.utils.geometry.Primitive;
 import org.jogamp.vecmath.Color3f;
 
 import java.util.Iterator;
 
-public class CollisionDetector extends Behavior {
+import static com.moondance.nettty.utils.Handy.out;
+
+public class ParticleCollisionDetector extends Behavior {
     private static final Color3f highlightColor =
             new Color3f(0.0f, 1.0f, 0.0f);
     private static final ColoringAttributes highlight =
@@ -57,19 +61,21 @@ public class CollisionDetector extends Behavior {
                     ColoringAttributes.SHADE_GOURAUD);
 
     private boolean inCollision = false;
-    private Shape3D shape;
+    private Primitive shape;
     private ColoringAttributes shapeColoring;
     private Appearance shapeAppearance;
 
     private WakeupOnCollisionEntry wEnter;
     private WakeupOnCollisionExit wExit;
 
+    Particle particle ;
 
-    public CollisionDetector(Shape3D s) {
+    public ParticleCollisionDetector(Primitive s, Particle particle) {
         shape = s;
         shapeAppearance = shape.getAppearance();
         shapeColoring = shapeAppearance.getColoringAttributes();
         inCollision = false;
+        this.particle = particle;
     }
 
     @Override
@@ -81,14 +87,26 @@ public class CollisionDetector extends Behavior {
 
     @Override
     public void processStimulus(Iterator<WakeupCriterion> criteria) {
-        inCollision = !inCollision;
-
-        if (inCollision) {
-            shapeAppearance.setColoringAttributes(highlight);
-            wakeupOn(wExit);
-        } else {
-            shapeAppearance.setColoringAttributes(shapeColoring);
-            wakeupOn(wEnter);
+        out("processStimulus");
+        while (criteria.hasNext()) {
+            WakeupCriterion theCriterion = criteria.next();
+            if (theCriterion instanceof WakeupOnCollisionEntry) {
+                Node theLeaf = ((WakeupOnCollisionEntry) theCriterion)
+                        .getTriggeringPath().getObject();
+                out("Collided with " + theLeaf);
+                out("Collided with " + theLeaf.getUserData());
+            } else if (theCriterion instanceof WakeupOnCollisionExit) {
+                Node theLeaf = ((WakeupOnCollisionExit) theCriterion)
+                        .getTriggeringPath().getObject();
+                out("Stopped colliding with  "
+                        + theLeaf.getUserData());
+            } else {
+                Node theLeaf = ((WakeupOnCollisionMovement) theCriterion)
+                        .getTriggeringPath().getObject();
+                System.out.println("Moved whilst colliding with "
+                        + theLeaf.getUserData());
+            }
         }
+        wakeupOn(wEnter);
     }
 }
