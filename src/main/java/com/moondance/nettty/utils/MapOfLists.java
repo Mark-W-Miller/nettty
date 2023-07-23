@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @param <V> the type of mapped values
  * @author chris
  */
-public class MapOfLists<K extends Comparable, V extends Comparable>{
+public class MapOfLists<K,V>{
 
     /**
      * Our internal map.
@@ -303,15 +303,6 @@ public class MapOfLists<K extends Comparable, V extends Comparable>{
                 .collect(Collectors.toList());
     }
 
-    public void sortAllDescending() {
-        map.values()
-                .stream()
-                .forEach(ts -> {
-                    Collections.sort(ts);
-                    Collections.reverse(ts);
-                });
-    }
-
     public void removeSmallerThan(int minSize) {
         List<K> remove = map.keySet().stream()
                 .filter(s -> map.get(s).size() < minSize)
@@ -320,25 +311,16 @@ public class MapOfLists<K extends Comparable, V extends Comparable>{
                 .forEach(s -> map.remove(s));
     }
 
-    public List<K> keysInSizeOrder() {
-        return map.entrySet()
-                .stream()
-                .map(e -> new KV(e.getKey(), e.getValue()))
-                .sorted()
-                .map(kv -> kv.key)
-                .collect(Collectors.toList());
 
-    }
-
-    @AllArgsConstructor
-    @Getter
-    public class KV implements Comparable<KV> {
-        K key;
-        List<V> value;
-
-        @Override
-        public int compareTo(KV o) {
-            return value.size() - o.value.size();
-        }
-    }
+//    @AllArgsConstructor
+//    @Getter
+//    public class KV implements Comparable<KV> {
+//        K key;
+//        List<V> value;
+//
+//        @Override
+//        public int compareTo(KV o) {
+//            return value.size() - o.value.size();
+//        }
+//    }
 }
