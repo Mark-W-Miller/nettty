@@ -3,15 +3,17 @@ package com.moondance.nettty.utils.octtree;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Objects;
 
 @Setter
 @Getter
 @AllArgsConstructor
-class AddressedData<T> {
+@ToString
+public class AddressedData<T> {
     OctAddress address;
-    T object ;
+    T data;
 
     @Override
     public boolean equals(Object o) {

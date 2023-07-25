@@ -2,7 +2,8 @@ package com.moondance.nettty.utils.octtree;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.jogamp.vecmath.Point3i;
+import lombok.ToString;
+import org.jogamp.vecmath.Point3d;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,45 +13,71 @@ import java.util.List;
 public class OctNode<T> {
 
     OctAddress center;
-    OctTree tree ;
+    OctTree<T> tree ;
     int voxelSize ;
     boolean branchNode = false; //when true this will only hac=ve children and no data
-    List<AddressedData> data = new ArrayList<>();
-    OctNode<T> octants[] = new OctNode[8];
+    List<AddressedData<T>> data = new ArrayList<>();
+    List<OctNode<T>> octants = new ArrayList<>(8);
     public OctNode(OctAddress  center,OctTree<T>  tree, int voxelSize){
         this.center = center ;
         this.tree = tree ;
         this.voxelSize = voxelSize ;
+        for(int ix=0; ix < 8; ix++){
+            octants.add(null);
+        }
     }
 
    public void add(AddressedData<T> addressedData) {
-        if(!branchNode && data.isEmpty() || data.stream().anyMatch(ad->ad.equals(addressedData))){
+        if(voxelSize <= 1 || !branchNode && data.isEmpty() || data.stream().anyMatch(ad->ad.equals(addressedData))){
             data.add(addressedData);
         } else {
             branchNode = true ;
             //voxel is full, find a new sub voxels for all
             for(AddressedData<T>  ad: data) {
                 SubNode sn = SubNode.findSubNode(center, ad.getAddress());
-                OctNode<T> octant = getOctants(sn, voxelSize);
-                octant.add(addressedData);
+                OctNode<T> octant = getOctant(sn, voxelSize);
+                octant.add(ad);
             }
             data.clear();
             SubNode sn = SubNode.findSubNode(center, addressedData.getAddress());
-            OctNode<T> octant = getOctants(sn, voxelSize);
+            OctNode<T> octant = getOctant(sn, voxelSize);
             octant.add(addressedData);
         }
     }
 
-    private OctNode<T> getOctants(SubNode sn, int voxelSize) {
-        if(octants[sn.index] == null){
+    private OctNode<T> getOctant(SubNode sn, int voxelSize) {
+        if(octants.get(sn.index) == null){
             int newVoxelSize = voxelSize/2;
-            Point3i scaledOffset = sn.scaledOffset(newVoxelSize) ;
-            Point3i newCenterPoint = (Point3i) center.address.clone();
+            Point3d scaledOffset = sn.scaledOffset(newVoxelSize) ;
+            Point3d newCenterPoint = (Point3d) center.address.clone();
             newCenterPoint.add(scaledOffset);
             OctAddress newCenter = new OctAddress(newCenterPoint);
-            return octants[sn.index] = new OctNode<>(newCenter,tree,newVoxelSize);
+            octants.set(sn.index,new OctNode<T>(newCenter,tree,newVoxelSize));
+            return octants.get(sn.index);
         } else {
-            return octants[sn.index];
+            return octants.get(sn.index);
         }
+    }
+
+    private String octantsStr(){
+        StringBuilder builder = new StringBuilder();
+        for(OctNode<T> oct: octants){
+            if(oct == null){
+                builder.append("-");
+            } else {
+                builder.append(oct.branchNode?"B":"L");
+            }
+        }
+        return builder.toString() ;
+    }
+    @Override
+    public String toString() {
+        return "OctNode{" +
+                "center=" + center +
+                ", voxelSize=" + voxelSize +
+                ", branchNode=" + branchNode +
+                ", data=" + data.size() +
+                ", octants=" + octantsStr() +
+                '}';
     }
 }

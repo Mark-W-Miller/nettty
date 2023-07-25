@@ -1,23 +1,25 @@
 package com.moondance.nettty.utils.octtree;
 
-abstract public class OctTreeWalker<T extends Object & Comparable> {
-    OctNode startNode ;
+abstract public class OctTreeWalker<T> {
+    OctNode<T> startNode ;
     public OctTreeWalker(OctNode<T> startNode){
         this.startNode = startNode ;
-        walk(startNode);
+        walk(startNode,0);
     }
 
-    private void walk(OctNode<T> startNode) {
-        if(startNode.branchNode){
-            for(OctNode<T> node:startNode.octants){
-                if(node != null){
-                    walk(node);
+    private void walk(OctNode<T> node,int level) {
+        if(node.branchNode){
+            visitBranch(node,level);
+            for(OctNode<T> subNode:node.octants){
+                if(subNode != null){
+                    walk(subNode,level + 1);
                 }
             }
         } else {
-            visit(startNode);
+            visitLeaf(node,level);
         }
     }
 
-    abstract void visit(OctNode<T> startNode) ;
+    abstract public void visitLeaf(OctNode<T> node, int level) ;
+    abstract public void visitBranch(OctNode<T> node, int level) ;
 }
