@@ -1,31 +1,54 @@
 particles:
   - id: 0
-    positionStr: "0 0 0"
+    positionStr: "5 0 0"
+    motionVectorStr: "-1 0 -1"
+    wiggleWhenWalking: false
+    numCopiesInitial: 50
     spins:
       - id: 0
         shell: 1
+        rotationAngleStr: d-90
         rotationAxisStr: "0 1 0"
-  - id: 1
-    positionStr: "2 0 0"
+  - id: 0
+    positionStr: "-5 0 -10"
+    motionVectorStr: "-1 -10 -1"
+    wiggleWhenWalking: false
+    numCopiesInitial: 80
     spins:
       - id: 0
         shell: 1
-        rotationAxisStr: "1 0 0"
-  - id: 2
-    positionStr: "4 0 0"
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "0 0 1"
-  - id: 3
-    positionStr: "6 0 0"
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "1 1 1"
-  - id: 4
-    positionStr: "8 0 0"
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "1 1 0"
+        rotationAngleStr: d-90
+        rotationAxisStr: "0 1 0"
+      - id: 2
+        shell: 3
+        rotationAngleStr: d-90
+        rotationAxisStr: "0 1 0"
+      - id: 3
+        shell: 5
+        rotationAngleStr: d-90
+        rotationAxisStr: "0 1 0"
+#  - id: 1
+#    positionStr: "2 0 0"
+#    wiggleWhenWalking: true
+#    spins:
+#      - id: 0
+#        shell: 1
+#        rotationAxisStr: "0 1 0"
+#  - id: 2
+#    motionVectorStr: "-1 0 0"
+#    positionStr: "10 0 0"
+#    wiggleWhenWalking: true
+#    spins:
+#      - id: 0
+#        shell: 1
+#        rotationAxisStr: "0 1 0"
+#      - id: 0
+#        shell: 2
+#        rotationAxisStr: "0 1 0"
+#      - id: 0
+#        shell: 3
+#        rotationAxisStr: "0 1 0"
+#      - id: 0
+#        shell: 4
+#        rotationAxisStr: "0 1 0"
+

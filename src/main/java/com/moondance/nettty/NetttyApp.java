@@ -46,6 +46,11 @@ package com.moondance.nettty;
 
 import com.moondance.nettty.graphics.NettGroup;
 import com.moondance.nettty.model.Nett;
+import com.moondance.nettty.model.Particle;
+import com.moondance.nettty.utils.octtree.AddressedData;
+import com.moondance.nettty.utils.octtree.OctTree;
+import com.moondance.nettty.utils.octtree.SubNode;
+import lombok.SneakyThrows;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.behaviors.vp.OrbitBehavior;
 import org.jogamp.java3d.utils.universe.SimpleUniverse;
@@ -60,25 +65,35 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.moondance.nettty.Script.loadNett;
+import static com.moondance.nettty.graphics.GraphicsUtils.makeAxis;
+import static com.moondance.nettty.graphics.GraphicsUtils.makeOctTreeGroup;
+import static com.moondance.nettty.model.Nett.Nettty;
 import static com.moondance.nettty.utils.Handy.out;
+import static com.moondance.nettty.utils.VecUtils.randomize;
 
 public class NetttyApp extends JFrame
         implements ActionListener {
-
-    BranchGroup contentBranchGroup ;
-    Material material;
+    TransformGroup mainTransform;
+    OctTree<Particle> particleOctTree;
+    BranchGroup contentBranchGroup;
     Appearance app;
     JButton reloadScript;
     JButton saveScript;
     JButton GodPulse;
-    JComboBox altAppMaterialColor;
+    JButton runNettty;
+    JButton stopNettty;
+    JTextField numberOfPulsesPerFrame;
+    JTextField numberOfFrames;
     JComboBox appMaterialColor;
     JComboBox altAppScoping;
     JComboBox override;
     private NettGroup content = null;
+    private Group octTreeGroup = null;
     BoundingSphere worldBounds;
     // Globally used colors
     Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
@@ -129,21 +144,22 @@ public class NetttyApp extends JFrame
         // add mouse behaviors to the viewingPlatform
         ViewingPlatform viewingPlatform = universe.getViewingPlatform();
 
-        // This will move the ViewPlatform back a bit so the
-        // objects in the scene can be viewed.
-        viewingPlatform.setNominalViewingTransform();
+//        // This will move the ViewPlatform back a bit so the
+//        // objects in the scene can be viewed.
+//        viewingPlatform.setNominalViewingTransform();
 
         OrbitBehavior orbit = new OrbitBehavior(canvas3D, OrbitBehavior.REVERSE_ALL);
+        orbit.goHome();
         BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
                 10500.0);
         orbit.setSchedulingBounds(bounds);
-        orbit.setZoomFactor(5);
-        orbit.setTransFactors(3,3);
+        orbit.setZoomFactor(50);
+        orbit.setTransFactors(20, 20);
         viewingPlatform.setViewPlatformBehavior(orbit);
         viewingPlatform.setNominalViewingTransform();
         universe.addBranchGraph(createSceneGraph());
         View view = universe.getViewer().getView();
-        view.setBackClipDistance (100000);
+        view.setBackClipDistance(100000);
     }
 
     public void destroy() {
@@ -162,33 +178,104 @@ public class NetttyApp extends JFrame
                 new Point3d(0.0, 0.0, 0.0),  // Center
                 1000.0);                      // Extent
 
+
+        Nett nettTemplate = loadNett(CURRENT_SCRIPT);
+        particleOctTree = makeParticleLadenOctTreeFromTemplate(nettTemplate);
+        Nett nett = new Nett(particleOctTree.getAllData());
+        particleOctTree = makeParticleOctTree(nett);
+
         Transform3D t = new Transform3D();
-        // move the object upwards
         t.set(new Vector3f(0.0f, 0.1f, 0.0f));
-        // Shrink the object
         t.setScale(0.8);
-
-        TransformGroup trans = new TransformGroup(t);
-        trans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-        trans.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-
-        Appearance app1 = new Appearance();
-        material = new Material();
-        material.setCapability(Material.ALLOW_COMPONENT_WRITE);
-        material.setDiffuseColor(new Color3f(1.0f, 0.0f, 0.0f));
-        app1.setMaterial(material);
-        Nett nett = loadNett(CURRENT_SCRIPT);
-        content = new NettGroup(nett);
-        trans.addChild(content);
-
+        mainTransform = new TransformGroup(t);
+        mainTransform.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        mainTransform.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        mainTransform.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
+        mainTransform.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+        mainTransform.addChild(makeAxis());
+        mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctTree));
+        mainTransform.addChild(content = new NettGroup(nett));
         addLights(objRoot);
-        objRoot.addChild(trans);
+        objRoot.addChild(mainTransform);
         contentBranchGroup = objRoot;
         return objRoot;
     }
 
+    private void rebuildParticleOctTree() {
+        particleOctTree = makeParticleOctTree(Nettty);
+        mainTransform.removeChild(octTreeGroup);
+        mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctTree));
+    }
+
+    OctTree<Particle> makeParticleLadenOctTreeFromTemplate(Nett nettty) {
+        List<AddressedData> data = new ArrayList<>();
+
+        for (Particle particleTemplate : nettty.getParticles()) {
+
+            for (int ix = 0; ix < 1; ix++) {
+
+                if (particleTemplate.getNumCopiesInitial() > 1) {
+
+                    int particlesRemaining = particleTemplate.getNumCopiesInitial();
+                    for (SubNode sn : SubNode.values()) {
+
+                        double scale = 30 * Math.random();
+                        Particle particle = particleTemplate.clone();
+                        randomize(particle.getPosition(), 0.5d);
+                        particle.getPosition().scale(scale);
+                        data.add(particle.makeAddressableData());
+                        particlesRemaining--;
+                        if (particlesRemaining < 1) {
+                            break;
+                        }
+                    }
+                } else {
+
+                    Particle particle = particleTemplate.clone();
+                    randomize(particle.getPosition(), 0.5d);
+                    data.add(particle.makeAddressableData());
+                }
+            }
+        }
+        out(data);
+        double finalMax = maxDimension(nettty);
+        out("Octree Size Initial:" + finalMax);
+        OctTree<Particle> octTree = new OctTree<>((int) finalMax * 2);
+        for (AddressedData addressedParticle : data) {
+            octTree.add(addressedParticle);
+        }
+        return octTree;
+    }
+
+    OctTree<Particle> makeParticleOctTree(Nett nettty) {
+        double finalMax = maxDimension(nettty);
+        out("Octree Size:" + finalMax);
+        OctTree<Particle> octTree = new OctTree<>((int) finalMax * 2);
+        List<AddressedData> data = new ArrayList<>();
+
+        for (Particle particle : nettty.getParticles()) {
+            data.add(particle.makeAddressableData());
+        }
+//        out(data);
+        for (AddressedData addressedParticle : data) {
+            octTree.add(addressedParticle);
+        }
+        return octTree;
+    }
+
+    private static double maxDimension(Nett nettty) {
+        Point3d max = new Point3d();
+        for (Particle particle : nettty.getParticles()) {
+            max.x = Math.max(max.x, Math.abs(particle.getPosition().getX()));
+            max.y = Math.max(max.y, Math.abs(particle.getPosition().getY()));
+            max.z = Math.max(max.z, Math.abs(particle.getPosition().getZ()));
+        }
+        double finalMax = Math.max(max.x, Math.max(max.y, max.z)) * 1.1;
+        return finalMax;
+    }
+
     private void reloadScript() throws IOException {
-        Nett nett = loadNett(CURRENT_SCRIPT) ;
+        Nett nett = loadNett(CURRENT_SCRIPT);
         content = new NettGroup(nett);
         universe.addBranchGraph(createSceneGraph());
     }
@@ -256,9 +343,21 @@ public class NetttyApp extends JFrame
         saveScript.addActionListener(this);
         GodPulse = new JButton("God Pulse:");
         GodPulse.addActionListener(this);
+        runNettty = new JButton("Run");
+        runNettty.addActionListener(this);
+        stopNettty = new JButton("Stop");
+        stopNettty.addActionListener(this);
+        numberOfPulsesPerFrame = new JTextField("1", 4);
+        numberOfFrames = new JTextField("1", 4);
         panel.add(reloadScript);
         panel.add(saveScript);
         panel.add(GodPulse);
+        panel.add(new JLabel("#Per Frame"));
+        panel.add(numberOfPulsesPerFrame);
+        panel.add(new JLabel("# Cycles"));
+        panel.add(numberOfFrames);
+        panel.add(runNettty);
+        panel.add(stopNettty);
 
         appMaterialColor = new JComboBox(colorVals);
         appMaterialColor.addActionListener(this);
@@ -270,7 +369,9 @@ public class NetttyApp extends JFrame
 
 
     }
+    static private boolean keepRunning = true;
 
+    @SneakyThrows
     public void actionPerformed(ActionEvent e) {
         Object target = e.getSource();
         if (target == reloadScript) {
@@ -280,27 +381,44 @@ public class NetttyApp extends JFrame
                 throw new RuntimeException(ex);
             }
         } else if (target == GodPulse) {
-            Nett.Nettty.GodPulse(1);
-            Nett.Nettty.updateTransforms();
-        } else if (target == override) {
-            int i;
-            if (override.getSelectedIndex() == 0) {
-            } else if (override.getSelectedIndex() == 1) {
-            } else if (override.getSelectedIndex() == 2) {
-            } else {
-            }
-
-        } else if (target == appMaterialColor) {
-            material.setDiffuseColor(colors[appMaterialColor.getSelectedIndex()]);
+            int numFrames = getIntFromTextField(numberOfFrames);
+            int pulsesPerFrame = getIntFromTextField(numberOfPulsesPerFrame);
+            Nettty.GodPulse(pulsesPerFrame);
+            Nettty.updateTransforms();
+            rebuildParticleOctTree();
+        } else if (target == runNettty) {
+            int numFrames = getIntFromTextField(numberOfFrames);
+            int pulsesPerFrame = getIntFromTextField(numberOfPulsesPerFrame);
+            keepRunning = true ;
+            new Thread(() -> {
+                for (int frames = 0; frames < numFrames; frames++) {
+                    if(!keepRunning){
+                        break ;
+                    }
+                    Nettty.GodPulse(pulsesPerFrame);
+                    Nettty.updateTransforms();
+                    rebuildParticleOctTree();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }).start();
+            out("Spawned thread");
+        } else if(target == stopNettty){
+            keepRunning = false ;
         }
-
     }
 
+    private int getIntFromTextField(JTextField textField) {
+        return Integer.parseInt(textField.getText());
+    }
 
     public static void main(String[] args) {
         out("args:" + Arrays.toString(args));
         System.setProperty("sun.awt.noerasebackground", "true");
-        if(args.length > 0){
+        if (args.length > 0) {
             CURRENT_SCRIPT = args[0];
             out("CURRENT_SCRIPT:" + CURRENT_SCRIPT);
         }

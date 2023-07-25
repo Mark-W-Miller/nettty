@@ -17,6 +17,10 @@ public class Nett {
     public Nett() {
         Nettty = this ;
     }
+    public Nett(List<Particle> particles) {
+        Nettty = this ;
+        this.particles = particles ;
+    }
 
     public void GodPulse(int number) {
         for(int ix=0;ix<number;ix++){

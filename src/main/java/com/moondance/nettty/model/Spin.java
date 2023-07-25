@@ -2,6 +2,7 @@ package com.moondance.nettty.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.ToString;
 import org.jogamp.java3d.Alpha;
 import org.jogamp.java3d.RotationInterpolator;
@@ -9,6 +10,7 @@ import org.jogamp.java3d.Transform3D;
 import org.jogamp.java3d.TransformGroup;
 import org.jogamp.vecmath.AxisAngle4d;
 import org.jogamp.vecmath.Matrix3d;
+import org.jogamp.vecmath.Point3d;
 import org.jogamp.vecmath.Vector3d;
 
 import static com.moondance.nettty.utils.Handy.out;
@@ -17,20 +19,21 @@ import static com.moondance.nettty.utils.VecUtils.*;
 @Getter
 @Setter
 @ToString
-public class Spin implements Comparable {
+public class Spin implements Comparable, Cloneable {
     private static int nextId = 0 ;
-    Particle particle ;
+    @ToString.Exclude Particle particle ;
     int id ;
     int shell = 1 ;
     int spinSpeed = 15000 ;
     boolean spinNudge = true ;
-    Vector3d rotationDeltaVector ;
+    Vector3d rotationDeltaVector = null;
     Vector3d rotationAxis = new Vector3d(0d,1d,0d);
+    double rotationAngle = Math.PI/2;
+
     TransformGroup currentSpinTransform ;
     Alpha rotationAlpha ;
     RotationInterpolator rotator ;
     TransformGroup fixedXForm;
-    double rotationAngle = Math.PI/2;
     public Spin(int shell,Vector3d rotationAxis) {
         id = nextId++ ;
         this.shell = shell ;
@@ -38,6 +41,14 @@ public class Spin implements Comparable {
     }
     public Spin() {
         id = nextId++ ;
+    }
+    @SneakyThrows
+    public Spin clone() {
+        Spin clone =  (Spin) super.clone();
+        clone.rotationAxis = (Vector3d) rotationAxis.clone();
+        clone.rotationDeltaVector =  rotationDeltaVector!= null ? (Vector3d) rotationDeltaVector.clone() : null;
+        clone.id = nextId++ ;
+        return clone ;
     }
 
     @Override
@@ -83,8 +94,8 @@ public class Spin implements Comparable {
     }
 
     public void GodPulse() {
-        int speedFactor = 1/shell;
-        double delta = speedFactor * (100 - 700 * Math.random()) ;
+        double speedFactor = 1/(shell *0.2);
+        double delta = speedFactor * (100 - 400 * Math.random()) ;
 //        out("Spin GodPulse delta:" + delta);
         spinSpeed += delta;
         spinSpeed = Math.max(spinSpeed,100);
@@ -98,15 +109,15 @@ public class Spin implements Comparable {
             deltaV.mul(rot);
             rot.rotZ(rotationDeltaVector.getZ());
             deltaV.mul(rot);
-            out("Spin GodPulse deltaV:\n" + deltaV);
+//            out("Spin GodPulse deltaV:\n" + deltaV);
             deltaV.transform(rotationAxis);
-            out("Spin GodPulse after nudge rotationAxis:" + rotationAxis);
+//            out("Spin GodPulse after nudge rotationAxis:" + rotationAxis);
         } else {
             if(rotationDeltaVector == null) {
                 rotationAxis.x += Math.random() * 0.5;
                 rotationAxis.y += Math.random() * 0.5;
                 rotationAxis.z += Math.random() * 0.5;
-                out(id + ":Spin GodPulse random nudge rotationAxis:" + rotationAxis);
+//                out(id + ":Spin GodPulse random nudge rotationAxis:" + rotationAxis);
             } else {
 //                out(id + ":Spin GodPulse NO nudge rotationAxis:" + rotationAxis);
             }
