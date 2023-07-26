@@ -25,11 +25,11 @@ import static com.moondance.nettty.utils.VecUtils.*;
 public class Particle implements Comparable, Cloneable, Addressable {
     private static int nextId = 0 ;
     int id ;
-    Nett nett ;
-    List<Spin> spins = new ArrayList<>();
-    Vector3d motionVector = new Vector3d(0,0,0);
     Point3d position = new Point3d();
+    Vector3d motionVector = new Vector3d(0,0,0);
+    List<Spin> spins = new ArrayList<>();
     TransformGroup currentParticleTransform ;
+    Nett nett ;
     int numCopiesInitial = 1 ;
     boolean wiggleWhenWalking = false ;
     public Particle() {

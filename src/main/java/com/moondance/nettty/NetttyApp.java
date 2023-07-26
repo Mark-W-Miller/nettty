@@ -149,7 +149,7 @@ public class NetttyApp extends JFrame
 //        viewingPlatform.setNominalViewingTransform();
 
         OrbitBehavior orbit = new OrbitBehavior(canvas3D, OrbitBehavior.REVERSE_ALL);
-        orbit.goHome();
+//        orbit.goHome();
         BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
                 10500.0);
         orbit.setSchedulingBounds(bounds);
@@ -232,18 +232,18 @@ public class NetttyApp extends JFrame
                 } else {
 
                     Particle particle = particleTemplate.clone();
-                    randomize(particle.getPosition(), 0.5d);
                     data.add(particle.makeAddressableData());
                 }
             }
         }
         out(data);
-        double finalMax = maxDimension(nettty);
+        double finalMax = maxDimension(data);
         out("Octree Size Initial:" + finalMax);
         OctTree<Particle> octTree = new OctTree<>((int) finalMax * 2);
         for (AddressedData addressedParticle : data) {
             octTree.add(addressedParticle);
         }
+        octTree.verifyTree();
         return octTree;
     }
 
@@ -269,6 +269,16 @@ public class NetttyApp extends JFrame
             max.x = Math.max(max.x, Math.abs(particle.getPosition().getX()));
             max.y = Math.max(max.y, Math.abs(particle.getPosition().getY()));
             max.z = Math.max(max.z, Math.abs(particle.getPosition().getZ()));
+        }
+        double finalMax = Math.max(max.x, Math.max(max.y, max.z)) * 1.1;
+        return finalMax;
+    }
+    private static double maxDimension(List<AddressedData> data) {
+        Point3d max = new Point3d();
+        for (AddressedData ad : data) {
+            max.x = Math.max(max.x, Math.abs(ad.getOctAddress().getAddress().getX()));
+            max.y = Math.max(max.y, Math.abs(ad.getOctAddress().getAddress().getY()));
+            max.z = Math.max(max.z, Math.abs(ad.getOctAddress().getAddress().getZ()));
         }
         double finalMax = Math.max(max.x, Math.max(max.y, max.z)) * 1.1;
         return finalMax;
@@ -358,12 +368,6 @@ public class NetttyApp extends JFrame
         panel.add(numberOfFrames);
         panel.add(runNettty);
         panel.add(stopNettty);
-
-        appMaterialColor = new JComboBox(colorVals);
-        appMaterialColor.addActionListener(this);
-        appMaterialColor.setSelectedIndex(1);
-        panel.add(new JLabel("Normal Appearance MaterialColor"));
-        panel.add(appMaterialColor);
 
         return panel;
 

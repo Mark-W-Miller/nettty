@@ -62,10 +62,10 @@ public enum SubNode {
         }
     }
 
-    public Point3d scaledOffset(int newVoxelSize) {
+    public Point3d scaledOffset(double newVoxelSize) {
         Point3d res = (Point3d) offset.clone();
 
-        int scale = newVoxelSize/2;
+        double scale = newVoxelSize/2;
         res.scale(scale);
         return res;
     }

@@ -3,6 +3,9 @@ package com.moondance.nettty.utils.octtree;
 import lombok.Getter;
 import lombok.Setter;
 import org.jogamp.vecmath.Point3d;
+
+import static com.moondance.nettty.graphics.GraphicsUtils.tup3dStr;
+
 @Getter
 @Setter
 public class OctAddress implements Comparable<OctAddress>{
@@ -48,6 +51,6 @@ public class OctAddress implements Comparable<OctAddress>{
 
     @Override
     public String toString() {
-        return "OctAddress" + address ;
+        return "OctAddress:" + tup3dStr(address) ;
     }
 }

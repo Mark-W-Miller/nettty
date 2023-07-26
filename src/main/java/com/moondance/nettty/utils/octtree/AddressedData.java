@@ -10,9 +10,8 @@ import java.util.Objects;
 @Setter
 @Getter
 @AllArgsConstructor
-@ToString
 public class AddressedData<T> {
-    OctAddress address;
+    OctAddress octAddress;
     T data;
 
     @Override
@@ -20,11 +19,19 @@ public class AddressedData<T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AddressedData<T> that = (AddressedData<T>) o;
-        return Objects.equals(address.address, that.address.address);
+        return Objects.equals(octAddress.address, that.octAddress.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(address);
+        return Objects.hash(octAddress);
+    }
+
+    @Override
+    public String toString() {
+        return "AddressedData{" +
+                "octAddress=" + octAddress +
+                ", data=" + data +
+                '}';
     }
 }

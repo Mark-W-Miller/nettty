@@ -1,48 +1,66 @@
 package com.moondance.nettty.graphics;
 
-import com.moondance.nettty.utils.octtree.AddressedData;
 import com.moondance.nettty.utils.octtree.OctNode;
 import com.moondance.nettty.utils.octtree.OctTree;
 import com.moondance.nettty.utils.octtree.OctTreeWalker;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Point3D;
 import org.jdesktop.j3d.examples.collision.Box;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.geometry.Sphere;
-import org.jogamp.vecmath.Color3f;
-import org.jogamp.vecmath.Point3d;
-import org.jogamp.vecmath.Point3f;
-import org.jogamp.vecmath.Vector3d;
+import org.jogamp.vecmath.*;
+
+import static com.moondance.nettty.utils.Handy.err;
 
 public class GraphicsUtils {
 
     public static Group makeAxis() {
         BranchGroup group = new BranchGroup();
-        Point3d coords[] = new Point3d[4];
-        Appearance app = new Appearance();
-        coords[0] = new Point3d(0, 0, 0);
-        coords[1] = new Point3d(1, 0, 0);
-        coords[2] = new Point3d(0, 1, 0);
-        coords[3] = new Point3d(0, 0, 1);
         LineArray lineArr = new LineArray(6, LineArray.COORDINATES);
-        lineArr.setCoordinate(0, new Point3f(0, 0, 0));
-        lineArr.setCoordinate(1, new Point3f(0, 300, 0));
+        group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(1000, 0, 0),new Color3f(1,0,0)));
+        group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 1000, 0),new Color3f(0,1,0)));
+        group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 0, 1000),new Color3f(0,0,1)));
 
-        lineArr.setCoordinate(2, new Point3f(0, 0, 0));
-        lineArr.setCoordinate(3, new Point3f(100, 0, 0));
-
-        lineArr.setCoordinate(4, new Point3f(0, 0, 0));
-        lineArr.setCoordinate(5, new Point3f(0, 0, 100));
-
-        Shape3D shape = new Shape3D(lineArr, app);
-
-        group.addChild(shape);
         return group;
+    }
+
+    public static Shape3D makeColorLineShape(Point3d from, Point3d to, Color3f color){
+        LineArray lineArr = new LineArray(2, LineArray.COORDINATES);
+        lineArr.setCoordinate(0, from);
+        lineArr.setCoordinate(1, to);
+        Appearance appearance = new Appearance();
+        ColoringAttributes ca = new ColoringAttributes();
+        ca.setColor(color);
+        appearance.setColoringAttributes(ca);
+        Shape3D shape = new Shape3D(lineArr, appearance);
+        return shape ;
+    }
+
+    public static void verifyBB(BoundingBox bb) {
+        if (bb.getMinX() >= bb.getMaxX() ||
+                bb.getMinY() >= bb.getMaxY() ||
+                bb.getMinY() >= bb.getMaxY()) {
+            err("Bad Bounding Box:" + bb);
+        }
+    }
+
+    public static Point3D p3dToP3D(Point3d point3d){
+        return new Point3D(point3d.x,point3d.y,point3d.z);
+    }
+
+    public static String tup3dStr(Tuple3d tuple3d){
+        return String.format("[%.2f %.2f %.2f]",tuple3d.getX(),tuple3d.getY(),tuple3d.getZ());
+    }
+
+    public static String bb2str(BoundingBox bb){
+        return String.format("BB X:[%.2f %.2f] Y[%.2f %.2f] Z[%.2f %.2f]",bb.getMinX(),bb.getMaxX(),bb.getMinY(),bb.getMaxY(),bb.getMinZ(),bb.getMaxZ());
     }
 
     public static <T> Group makeOctTreeGroup(OctTree<T> tree) {
         BranchGroup group = new BranchGroup();
         group.setCapability(BranchGroup.ALLOW_DETACH);
-        Appearance boxApp = getDebugStructureAppearance(new Color3f(0,1,1), 0.97f) ;
-        Appearance dotApp = getDebugStructureAppearance(new Color3f(0,0,1), 0f) ;
+        Appearance boxApp = getDebugStructureAppearance(new Color3f(0, 1, 1), 0.30f);
+        Appearance dotApp = getDebugStructureAppearance(new Color3f(0, 0, 1), 0f);
         new OctTreeWalker<T>(tree.getRoot()) {
 
             @Override
@@ -56,11 +74,14 @@ public class GraphicsUtils {
             }
 
             private void makeOctNodeDecoration(OctNode<T> node) {
-                TransformGroup octRegionBox = makeSquareAt(node.getCenter().getAddress(),node.getVoxelSize(), boxApp);
+                TransformGroup octRegionBox = makeSquareAt(node.getCenter().getAddress(), node.getVoxelSize(), boxApp);
                 group.addChild(octRegionBox);
-//                if(node.isBranchNode()){
-//                    group.addChild(makeSphereAt(node.getCenter().getAddress(),0.5, dotApp));
-//                }
+                if (!node.isBranchNode()) {
+                    Point3d part = node.getData().get(0).getOctAddress().getAddress();
+                    group.addChild(makeSphereAt(part, 0.5, dotApp));
+                    group.addChild(makeSphereAt(node.getCenter().getAddress(), 2, dotApp));
+                    group.addChild(makeColorLineShape(node.getCenter().getAddress(),part, new Color3f(100, 64.7f, 0)));
+                }
             }
         };
         return group;
@@ -90,6 +111,7 @@ public class GraphicsUtils {
         objTrans.addChild(sphere);
         return objTrans;
     }
+
     private static Appearance getDebugStructureAppearance() {
         Appearance appearance = new Appearance();
 
@@ -133,6 +155,7 @@ public class GraphicsUtils {
         PolygonAttributes polygonAttributes = new PolygonAttributes();
         polygonAttributes.setCapability(PolygonAttributes.POLYGON_LINE);
         polygonAttributes.setCullFace(PolygonAttributes.CULL_NONE);
+        polygonAttributes.setPolygonMode(PolygonAttributes.POLYGON_LINE);
         appearance.setPolygonAttributes(polygonAttributes);
 
         ColoringAttributes ca = new ColoringAttributes();

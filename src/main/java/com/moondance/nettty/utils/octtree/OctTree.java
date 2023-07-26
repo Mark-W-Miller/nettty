@@ -1,41 +1,50 @@
 package com.moondance.nettty.utils.octtree;
 
-import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.utils.MapOfLists;
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Point3D;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.jogamp.vecmath.Point3d;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.moondance.nettty.graphics.GraphicsUtils.p3dToP3D;
+import static com.moondance.nettty.utils.Handy.*;
 
 @Getter
 @Setter
 @ToString
 public class OctTree<T> {
 
-    OctNode<T> root ;
-    int voxelSize ;
-    public OctTree(int voxelSize){
-        this.voxelSize = voxelSize ;
-        root = new OctNode<>(new OctAddress(),this, voxelSize);
+    OctNode<T> root;
+    int voxelSize;
+
+    public OctTree(int voxelSize) {
+        this.voxelSize = voxelSize;
+        root = new OctNode<>(new OctAddress(), this, voxelSize);
     }
 
-    public void add(AddressedData<T> addressedData){
+    public void add(AddressedData<T> addressedData) {
+        if(!root.makeBoundingBox().contains(p3dToP3D(addressedData.getOctAddress().getAddress()))){
+            err("ROOT Out of bounds address:" + addressedData);
+        }
         root.add(addressedData);
     }
-    public void add(OctAddress address,T data){
-        root.add(new AddressedData<>(address,data));
+
+    public void add(OctAddress address, T data) {
+        root.add(new AddressedData<>(address, data));
     }
 
 
     /**
-     *
      * @param address i,j,k of the address of the cell
-     * @param radius how big of a sphere. which translates to how deep into the tree will it search, and then return all below.
+     * @param radius  how big of a sphere. which translates to how deep into the tree will it search, and then return all below.
      * @return a map of all objects within the radius keyed on their address.
      */
-    public MapOfLists<OctAddress, T> findNeighbors(OctAddress address, double radius){
+    public MapOfLists<OctAddress, T> findNeighbors(OctAddress address, double radius) {
         return null;
     }
 
@@ -45,7 +54,7 @@ public class OctTree<T> {
 
             @Override
             public void visitLeaf(OctNode<T> node, int level) {
-                for(AddressedData<T> ad: node.getData()){
+                for (AddressedData<T> ad : node.getData()) {
                     allData.add(ad.getData());
                 }
             }
@@ -54,6 +63,29 @@ public class OctTree<T> {
             public void visitBranch(OctNode<T> node, int level) {
             }
         };
-        return allData ;
+        return allData;
+    }
+
+    public void verifyTree() {
+        new OctTreeWalker<T>(root) {
+
+            @Override
+            public void visitLeaf(OctNode<T> node, int level) {
+                BoundingBox bb = node.makeBoundingBox();
+                for (AddressedData<T> ad : node.getData()) {
+
+                    Point3d p3d = ad.getOctAddress().getAddress();
+                    Point3D p3D = new Point3D(p3d.x,p3d.y,p3d.z);
+                    if(!bb.contains(p3D)){
+                        err("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!verifyTree NOT IN BOX:" + node + " voxelSize:" + node.getVoxelSize());
+                        err(tabs(8) + "verifyTree NOT IN bb:" + bb + "\n" + tabs(8) + " p3D:" + p3D);
+                    }
+                }
+            }
+
+            @Override
+            public void visitBranch(OctNode<T> node, int level) {
+            }
+        };
     }
 }
