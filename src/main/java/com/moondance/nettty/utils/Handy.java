@@ -23,6 +23,7 @@ public final class Handy {
 	static public void trace(Object s) {if(debug) System.out.println(ANSI_YELLOW + s.toString());}
 	static public void dout(Object s) {if(debug) System.out.println(ANSI_GREEN + s.toString());}
 	static public void out(Object s) {System.out.println(ANSI_RESET + s.toString());}
+	static public void out(boolean show, Object s) {if(show) System.out.println(ANSI_RESET + s.toString());}
 	static public void err(Object s) {
         System.out.println(ANSI_RED + s.toString());
     }

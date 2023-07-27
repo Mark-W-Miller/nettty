@@ -50,6 +50,7 @@ import com.moondance.nettty.model.Particle;
 import com.moondance.nettty.utils.octtree.AddressedData;
 import com.moondance.nettty.utils.octtree.OctTree;
 import com.moondance.nettty.utils.octtree.SubNode;
+import javafx.geometry.Point3D;
 import lombok.SneakyThrows;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.behaviors.vp.OrbitBehavior;
@@ -57,6 +58,7 @@ import org.jogamp.java3d.utils.universe.SimpleUniverse;
 import org.jogamp.java3d.utils.universe.ViewingPlatform;
 import org.jogamp.vecmath.Color3f;
 import org.jogamp.vecmath.Point3d;
+import org.jogamp.vecmath.Vector3d;
 import org.jogamp.vecmath.Vector3f;
 
 import javax.swing.*;
@@ -70,9 +72,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.moondance.nettty.Script.loadNett;
-import static com.moondance.nettty.graphics.GraphicsUtils.makeAxis;
-import static com.moondance.nettty.graphics.GraphicsUtils.makeOctTreeGroup;
+import static com.moondance.nettty.graphics.GraphicsUtils.*;
 import static com.moondance.nettty.model.Nett.Nettty;
+import static com.moondance.nettty.utils.DB.NETTYAPP_FLOW_DB;
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.randomize;
 
@@ -81,12 +83,14 @@ public class NetttyApp extends JFrame
     TransformGroup mainTransform;
     OctTree<Particle> particleOctTree;
     BranchGroup contentBranchGroup;
-    Appearance app;
+    OrbitBehavior orbit;
     JButton reloadScript;
     JButton saveScript;
     JButton GodPulse;
     JButton runNettty;
     JButton stopNettty;
+    JButton setHome;
+    JButton goHome;
     JTextField numberOfPulsesPerFrame;
     JTextField numberOfFrames;
     JComboBox appMaterialColor;
@@ -115,7 +119,7 @@ public class NetttyApp extends JFrame
     }
 
     public void init() throws IOException {
-        this.setSize(new Dimension(1000, 600));
+        this.setSize(new Dimension(1500, 700));
         System.setProperty("sun.awt.noerasebackground", "true");
         Container contentPane = getContentPane();
 
@@ -148,18 +152,32 @@ public class NetttyApp extends JFrame
 //        // objects in the scene can be viewed.
 //        viewingPlatform.setNominalViewingTransform();
 
-        OrbitBehavior orbit = new OrbitBehavior(canvas3D, OrbitBehavior.REVERSE_ALL);
+        orbit = new OrbitBehavior(canvas3D, OrbitBehavior.REVERSE_ALL);
 //        orbit.goHome();
         BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
                 10500.0);
         orbit.setSchedulingBounds(bounds);
-        orbit.setZoomFactor(50);
-        orbit.setTransFactors(20, 20);
+        orbit.setZoomFactor(150);
+        orbit.setTransFactors(50, 50);
         viewingPlatform.setViewPlatformBehavior(orbit);
         viewingPlatform.setNominalViewingTransform();
         universe.addBranchGraph(createSceneGraph());
         View view = universe.getViewer().getView();
         view.setBackClipDistance(100000);
+    }
+
+    public void dumpOrbit(String prefix){
+        Point3d center = new Point3d();
+        orbit.getRotationCenter(center);
+        Transform3D t3D = new Transform3D();
+        Vector3d v3d = new Vector3d();
+        t3D.get(v3d);
+
+        orbit.getViewingPlatform().getViewPlatformTransform().getTransform(t3D);
+        out(prefix + " center:" + tup3dStr(center));
+        out(prefix + " VP t3D:" + tup3dStr(v3d));
+        out(prefix + " VP t3D:\n" + t3D);
+
     }
 
     public void destroy() {
@@ -193,8 +211,8 @@ public class NetttyApp extends JFrame
         mainTransform.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
         mainTransform.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         mainTransform.addChild(makeAxis());
-        mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctTree));
         mainTransform.addChild(content = new NettGroup(nett));
+        mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctTree));
         addLights(objRoot);
         objRoot.addChild(mainTransform);
         contentBranchGroup = objRoot;
@@ -205,6 +223,9 @@ public class NetttyApp extends JFrame
         particleOctTree = makeParticleOctTree(Nettty);
         mainTransform.removeChild(octTreeGroup);
         mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctTree));
+        Transform3D t3D = new Transform3D();
+        mainTransform.getTransform(t3D);
+        out(NETTYAPP_FLOW_DB,"NettyApp rebuildParticleOctTree mainTransform:\n" + t3D);
     }
 
     OctTree<Particle> makeParticleLadenOctTreeFromTemplate(Nett nettty) {
@@ -359,6 +380,10 @@ public class NetttyApp extends JFrame
         stopNettty.addActionListener(this);
         numberOfPulsesPerFrame = new JTextField("1", 4);
         numberOfFrames = new JTextField("1", 4);
+        setHome = new JButton("Set Home");
+        setHome.addActionListener(this);
+        goHome = new JButton("GoHome");
+        goHome.addActionListener(this);
         panel.add(reloadScript);
         panel.add(saveScript);
         panel.add(GodPulse);
@@ -368,6 +393,8 @@ public class NetttyApp extends JFrame
         panel.add(numberOfFrames);
         panel.add(runNettty);
         panel.add(stopNettty);
+        panel.add(setHome);
+        panel.add(goHome);
 
         return panel;
 
@@ -380,16 +407,21 @@ public class NetttyApp extends JFrame
         Object target = e.getSource();
         if (target == reloadScript) {
             try {
+                keepRunning = false ;
                 reloadScript();
+                homeTransformation = new Transform3D();
+                orbit.getViewingPlatform().getViewPlatformTransform().getTransform(homeTransformation);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         } else if (target == GodPulse) {
+            dumpOrbit("Orbit Before God Pulse");
             int numFrames = getIntFromTextField(numberOfFrames);
             int pulsesPerFrame = getIntFromTextField(numberOfPulsesPerFrame);
             Nettty.GodPulse(pulsesPerFrame);
             Nettty.updateTransforms();
             rebuildParticleOctTree();
+            dumpOrbit("Orbit After God Pulse");
         } else if (target == runNettty) {
             int numFrames = getIntFromTextField(numberOfFrames);
             int pulsesPerFrame = getIntFromTextField(numberOfPulsesPerFrame);
@@ -412,9 +444,17 @@ public class NetttyApp extends JFrame
             out("Spawned thread");
         } else if(target == stopNettty){
             keepRunning = false ;
+        } else if(target == setHome) {
+            homeTransformation = new Transform3D();
+            orbit.getViewingPlatform().getViewPlatformTransform().getTransform(homeTransformation);
+        } else if(target == goHome) {
+            if(homeTransformation != null) {
+                orbit.setHomeTransform(homeTransformation);
+                orbit.goHome();
+            }
         }
     }
-
+    Transform3D homeTransformation ;
     private int getIntFromTextField(JTextField textField) {
         return Integer.parseInt(textField.getText());
     }

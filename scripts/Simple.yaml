@@ -1,20 +1,19 @@
 particles:
   - id: 1
-    motionVectorStr: "0 0 0"
     positionStr: "0 0 0"
-    wiggleWhenWalking: true
+    wiggleWhenWalking: false
     spins:
       - id: 0
         spinNudge: true
-        spinSpeed: 60000
-        shell: 1
+        spinSpeed: 5000
+        shell: 10
         rotationAxisStr: "1 1 1"
         rotationDeltaVectorStr: "1 1 1"
         rotationAngleStr: d-90
   - id: 0
-    motionVectorStr: "0 0 0"
+    motionVectorStr: "1 0 0"
     positionStr: "0 0 0"
-    wiggleWhenWalking: true
+    wiggleWhenWalking: false
     spins:
       - id: 0
         shell: 1
@@ -26,63 +25,63 @@ particles:
       - id: 2
         shell: 3
         rotationAxisStr: "0 0 1"
-  - id: 1
-    positionStr: "4 4 4"
-    wiggleWhenWalking: true
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "1 1 1"
-      - id: 1
-        shell: 2
-        rotationAxisStr: "1 0 1"
-      - id: 2
-        shell: 3
-        rotationAxisStr: "0 1 1"
-  - id: 2
-    positionStr: "10 0 0"
-    wiggleWhenWalking: true
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "1 1 1"
-      - id: 1
-        shell: 2
-        rotationAxisStr: "1 1 0"
-      - id: 2
-        shell: 3
-        rotationAxisStr: "1 0 1"
-  - id: 0
-    positionStr: "0 0 0"
-    wiggleWhenWalking: true
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "0 1 0"
-  - id: 1
-    positionStr: "2 0 0"
-    wiggleWhenWalking: true
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "1 0 0"
-  - id: 2
-    positionStr: "4 0 0"
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "0 0 1"
-  - id: 3
-    positionStr: "6 0 0"
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "1 1 1"
-  - id: 4
-    positionStr: "8 0 0"
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "1 1 0"
-
-
+#  - id: 1
+#    positionStr: "0 0 0"
+#    wiggleWhenWalking: true
+#    spins:
+#      - id: 0
+#        shell: 1
+#        rotationAxisStr: "1 1 1"
+#      - id: 1
+#        shell: 2
+#        rotationAxisStr: "1 0 1"
+#      - id: 2
+#        shell: 3
+#        rotationAxisStr: "0 1 1"
+#  - id: 2
+#    positionStr: "10 0 0"
+#    wiggleWhenWalking: true
+#    spins:
+#      - id: 0
+#        shell: 1
+#        rotationAxisStr: "1 1 1"
+#      - id: 1
+#        shell: 2
+#        rotationAxisStr: "1 1 0"
+#      - id: 2
+#        shell: 3
+#        rotationAxisStr: "1 0 1"
+#  - id: 0
+#    positionStr: "0 0 0"
+#    wiggleWhenWalking: true
+#    spins:
+#      - id: 0
+#        shell: 1
+#        rotationAxisStr: "0 1 0"
+#  - id: 1
+#    positionStr: "2 0 0"
+#    wiggleWhenWalking: true
+#    spins:
+#      - id: 0
+#        shell: 1
+#        rotationAxisStr: "1 0 0"
+#  - id: 2
+#    positionStr: "4 0 0"
+#    spins:
+#      - id: 0
+#        shell: 1
+#        rotationAxisStr: "0 0 1"
+#  - id: 3
+#    positionStr: "6 0 0"
+#    spins:
+#      - id: 0
+#        shell: 1
+#        rotationAxisStr: "1 1 1"
+#  - id: 4
+#    positionStr: "8 0 0"
+#    spins:
+#      - id: 0
+#        shell: 1
+#        rotationAxisStr: "1 1 0"
+#
+#

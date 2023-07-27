@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.moondance.nettty.graphics.GraphicsUtils.*;
+import static com.moondance.nettty.utils.DB.OCTNODE_DB;
 import static com.moondance.nettty.utils.Handy.err;
 import static com.moondance.nettty.utils.Handy.out;
 
@@ -33,18 +34,18 @@ public class OctNode<T> {
     }
 
     public void add(AddressedData<T> addressedData) {
-        out("OctNode add add:" + tup3dStr(addressedData.getOctAddress().getAddress()));
-        out("OctNode add BBB:" + bb2str(makeBoundingBox()));
+        out(OCTNODE_DB,"OctNode add add:" + tup3dStr(addressedData.getOctAddress().getAddress()));
+        out(OCTNODE_DB,"OctNode add BBB:" + bb2str(makeBoundingBox()));
         BoundingBox bb = makeBoundingBox();
         if (!bb.contains(p3dToP3D(addressedData.getOctAddress().getAddress()))) {
             err("Point not in Octant addressedData:" + tup3dStr(addressedData.getOctAddress().getAddress()));
             err("Point not in Octant  assigned bb:" + bb2str(bb));
         }
         if (voxelSize <= 1 || !branchNode && data.isEmpty() || data.stream().anyMatch(ad -> ad.equals(addressedData))) {
-            out("OctNode Becomes Leaf:" + tup3dStr(addressedData.getOctAddress().getAddress()));
+            out(OCTNODE_DB,"OctNode Becomes Leaf:" + tup3dStr(addressedData.getOctAddress().getAddress()));
             data.add(addressedData);
         } else {
-            out("OctNode Becomes Branch:" + tup3dStr(addressedData.getOctAddress().getAddress()));
+            out(OCTNODE_DB,"OctNode Becomes Branch:" + tup3dStr(addressedData.getOctAddress().getAddress()));
             branchNode = true;
             //Octant has data, so all must be sent down, find a new sub voxels for all
             for (AddressedData<T> ad : data) {
