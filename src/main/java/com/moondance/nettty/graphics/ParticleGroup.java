@@ -51,6 +51,7 @@ import org.jogamp.java3d.utils.geometry.Cylinder;
 import org.jogamp.java3d.utils.geometry.Sphere;
 import org.jogamp.vecmath.*;
 
+import static com.moondance.nettty.graphics.GraphicsUtils.makeAxisAt;
 import static com.moondance.nettty.utils.VecUtils.makeRotationGroup;
 import static com.moondance.nettty.utils.VecUtils.makeTranslationGroup;
 
@@ -64,18 +65,19 @@ public class ParticleGroup  extends Group {
         BoundingSphere bounds =
                 new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 10000.0);
 
-        Sphere sphere;
-        TransformGroup trans;
         Vector3d vec = new Vector3d();
         vec.set(particle.getPosition());
-        trans = makeTranslationGroup(vec);
+        TransformGroup trans = makeTranslationGroup(vec);
         trans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         addChild(trans);
+        BranchGroup localAxis = makeAxisAt(particle.getPosition(),particle.maxShell());
+        addChild(localAxis);
         particle.setCurrentParticleTransform(trans);
         for (Spin spin : particle.getSpins()) {
 
             spin.setParticle(particle);
-            sphere = makeSpinSphere(appearence, spin);
+            Sphere sphere = makeSpinSphere(appearence, spin);
+
             TransformGroup cylinderXForm = makeSpinAxis(getAppearance(), spin);
             TransformGroup fixedXForm = makeFixedSpinAxis(getAppearanceYPointer(), spin);
             spin.setFixedXForm(fixedXForm);
@@ -123,7 +125,7 @@ public class ParticleGroup  extends Group {
 
     private TransformGroup makeFixedSpinAxis(Appearance appearance, Spin spin) {
         TransformGroup group = makeRotationGroup( spin.getRotationAxis(),spin.getRotationAngle());
-        Cylinder cylinder = new Cylinder(0.05f, 4*spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, appearance);
+        Cylinder cylinder = new Cylinder(0.05f, spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, appearance);
         cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         group.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         group.addChild(cylinder);
@@ -134,7 +136,7 @@ public class ParticleGroup  extends Group {
         TransformGroup group = makeTranslationGroup(new Vector3d(0,0,0));
         TransformGroup cylinderXForm = makeTranslationGroup(new Vector3d(0,((float) spin.getShell())/2,0));
         group.addChild(cylinderXForm);
-        Cylinder cylinder = new Cylinder(0.6f, spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
+        Cylinder cylinder = new Cylinder(0.1f * spin.getShell(), spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
         cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         cylinderXForm.addChild(cylinder);
 
@@ -142,7 +144,7 @@ public class ParticleGroup  extends Group {
         group.addChild(ballXForm);
 
         Sphere sphere = new Sphere(
-                0.6f,     // sphere radius
+                0.1f * spin.getShell(),     // sphere radius
                 Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
                 8,         // 16 divisions radially
                 app);      // it's appearance

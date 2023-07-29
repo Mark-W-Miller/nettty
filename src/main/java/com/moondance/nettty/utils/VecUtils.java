@@ -25,6 +25,11 @@ public class VecUtils {
         return vec3d ;
     }
 
+    public static Vector3d normal(double x, double y, double z){
+        Vector3d v3d = new Vector3d(x,y,z);
+        v3d.normalize();
+        return v3d ;
+    }
     static double[] parseThreeD(String tripleStr){
         String[] bits = tripleStr.split(" ");
         if(bits.length != 3) {

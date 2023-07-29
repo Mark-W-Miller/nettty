@@ -20,7 +20,15 @@ public class GraphicsUtils {
         group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(1000, 0, 0),new Color3f(1,0,0)));
         group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 1000, 0),new Color3f(0,1,0)));
         group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 0, 1000),new Color3f(0,0,1)));
-        group.addChild(makeColorLineShape(new Point3d(-1000, -1000, -1000), new Point3d(1000, 1000, 1000),new Color3f(1,1,0)));
+
+        return group;
+    }
+    public static BranchGroup makeAxisAt(Point3d c, double size) {
+        BranchGroup group = new BranchGroup();
+        LineArray lineArr = new LineArray(6, LineArray.COORDINATES);
+        group.addChild(makeColorLineShape(c, new Point3d(c.x + size, c.y, c.z),new Color3f(1,0,0)));
+        group.addChild(makeColorLineShape(c, new Point3d(c.x, c.y + size, c.z),new Color3f(0,1,0)));
+        group.addChild(makeColorLineShape(c, new Point3d(c.x, c.y, c.z + size),new Color3f(0,0,1)));
 
         return group;
     }
@@ -80,7 +88,7 @@ public class GraphicsUtils {
                 if (!node.isBranchNode()) {
                     Point3d part = node.getData().get(0).getOctAddress().getAddress();
                     group.addChild(makeSphereAt(part, 0.5, dotApp));
-                    group.addChild(makeSphereAt(node.getCenter().getAddress(), 2, dotApp));
+                    group.addChild(makeSphereAt(node.getCenter().getAddress(), 0.5, dotApp));
                     group.addChild(makeColorLineShape(node.getCenter().getAddress(),part, new Color3f(1, .64f, 0)));
                 }
             }

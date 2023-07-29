@@ -84,6 +84,7 @@ public class NetttyApp extends JFrame
     OctTree<Particle> particleOctTree;
     BranchGroup contentBranchGroup;
     OrbitBehavior orbit;
+    double orbitSensitivity = 10 ;
     JButton reloadScript;
     JButton saveScript;
     JButton GodPulse;
@@ -143,6 +144,7 @@ public class NetttyApp extends JFrame
         contentPane.add("South", p);
     }
 
+
     private void configureSimpleUniverse(Canvas3D canvas3D) throws IOException {
         universe = new SimpleUniverse(canvas3D);
 
@@ -158,8 +160,8 @@ public class NetttyApp extends JFrame
         BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
                 10500.0);
         orbit.setSchedulingBounds(bounds);
-        orbit.setZoomFactor(50);
-        orbit.setTransFactors(50, 50);
+        orbit.setZoomFactor(orbitSensitivity);
+        orbit.setTransFactors(orbitSensitivity, orbitSensitivity);
         viewingPlatform.setViewPlatformBehavior(orbit);
         viewingPlatform.setNominalViewingTransform();
         universe.addBranchGraph(createSceneGraph());

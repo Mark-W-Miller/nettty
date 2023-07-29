@@ -1,13 +1,11 @@
 package com.moondance.nettty.model;
 
-import com.moondance.nettty.utils.MapOfLists;
 import com.moondance.nettty.utils.octtree.Addressable;
 import com.moondance.nettty.utils.octtree.AddressedData;
 import com.moondance.nettty.utils.octtree.OctAddress;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import lombok.ToString;
 import org.jogamp.java3d.Transform3D;
 import org.jogamp.java3d.TransformGroup;
 import org.jogamp.vecmath.Point3d;
@@ -34,6 +32,10 @@ public class Particle implements Comparable, Cloneable, Addressable {
     boolean wiggleWhenWalking = false ;
     public Particle() {
         id = "P-" + nextId++;
+    }
+
+    public boolean isSentinel(){
+        return (spins.size() == 1) && (spins.get(0).getShell() == 1) ;
     }
 
     @Override
@@ -89,6 +91,10 @@ public class Particle implements Comparable, Cloneable, Addressable {
     @Override
     public AddressedData<Particle> makeAddressableData() {
         return new AddressedData<>(new OctAddress(this.getPosition(),1),this);
+    }
+
+    public int maxShell(){
+        return spins.stream().mapToInt(s->s.shell).max().orElse(0);
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.jogamp.vecmath.Matrix3d;
 import org.jogamp.vecmath.Point3d;
 import org.jogamp.vecmath.Vector3d;
 
+import static com.moondance.nettty.model.SpinSignature.*;
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.*;
 
@@ -26,6 +27,7 @@ public class Spin implements Comparable, Cloneable {
     int shell = 1 ;
     int spinSpeed = 15000 ;
     boolean spinNudge = true ;
+    SpinSignature spinSignature = Y_CW;
     Vector3d rotationDeltaVector = null;
     Vector3d rotationAxis = new Vector3d(0d,1d,0d);
     double rotationAngle = Math.PI/2;
@@ -66,6 +68,11 @@ public class Spin implements Comparable, Cloneable {
     }
     public void setRotationAngleStr(String string){
         rotationAngle = parseAngleStr(string);
+    }
+    public void setSpinSignatureStr(String string){
+        spinSignature = SpinSignature.valueOf(string.trim());
+        rotationAxis = spinSignature.getAxis() ;
+        rotationAngle = spinSignature.getAngle() ;
     }
 
     private double parseAngleStr(String string) {
