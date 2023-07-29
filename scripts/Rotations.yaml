@@ -1,0 +1,71 @@
+particles:
+#About Y-Axis CW-CCW
+  - id: 1
+    positionStr: "0 5 0"
+    spins:
+      - id: 0
+        spinSpeed: 20000
+        shell: 1
+        rotationAxisStr: "0 1 0"
+        rotationAngleStr: d90
+  - id: 1
+    positionStr: "2 5 0"
+    spins:
+      - id: 0
+        spinSpeed: 20000
+        shell: 1
+        rotationAxisStr: "0 1 0"
+        rotationAngleStr: d-90
+#About Z-Axis CW-CCW
+  - id: 1
+    positionStr: "3 2 2"
+    spins:
+      - id: 0
+        spinSpeed: 20000
+        shell: 1
+        rotationAxisStr: "1 0 0"
+        rotationAngleStr: d-90
+  - id: 1
+    positionStr: "5 2 2"
+    spins:
+      - id: 0
+        spinSpeed: 20000
+        shell: 1
+        rotationAxisStr: "-1 0 0"
+        rotationAngleStr: d90
+#About X-Axis CW-CCW
+  - id: 0
+    positionStr: "2 -2 0"
+    spins:
+      - id: 0
+        spinNudge: true
+        spinSpeed: 20000
+        shell: 1
+        rotationAxisStr: "0 0 -1"
+        rotationAngleStr: d90
+  - id: 3
+    positionStr: "2 0 0"
+    spins:
+      - id: 0
+        spinSpeed: 20000
+        shell: 1
+        rotationAxisStr: "0 0 1"
+        rotationAngleStr: d-90
+#About Diag_Pos
+  - id: 0
+#    positionStr: "50 50 50"
+#    spins:
+#      - id: 0
+#        spinNudge: true
+#        spinSpeed: 30000
+#        shell: 10
+#        rotationAxisStr: "1 1 1"
+#        rotationAngleStr: d90
+#  - id: 3
+#    positionStr: "75 75 75"
+#    spins:
+#      - id: 0
+#        spinSpeed: 30000
+#        shell: 10
+#        rotationAxisStr: "0 0 1"
+#        rotationAngleStr: d-90

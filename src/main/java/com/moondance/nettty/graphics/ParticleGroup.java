@@ -62,7 +62,7 @@ public class ParticleGroup  extends Group {
             appearence = getAppearance();
         }
         BoundingSphere bounds =
-                new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
+                new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 10000.0);
 
         Sphere sphere;
         TransformGroup trans;
@@ -123,7 +123,7 @@ public class ParticleGroup  extends Group {
 
     private TransformGroup makeFixedSpinAxis(Appearance appearance, Spin spin) {
         TransformGroup group = makeRotationGroup( spin.getRotationAxis(),spin.getRotationAngle());
-        Cylinder cylinder = new Cylinder(0.05f, 2*spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, appearance);
+        Cylinder cylinder = new Cylinder(0.05f, 4*spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, appearance);
         cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         group.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         group.addChild(cylinder);
@@ -134,7 +134,7 @@ public class ParticleGroup  extends Group {
         TransformGroup group = makeTranslationGroup(new Vector3d(0,0,0));
         TransformGroup cylinderXForm = makeTranslationGroup(new Vector3d(0,((float) spin.getShell())/2,0));
         group.addChild(cylinderXForm);
-        Cylinder cylinder = new Cylinder(0.1f, spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
+        Cylinder cylinder = new Cylinder(0.6f, spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
         cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         cylinderXForm.addChild(cylinder);
 
@@ -142,7 +142,7 @@ public class ParticleGroup  extends Group {
         group.addChild(ballXForm);
 
         Sphere sphere = new Sphere(
-                0.2f,     // sphere radius
+                0.6f,     // sphere radius
                 Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
                 8,         // 16 divisions radially
                 app);      // it's appearance
@@ -154,13 +154,13 @@ public class ParticleGroup  extends Group {
         Appearance app;
         app = new Appearance();
         Material material = new Material();
-        material.setDiffuseColor(new Color3f(0.8f, 0.8f, 0.8f));
+        material.setDiffuseColor(new Color3f(0.8f, 0.3f, 0.1f));
         material.setSpecularColor(new Color3f(0.0f, 0.0f, 0.0f));
-        material.setShininess(0.0f);
+        material.setShininess(128f);
         app.setMaterial(material);
         TransparencyAttributes opacity = new TransparencyAttributes();
         opacity.setTransparencyMode(TransparencyAttributes.NICEST);
-        opacity.setTransparency(0.4f);
+        opacity.setTransparency(0.3f);
         app.setTransparencyAttributes(opacity);
         return app;
     }

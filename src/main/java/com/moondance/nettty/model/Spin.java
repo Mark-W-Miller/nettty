@@ -22,7 +22,7 @@ import static com.moondance.nettty.utils.VecUtils.*;
 public class Spin implements Comparable, Cloneable {
     private static int nextId = 0 ;
     @ToString.Exclude Particle particle ;
-    int id ;
+    String id ;
     int shell = 1 ;
     int spinSpeed = 15000 ;
     boolean spinNudge = true ;
@@ -35,19 +35,19 @@ public class Spin implements Comparable, Cloneable {
     RotationInterpolator rotator ;
     TransformGroup fixedXForm;
     public Spin(int shell,Vector3d rotationAxis) {
-        id = nextId++ ;
+        id = "S-" + nextId++;
         this.shell = shell ;
         this.rotationAxis = rotationAxis ;
     }
     public Spin() {
-        id = nextId++ ;
+        id = "S-" + nextId++;
     }
     @SneakyThrows
     public Spin clone() {
         Spin clone =  (Spin) super.clone();
         clone.rotationAxis = (Vector3d) rotationAxis.clone();
         clone.rotationDeltaVector =  rotationDeltaVector!= null ? (Vector3d) rotationDeltaVector.clone() : null;
-        clone.id = nextId++ ;
+        clone.id = "S-" + nextId++;
         return clone ;
     }
 
@@ -62,6 +62,7 @@ public class Spin implements Comparable, Cloneable {
     }
     public void setRotationAxisStr(String string){
         rotationAxis = parseVector3d(string);
+        rotationAxis.normalize();
     }
     public void setRotationAngleStr(String string){
         rotationAngle = parseAngleStr(string);

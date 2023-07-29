@@ -24,7 +24,7 @@ import static com.moondance.nettty.utils.VecUtils.*;
 @Setter
 public class Particle implements Comparable, Cloneable, Addressable {
     private static int nextId = 0 ;
-    int id ;
+    String id ;
     Point3d position = new Point3d();
     Vector3d motionVector = new Vector3d(0,0,0);
     List<Spin> spins = new ArrayList<>();
@@ -33,7 +33,7 @@ public class Particle implements Comparable, Cloneable, Addressable {
     int numCopiesInitial = 1 ;
     boolean wiggleWhenWalking = false ;
     public Particle() {
-        id = nextId++;
+        id = "P-" + nextId++;
     }
 
     @Override
@@ -43,7 +43,6 @@ public class Particle implements Comparable, Cloneable, Addressable {
         clone.motionVector = (Vector3d) motionVector.clone();
         clone.position = (Point3d) position.clone();
         clone.spins = spins.stream().map(spin->spin.clone()).collect(Collectors.toList());
-        clone.id = nextId++ ;
         return clone ;
     }
 

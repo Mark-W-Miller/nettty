@@ -90,6 +90,7 @@ public class NetttyApp extends JFrame
     JButton runNettty;
     JButton stopNettty;
     JButton setHome;
+    JButton toggleOctTree;
     JButton goHome;
     JTextField numberOfPulsesPerFrame;
     JTextField numberOfFrames;
@@ -157,7 +158,7 @@ public class NetttyApp extends JFrame
         BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
                 10500.0);
         orbit.setSchedulingBounds(bounds);
-        orbit.setZoomFactor(150);
+        orbit.setZoomFactor(50);
         orbit.setTransFactors(50, 50);
         viewingPlatform.setViewPlatformBehavior(orbit);
         viewingPlatform.setNominalViewingTransform();
@@ -222,10 +223,12 @@ public class NetttyApp extends JFrame
     private void rebuildParticleOctTree() {
         particleOctTree = makeParticleOctTree(Nettty);
         mainTransform.removeChild(octTreeGroup);
-        mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctTree));
-        Transform3D t3D = new Transform3D();
-        mainTransform.getTransform(t3D);
-        out(NETTYAPP_FLOW_DB,"NettyApp rebuildParticleOctTree mainTransform:\n" + t3D);
+        if(showOctree){
+            mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctTree));
+            Transform3D t3D = new Transform3D();
+            mainTransform.getTransform(t3D);
+            out(NETTYAPP_FLOW_DB,"NettyApp rebuildParticleOctTree mainTransform:\n" + t3D);
+        }
     }
 
     OctTree<Particle> makeParticleLadenOctTreeFromTemplate(Nett nettty) {
@@ -378,6 +381,8 @@ public class NetttyApp extends JFrame
         runNettty.addActionListener(this);
         stopNettty = new JButton("Stop");
         stopNettty.addActionListener(this);
+        toggleOctTree = new JButton("Toggle OT");
+        toggleOctTree.addActionListener(this);
         numberOfPulsesPerFrame = new JTextField("1", 4);
         numberOfFrames = new JTextField("1", 4);
         setHome = new JButton("Set Home");
@@ -385,7 +390,7 @@ public class NetttyApp extends JFrame
         goHome = new JButton("GoHome");
         goHome.addActionListener(this);
         panel.add(reloadScript);
-        panel.add(saveScript);
+//        panel.add(saveScript);
         panel.add(GodPulse);
         panel.add(new JLabel("#Per Frame"));
         panel.add(numberOfPulsesPerFrame);
@@ -395,12 +400,14 @@ public class NetttyApp extends JFrame
         panel.add(stopNettty);
         panel.add(setHome);
         panel.add(goHome);
+        panel.add(toggleOctTree);
 
         return panel;
 
 
     }
     static private boolean keepRunning = true;
+    static private boolean showOctree = true;
 
     @SneakyThrows
     public void actionPerformed(ActionEvent e) {
@@ -442,6 +449,10 @@ public class NetttyApp extends JFrame
                 }
             }).start();
             out("Spawned thread");
+        } else if(target == toggleOctTree){
+            showOctree = !showOctree ;
+            out("showOctree:" + showOctree);
+            rebuildParticleOctTree();
         } else if(target == stopNettty){
             keepRunning = false ;
         } else if(target == setHome) {

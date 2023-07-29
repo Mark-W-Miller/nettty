@@ -20,6 +20,7 @@ public class GraphicsUtils {
         group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(1000, 0, 0),new Color3f(1,0,0)));
         group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 1000, 0),new Color3f(0,1,0)));
         group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 0, 1000),new Color3f(0,0,1)));
+        group.addChild(makeColorLineShape(new Point3d(-1000, -1000, -1000), new Point3d(1000, 1000, 1000),new Color3f(1,1,0)));
 
         return group;
     }
@@ -80,7 +81,7 @@ public class GraphicsUtils {
                     Point3d part = node.getData().get(0).getOctAddress().getAddress();
                     group.addChild(makeSphereAt(part, 0.5, dotApp));
                     group.addChild(makeSphereAt(node.getCenter().getAddress(), 2, dotApp));
-                    group.addChild(makeColorLineShape(node.getCenter().getAddress(),part, new Color3f(100, 64.7f, 0)));
+                    group.addChild(makeColorLineShape(node.getCenter().getAddress(),part, new Color3f(1, .64f, 0)));
                 }
             }
         };
