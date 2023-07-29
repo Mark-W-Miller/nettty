@@ -51,6 +51,7 @@ import org.jogamp.java3d.utils.geometry.Cylinder;
 import org.jogamp.java3d.utils.geometry.Sphere;
 import org.jogamp.vecmath.*;
 
+import static com.moondance.nettty.graphics.Appearences.*;
 import static com.moondance.nettty.graphics.GraphicsUtils.makeAxisAt;
 import static com.moondance.nettty.utils.VecUtils.makeRotationGroup;
 import static com.moondance.nettty.utils.VecUtils.makeTranslationGroup;
@@ -60,7 +61,10 @@ public class ParticleGroup  extends Group {
     public ParticleGroup(Particle particle, Appearance appearence) {
         this.particle = particle;
         if (appearence == null) {
-            appearence = getAppearance();
+            appearence = getDefaultSpinAppearance();
+        }
+        if(particle.isSentinel()){
+            appearence = getSentinelSpinAppearance();
         }
         BoundingSphere bounds =
                 new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 10000.0);
@@ -69,16 +73,16 @@ public class ParticleGroup  extends Group {
         vec.set(particle.getPosition());
         TransformGroup trans = makeTranslationGroup(vec);
         trans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-        addChild(trans);
-        BranchGroup localAxis = makeAxisAt(particle.getPosition(),particle.maxShell());
-        addChild(localAxis);
         particle.setCurrentParticleTransform(trans);
+        addChild(trans);
+        BranchGroup localAxis = makeAxisAt(new Point3d(),((float)particle.maxShell()));
+        trans.addChild(localAxis);
         for (Spin spin : particle.getSpins()) {
 
             spin.setParticle(particle);
             Sphere sphere = makeSpinSphere(appearence, spin);
 
-            TransformGroup cylinderXForm = makeSpinAxis(getAppearance(), spin);
+            TransformGroup cylinderXForm = makeSpinAxis(getDefaultSpinAppearance(), spin);
             TransformGroup fixedXForm = makeFixedSpinAxis(getAppearanceYPointer(), spin);
             spin.setFixedXForm(fixedXForm);
             trans.addChild(fixedXForm);
@@ -113,7 +117,7 @@ public class ParticleGroup  extends Group {
     private static Sphere makeSpinSphere(Appearance app, Spin spin) {
         Sphere sphere;
         sphere = new Sphere(
-                spin.getShell(),     // sphere radius
+                ((float)spin.getShell())/2,     // sphere radius
                 Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
                 16,         // 16 divisions radially
                 app);      // it's appearance
@@ -134,17 +138,17 @@ public class ParticleGroup  extends Group {
 
     private static TransformGroup makeSpinAxis(Appearance app, Spin spin) {
         TransformGroup group = makeTranslationGroup(new Vector3d(0,0,0));
-        TransformGroup cylinderXForm = makeTranslationGroup(new Vector3d(0,((float) spin.getShell())/2,0));
+        TransformGroup cylinderXForm = makeTranslationGroup(new Vector3d(0,((float) spin.getShell())/4,0));
         group.addChild(cylinderXForm);
-        Cylinder cylinder = new Cylinder(0.1f * spin.getShell(), spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
+        Cylinder cylinder = new Cylinder(0.1f * spin.getShell()/2, ((float)spin.getShell())/2, Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
         cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         cylinderXForm.addChild(cylinder);
 
-        TransformGroup ballXForm = makeTranslationGroup(new Vector3d(0,spin.getShell(),0));
+        TransformGroup ballXForm = makeTranslationGroup(new Vector3d(0,((float)spin.getShell())/2,0));
         group.addChild(ballXForm);
 
         Sphere sphere = new Sphere(
-                0.1f * spin.getShell(),     // sphere radius
+                0.1f * ((float)spin.getShell())/2,     // sphere radius
                 Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
                 8,         // 16 divisions radially
                 app);      // it's appearance
@@ -152,37 +156,5 @@ public class ParticleGroup  extends Group {
         return group;
     }
 
-    private static Appearance getAppearance() {
-        Appearance app;
-        app = new Appearance();
-        Material material = new Material();
-        material.setDiffuseColor(new Color3f(0.8f, 0.3f, 0.1f));
-        material.setSpecularColor(new Color3f(0.0f, 0.0f, 0.0f));
-        material.setShininess(128f);
-        app.setMaterial(material);
-        TransparencyAttributes opacity = new TransparencyAttributes();
-        opacity.setTransparencyMode(TransparencyAttributes.NICEST);
-        opacity.setTransparency(0.3f);
-        app.setTransparencyAttributes(opacity);
-        return app;
-    }
-
-    private static Appearance getAppearanceYPointer() {
-        Appearance app;
-        app = new Appearance();
-        Material material = new Material();
-        material.setDiffuseColor(new Color3f(1f, 0.1f, 0.9f));
-        material.setSpecularColor(new Color3f(0.0f, 1.0f, 0.0f));
-        material.setShininess(1.0f);
-        app.setMaterial(material);
-        TransparencyAttributes opacity = new TransparencyAttributes();
-        opacity.setTransparencyMode(TransparencyAttributes.NICEST);
-        opacity.setTransparency(0f);
-        app.setTransparencyAttributes(opacity);
-        ColoringAttributes ca = new ColoringAttributes();
-        ca.setColor(0.6f, 0.3f, 0.0f);
-        app.setCapability(app.ALLOW_COLORING_ATTRIBUTES_WRITE);
-        return app;
-    }
 
 }

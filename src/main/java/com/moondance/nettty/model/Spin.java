@@ -9,13 +9,11 @@ import org.jogamp.java3d.RotationInterpolator;
 import org.jogamp.java3d.Transform3D;
 import org.jogamp.java3d.TransformGroup;
 import org.jogamp.vecmath.AxisAngle4d;
-import org.jogamp.vecmath.Matrix3d;
-import org.jogamp.vecmath.Point3d;
 import org.jogamp.vecmath.Vector3d;
 
-import static com.moondance.nettty.model.SpinSignature.*;
-import static com.moondance.nettty.utils.Handy.out;
-import static com.moondance.nettty.utils.VecUtils.*;
+import static com.moondance.nettty.model.SpinSignature.Y_CW;
+import static com.moondance.nettty.utils.VecUtils.ORIGIN;
+import static com.moondance.nettty.utils.VecUtils.parseVector3d;
 
 @Getter
 @Setter

@@ -1,0 +1,7 @@
+particles:
+  - idRef: Sent_Y_CW(0 0 0)
+  - idRef: Sent_Y_CCW(1 0 0)
+  - idRef: Sent_Z_CW(2 0 0)
+  - idRef: Sent_Z_CCW(3 2 2)
+  - idRef: Sent_X_CW(4 -2 0)
+  - idRef: Sent_X_CCW(5 0 0)

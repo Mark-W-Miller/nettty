@@ -53,6 +53,13 @@ public class VecUtils {
         tuple.z += offset - Math.random() ;
         return tuple ;
     }
+    public static Point3d cast(Tuple3d vector, double scale){
+        Point3d p3d = new Point3d();
+        p3d.x = Math.rint(vector.x * scale * (Math.random())) ;
+        p3d.y = Math.rint(vector.y * scale * (Math.random()));
+        p3d.z = Math.rint(vector.z * scale * (Math.random())) ;
+        return p3d ;
+    }
     public static TransformGroup makeTranslationGroup(Vector3d vec){
         Transform3D t3d = new Transform3D();
         t3d.setTranslation(vec);

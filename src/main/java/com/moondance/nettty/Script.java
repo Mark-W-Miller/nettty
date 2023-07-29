@@ -9,9 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import com.moondance.nettty.utils.Handy.*;
+import java.util.Map;
 
-import static com.moondance.nettty.NetttyApp.CURRENT_SCRIPT;
 import static com.moondance.nettty.utils.Handy.out;
 
 public class Script {
@@ -24,9 +23,20 @@ public class Script {
             e.printStackTrace();
         }
     }
-    public static Nett loadNett(String fileName) throws IOException {
+    public static Nett loadNett(String referenceFileName, String fileName) throws IOException {
 
-        out("NetttyApp loadNett:" + fileName);
+        out("NetttyApp loadNett fileName:" + fileName);
+        out("NetttyApp loadNett referenceFileName:" + referenceFileName);
+        String yamlReference = new String(Files.readAllBytes(scriptsDirectory.resolve(referenceFileName)));
+        Map<String, Particle> reference = getNett(referenceFileName).makeParticleLookup();
+
+        Nett nett1 = getNett(fileName);
+        nett1.applyReference(reference);
+        if (nett1 != null) return nett1;
+        return null;
+    }
+
+    private static Nett getNett(String fileName) throws IOException {
         String yamlFile = new String(Files.readAllBytes(scriptsDirectory.resolve(fileName)));
         Yaml yaml = new Yaml(new Constructor(Nett.class));
         for (Object details : yaml.loadAll(yamlFile)) {

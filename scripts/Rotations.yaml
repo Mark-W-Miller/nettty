@@ -1,59 +1,10 @@
 particles:
 #About Y-Axis CW-CCW
-  - id: 1
-    positionStr: "0 5 0"
-    spins:
-      - id: 0
-        spinSpeed: 2000
-        shell: 1
-        spinSignatureStr: "Y_CW"
-#        rotationAxisStr: "0 1 0"
-#        rotationAngleStr: d90
-  - id: 1
-    positionStr: "2 5 0"
-    spins:
-      - id: 0
-        spinSpeed: 2000
-        shell: 1
-        spinSignatureStr: "Y_CCW"
-#        rotationAxisStr: "0 1 0"
-#        rotationAngleStr: d-90
+  - idRef: Sent_Y_CW(0 5 0)
+  - idRef: Sent_Y_CCW(2 5 0)
 #About Z-Axis CW-CCW
-  - id: 1
-    positionStr: "3 2 2"
-    spins:
-      - id: 0
-        spinSpeed: 4000
-        shell: 1
-        spinSignatureStr: "Z_CW"
-#        rotationAxisStr: "1 0 0"
-#        rotationAngleStr: d-90
-  - id: 1
-    positionStr: "5 2 2"
-    spins:
-      - id: 0
-        spinSpeed: 4000
-        shell: 1
-        spinSignatureStr: "Z_CCW"
-#        rotationAxisStr: "-1 0 0"
-#        rotationAngleStr: d90
+  - idRef: Sent_Z_CW(3 2 2)
+  - idRef: Sent_Z_CCW(5 2 2)
 #About X-Axis CW-CCW
-  - id: 0
-    positionStr: "2 -2 0"
-    spins:
-      - id: 0
-        spinNudge: true
-        spinSpeed: 8000
-        shell: 1
-        spinSignatureStr: "X_CW"
-#        rotationAxisStr: "0 0 -1"
-#        rotationAngleStr: d90
-  - id: 3
-    positionStr: "2 0 0"
-    spins:
-      - id: 0
-        spinSpeed: 8000
-        shell: 1
-        spinSignatureStr: "X_CCW"
-#        rotationAxisStr: "0 0 1"
-#        rotationAngleStr: d-90
+  - idRef: Sent_X_CW(2 -2 0)
+  - idRef: Sent_X_CCW(2 0 0)

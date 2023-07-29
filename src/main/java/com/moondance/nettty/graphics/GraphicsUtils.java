@@ -25,7 +25,6 @@ public class GraphicsUtils {
     }
     public static BranchGroup makeAxisAt(Point3d c, double size) {
         BranchGroup group = new BranchGroup();
-        LineArray lineArr = new LineArray(6, LineArray.COORDINATES);
         group.addChild(makeColorLineShape(c, new Point3d(c.x + size, c.y, c.z),new Color3f(1,0,0)));
         group.addChild(makeColorLineShape(c, new Point3d(c.x, c.y + size, c.z),new Color3f(0,1,0)));
         group.addChild(makeColorLineShape(c, new Point3d(c.x, c.y, c.z + size),new Color3f(0,0,1)));

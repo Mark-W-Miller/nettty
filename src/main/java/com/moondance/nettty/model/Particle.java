@@ -3,6 +3,7 @@ package com.moondance.nettty.model;
 import com.moondance.nettty.utils.octtree.Addressable;
 import com.moondance.nettty.utils.octtree.AddressedData;
 import com.moondance.nettty.utils.octtree.OctAddress;
+import com.moondance.nettty.utils.octtree.SubNode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -23,19 +24,18 @@ import static com.moondance.nettty.utils.VecUtils.*;
 public class Particle implements Comparable, Cloneable, Addressable {
     private static int nextId = 0 ;
     String id ;
+    String idRef ;
     Point3d position = new Point3d();
     Vector3d motionVector = new Vector3d(0,0,0);
     List<Spin> spins = new ArrayList<>();
+    boolean sentinel = false ;
+    double cast = 10;
     TransformGroup currentParticleTransform ;
     Nett nett ;
     int numCopiesInitial = 1 ;
     boolean wiggleWhenWalking = false ;
     public Particle() {
         id = "P-" + nextId++;
-    }
-
-    public boolean isSentinel(){
-        return (spins.size() == 1) && (spins.get(0).getShell() == 1) ;
     }
 
     @Override
@@ -46,6 +46,12 @@ public class Particle implements Comparable, Cloneable, Addressable {
         clone.position = (Point3d) position.clone();
         clone.spins = spins.stream().map(spin->spin.clone()).collect(Collectors.toList());
         return clone ;
+    }
+
+    public void populateFromReference(Particle referenceParticle) {
+        sentinel = referenceParticle.isSentinel();
+        spins = referenceParticle.getSpins().stream().map(spin->spin.clone()).collect(Collectors.toList());
+        id = referenceParticle.getId() + "-" + nextId ;
     }
 
     @Override
@@ -73,19 +79,25 @@ public class Particle implements Comparable, Cloneable, Addressable {
         position = parsePoint3d(string);
     }
 
+
     public void GodPulse(int i) {
-        if(motionVector != null){
-            position.add(motionVector);
-            if(wiggleWhenWalking){
-                randomize(position,0.5d);
-            }
-//            out("Particle GodPulse position:" + position);
+        if(isSentinel()){
+            Point3d change = SubNode.randomDirection();
+            position.add(change);
         } else {
-            position.x += 0.5 - Math.random();
-            position.y += 0.5 - Math.random();
-            position.z += 0.5 - Math.random();
+            if (motionVector != null) {
+                position.add(motionVector);
+                if (wiggleWhenWalking) {
+                    randomize(position, 0.5d);
+                }
+//            out("Particle GodPulse position:" + position);
+            } else {
+                position.x += 0.5 - Math.random();
+                position.y += 0.5 - Math.random();
+                position.z += 0.5 - Math.random();
+            }
+            spins.stream().forEach(spin -> spin.GodPulse());
         }
-        spins.stream().forEach(spin->spin.GodPulse());
     }
 
     @Override
@@ -108,4 +120,5 @@ public class Particle implements Comparable, Cloneable, Addressable {
                 ", wiggleWhenWalking=" + wiggleWhenWalking +
                 '}';
     }
+
 }
