@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.moondance.nettty.utils.VecUtils.parsePoint3d;
+import static com.moondance.nettty.utils.octtree.OctTree.dumpTree;
 
 @Getter
 @Setter
@@ -33,6 +34,7 @@ public class Nett {
         for (int ix = 0; ix < number; ix++) {
             particles.stream().forEach(particle -> particle.GodPulse(1));
         }
+        updateTransforms();
     }
 
     public void updateTransforms() {

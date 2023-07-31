@@ -17,26 +17,29 @@ public class GraphicsUtils {
     public static Group makeAxis() {
         BranchGroup group = new BranchGroup();
         LineArray lineArr = new LineArray(6, LineArray.COORDINATES);
-        group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(1000, 0, 0),new Color3f(1,0,0)));
-        group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 1000, 0),new Color3f(0,1,0)));
-        group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 0, 1000),new Color3f(0,0,1)));
+        group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(1000, 0, 0),new Color3f(1,0,0), null));
+        group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 1000, 0),new Color3f(0,1,0), null));
+        group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 0, 1000),new Color3f(0,0,1), null));
 
         return group;
     }
     public static BranchGroup makeAxisAt(Point3d c, double size) {
         BranchGroup group = new BranchGroup();
-        group.addChild(makeColorLineShape(c, new Point3d(c.x + size, c.y, c.z),new Color3f(1,0,0)));
-        group.addChild(makeColorLineShape(c, new Point3d(c.x, c.y + size, c.z),new Color3f(0,1,0)));
-        group.addChild(makeColorLineShape(c, new Point3d(c.x, c.y, c.z + size),new Color3f(0,0,1)));
+        group.addChild(makeColorLineShape(c, new Point3d(c.x + size, c.y, c.z),new Color3f(1,0,0), null));
+        group.addChild(makeColorLineShape(c, new Point3d(c.x, c.y + size, c.z),new Color3f(0,1,0), null));
+        group.addChild(makeColorLineShape(c, new Point3d(c.x, c.y, c.z + size),new Color3f(0,0,1), null));
 
         return group;
     }
 
-    public static Shape3D makeColorLineShape(Point3d from, Point3d to, Color3f color){
+    public static Shape3D makeColorLineShape(Point3d from, Point3d to, Color3f color, Appearance appearanceOver){
         LineArray lineArr = new LineArray(2, LineArray.COORDINATES);
         lineArr.setCoordinate(0, from);
         lineArr.setCoordinate(1, to);
-        Appearance appearance = new Appearance();
+        Appearance appearance = appearanceOver ;
+        if(appearanceOver == null){
+            appearance = new Appearance();
+        }
         ColoringAttributes ca = new ColoringAttributes();
         ca.setColor(color);
         appearance.setColoringAttributes(ca);
@@ -67,8 +70,10 @@ public class GraphicsUtils {
     public static <T> Group makeOctTreeGroup(OctTree<T> tree) {
         BranchGroup group = new BranchGroup();
         group.setCapability(BranchGroup.ALLOW_DETACH);
-        Appearance boxApp = getDebugStructureAppearance(new Color3f(0, 1, 1), 0.30f);
-        Appearance dotApp = getDebugStructureAppearance(new Color3f(0, 0, 1), 0f);
+        Appearance boxApp = getDebugStructureAppearance(new Color3f(0, 1, 1), 0.95f, false);
+        Appearance dotApp = getDebugStructureAppearance(new Color3f(0, 0, 1), 0.85f, false);
+        Appearance crowdedApp = getDebugStructureAppearance(new Color3f(1, 0, 0), 0f, true);
+        Appearance toNodeCenter = getDebugStructureAppearance(new Color3f(1, .64f, 0), 0.85f, true);
         new OctTreeWalker<T>(tree.getRoot()) {
 
             @Override
@@ -85,10 +90,12 @@ public class GraphicsUtils {
                 TransformGroup octRegionBox = makeSquareAt(node.getCenter().getAddress(), node.getVoxelSize(), boxApp);
                 group.addChild(octRegionBox);
                 if (!node.isBranchNode()) {
+                    Appearance finalApp = node.getData().size() > 1 ? crowdedApp : dotApp ;
+                    boolean crowded = finalApp == crowdedApp ;
                     Point3d part = node.getData().get(0).getOctAddress().getAddress();
-                    group.addChild(makeSphereAt(part, 0.5, dotApp));
-                    group.addChild(makeSphereAt(node.getCenter().getAddress(), 0.5, dotApp));
-                    group.addChild(makeColorLineShape(node.getCenter().getAddress(),part, new Color3f(1, .64f, 0)));
+//                    group.addChild(makeSphereAt(part, 0.5, finalApp, crowded ? 16 : 8));
+                    group.addChild(makeSphereAt(node.getCenter().getAddress(), 0.5, finalApp, crowded ? 16 : 8));
+                    group.addChild(makeColorLineShape(node.getCenter().getAddress(),part, new Color3f(1, .64f, 0), toNodeCenter));
                 }
             }
         };
@@ -106,14 +113,14 @@ public class GraphicsUtils {
         return objTrans;
     }
 
-    private static TransformGroup makeSphereAt(Point3d center, double size, Appearance app) {
+    private static TransformGroup makeSphereAt(Point3d center, double size, Appearance app, int divisions) {
         Transform3D t = new Transform3D();
         t.setTranslation(new Vector3d(center));
         TransformGroup objTrans = new TransformGroup(t);
         Sphere sphere = new Sphere(
                 (float) size,     // sphere radius
                 Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
-                8,         // 16 divisions radially
+                divisions,         // 16 divisions radially
                 app);      // it's appearance
         sphere.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         objTrans.addChild(sphere);
@@ -146,11 +153,11 @@ public class GraphicsUtils {
         return appearance;
     }
 
-    private static Appearance getDebugStructureAppearance(Color3f color, float transparency) {
+    private static Appearance getDebugStructureAppearance(Color3f color, float transparency, boolean solid) {
         Appearance appearance = new Appearance();
 
         Material material = new Material();
-        material.setDiffuseColor(new Color3f(0f, 1f, 1f));
+        material.setDiffuseColor(color);
         material.setSpecularColor(new Color3f(0.0f, 0.0f, 0.0f));
         material.setShininess(0.0f);
         appearance.setMaterial(material);
@@ -163,7 +170,12 @@ public class GraphicsUtils {
         PolygonAttributes polygonAttributes = new PolygonAttributes();
         polygonAttributes.setCapability(PolygonAttributes.POLYGON_LINE);
         polygonAttributes.setCullFace(PolygonAttributes.CULL_NONE);
-        polygonAttributes.setPolygonMode(PolygonAttributes.POLYGON_LINE);
+        if(solid){
+            polygonAttributes.setPolygonMode(PolygonAttributes.POLYGON_FILL);
+        } else {
+            polygonAttributes.setPolygonMode(PolygonAttributes.POLYGON_LINE);
+
+        }
         appearance.setPolygonAttributes(polygonAttributes);
 
         ColoringAttributes ca = new ColoringAttributes();

@@ -64,7 +64,7 @@ public class ParticleGroup  extends Group {
             appearence = getDefaultSpinAppearance();
         }
         if(particle.isSentinel()){
-            appearence = getSentinelSpinAppearance();
+            appearence = makeSpinningTexture(Images.getSpinTextureRock());
         }
         BoundingSphere bounds =
                 new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 10000.0);
@@ -75,7 +75,7 @@ public class ParticleGroup  extends Group {
         trans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         particle.setCurrentParticleTransform(trans);
         addChild(trans);
-        BranchGroup localAxis = makeAxisAt(new Point3d(),((float)particle.maxShell()));
+        BranchGroup localAxis = makeAxisAt(new Point3d(),((float)particle.maxShell())/2);
         trans.addChild(localAxis);
         for (Spin spin : particle.getSpins()) {
 
@@ -108,6 +108,7 @@ public class ParticleGroup  extends Group {
             trans.addChild(rotatorTransform);
             rotatorTransform.addChild(sphere);
             rotatorTransform.addChild(cylinderXForm);
+
             spin.setCurrentSpinTransform(rotatorTransform);
             spin.setRotationAlpha(rotor1Alpha);
             spin.setRotator(rotator);

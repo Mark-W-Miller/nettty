@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.moondance.nettty.graphics.GraphicsUtils.p3dToP3D;
+import static com.moondance.nettty.utils.DB.OCTTREE_DUMP_DB;
 import static com.moondance.nettty.utils.Handy.*;
 
 @Getter
@@ -88,4 +89,22 @@ public class OctTree<T> {
             }
         };
     }
+
+    public static <T> void dumpTree(OctTree<T> octTree) {
+        out("dumpTree:-----------------------------------------------------------" + octTree.getVoxelSize());
+        new OctTreeWalker<T>(octTree.getRoot()){
+
+            @Override
+            public void visitLeaf(OctNode<T> node, int level) {
+                boolean crowded = node.data.size() > 2 ;
+                out(OCTTREE_DUMP_DB,tabs(level) + ((crowded) ? ANSI_GREEN : ANSI_RED) + "LEAF:" + node);
+            }
+
+            @Override
+            public void visitBranch(OctNode<T> node, int level) {
+                out(OCTTREE_DUMP_DB,tabs(level) + "BRCH:" + node);
+            }
+        };
+    }
+
 }

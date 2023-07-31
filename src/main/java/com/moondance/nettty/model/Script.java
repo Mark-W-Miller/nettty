@@ -1,4 +1,4 @@
-package com.moondance.nettty;
+package com.moondance.nettty.model;
 
 import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.model.Particle;

@@ -7,6 +7,7 @@ import java.util.List;
 
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.Handy.tabs;
+import static com.moondance.nettty.utils.octtree.OctTree.dumpTree;
 
 public class OctTreeTest extends TestCase {
 
@@ -38,21 +39,6 @@ public class OctTreeTest extends TestCase {
         OctAddress address = new OctAddress(0,0,0,1);
     }
 
-    private static void dumpTree(OctTree<OctAddress> octTree) {
-        out("dumpTree:-----------------------------------------------------------" + octTree.getVoxelSize());
-        new OctTreeWalker<OctAddress>(octTree.getRoot()){
-
-            @Override
-            public void visitLeaf(OctNode<OctAddress> node, int level) {
-                out(tabs(level) + "LEAF:" + node);
-            }
-
-            @Override
-            public void visitBranch(OctNode<OctAddress> node, int level) {
-                out(tabs(level) + "BRCH:" + node);
-            }
-        };
-    }
 
     public void testFindNeighbors() {
     }

@@ -1,6 +1,5 @@
 package com.moondance.nettty.graphics;
 
-import com.moondance.nettty.Images;
 import org.jogamp.java3d.*;
 import org.jogamp.vecmath.Color3f;
 import org.jogamp.vecmath.Color4f;
@@ -56,10 +55,10 @@ public class Appearences {
     static Color3f sColor = new Color3f(1.0f, 1.0f, 1.0f);
     static Color3f objColor = new Color3f(0.6f, 0.6f, 0.6f);
 
-    public static Appearance makeSpinningTexture(){
+    public static Appearance makeSpinningTexture(Texture texture){
 //        TextureLoader loader = new TextureLoader("K:\\3d\\Arizona.jpg",
 //                "LUMINANCE", new Container());
-        Texture texture = Images.getSpinTexture();
+//        Texture texture = Images.getSpinTextureEarth();
         texture.setBoundaryModeS(Texture.WRAP);
         texture.setBoundaryModeT(Texture.WRAP);
         texture.setBoundaryColor(new Color4f(0.0f, 1.0f, 0.0f, 0.0f));

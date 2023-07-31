@@ -44,12 +44,9 @@
 
 package com.moondance.nettty.graphics;
 
-import com.moondance.nettty.Images;
 import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.model.Particle;
 import org.jogamp.java3d.*;
-import org.jogamp.vecmath.Color3f;
-import org.jogamp.vecmath.Color4f;
 import org.jogamp.vecmath.Vector3d;
 
 import static com.moondance.nettty.graphics.Appearences.makeSpinningTexture;
@@ -65,7 +62,7 @@ public class NettGroup
         vec.set(ORIGIN);
         Transform3D t3d = new Transform3D();
         t3d.setTranslation(vec);
-        Appearance shaderApp = makeSpinningTexture();
+        Appearance shaderApp = makeSpinningTexture(Images.getSpinTextureEarth());
         for (Particle particle: nett.getParticles()) {
             particle.setNett(nett);
             trans = new TransformGroup(t3d);

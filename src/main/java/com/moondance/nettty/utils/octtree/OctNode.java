@@ -41,8 +41,10 @@ public class OctNode<T> {
             err("Point not in Octant addressedData:" + tup3dStr(addressedData.getOctAddress().getAddress()));
             err("Point not in Octant  assigned bb:" + bb2str(bb));
         }
-        if (voxelSize <= 1 || !branchNode && data.isEmpty() || data.stream().anyMatch(ad -> ad.equals(addressedData))) {
+        boolean sameAddressAsOthers = data.stream().anyMatch(ad -> ad.equals(addressedData));
+        if (voxelSize <= 1 || !branchNode && data.isEmpty() || sameAddressAsOthers) {
             out(OCTNODE_DB,"OctNode Becomes Leaf:" + tup3dStr(addressedData.getOctAddress().getAddress()));
+            out(OCTNODE_DB,"OctNode Becomes sameAddressAsOthers:" + sameAddressAsOthers);
             data.add(addressedData);
         } else {
             out(OCTNODE_DB,"OctNode Becomes Branch:" + tup3dStr(addressedData.getOctAddress().getAddress()));
@@ -93,11 +95,11 @@ public class OctNode<T> {
     @Override
     public String toString() {
         return "OctNode{" +
+                ", data=" + data.size() +
+                ", branchNode=" + branchNode +
                 "BB=" + bb2str(makeBoundingBox()) +
                 "center=" + tup3dStr(center.address) +
                 ", voxelSize=" + voxelSize +
-                ", branchNode=" + branchNode +
-                ", data=" + data.size() +
                 ", octants=" + octantsStr() +
                 '}';
     }

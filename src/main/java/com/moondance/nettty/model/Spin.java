@@ -12,8 +12,10 @@ import org.jogamp.vecmath.AxisAngle4d;
 import org.jogamp.vecmath.Vector3d;
 
 import static com.moondance.nettty.model.SpinSignature.Y_CW;
-import static com.moondance.nettty.utils.VecUtils.ORIGIN;
-import static com.moondance.nettty.utils.VecUtils.parseVector3d;
+import static com.moondance.nettty.utils.DB.GOD_PULSE_DB;
+import static com.moondance.nettty.utils.DB.GOD_PULSE_TRACE_DB;
+import static com.moondance.nettty.utils.Handy.out;
+import static com.moondance.nettty.utils.VecUtils.*;
 
 @Getter
 @Setter
@@ -83,52 +85,66 @@ public class Spin implements Comparable, Cloneable {
     }
 
     public void updateTransform() {
-//        out("Spin updateTransforms");
-        Transform3D yAxisNeg = new Transform3D();
-        AxisAngle4d aa = new AxisAngle4d(rotationAxis,-rotationAngle);
-        yAxisNeg.setRotation(aa);
+        out(GOD_PULSE_TRACE_DB,"Spin updateTransform spinSignature:" + spinSignature);
+        out(GOD_PULSE_TRACE_DB,"Spin updateTransform rotationAxis:" + rotationAxis);
+        out(GOD_PULSE_TRACE_DB,"Spin updateTransform rotationAngle:" + rotationAngle);
+        //ROTATION
         Transform3D yAxis = new Transform3D();
-        aa = new AxisAngle4d(rotationAxis,rotationAngle);
+        AxisAngle4d aa = new AxisAngle4d(rotationAxis,rotationAngle);
         yAxis.setRotation(aa);
-//        out("Spin yAxisNeg:\n" + yAxisNeg);
-//        out("Spin yAxis:\n" + yAxis);
 
-        rotationAlpha.setIncreasingAlphaDuration(spinSpeed);
         rotator.setAlpha(rotationAlpha);
         rotator.setTransformAxis(yAxis);
         fixedXForm.setTransform(yAxis);
+
+        //SPEED
+        rotationAlpha.setIncreasingAlphaDuration(spinSpeed);
     }
 
-    public void GodPulse() {
-        double speedFactor = 1/(shell *0.2);
-        double delta = speedFactor * (100 - 400 * Math.random()) ;
-//        out("Spin GodPulse delta:" + delta);
-        spinSpeed += delta;
-        spinSpeed = Math.max(spinSpeed,100);
-        spinSpeed = Math.min(spinSpeed,60000);
-        if(rotationDeltaVector != null && !rotationDeltaVector.equals(ORIGIN)){
-            Transform3D deltaV = new Transform3D();
-            Transform3D rot = new Transform3D();
+    public void GodPulse(boolean sentinel) {
+        if(sentinel){
+            out(GOD_PULSE_TRACE_DB,"Spin GodPulse spinSignature:" + spinSignature);
+            out(GOD_PULSE_TRACE_DB,"Spin GodPulse rotationAxis:" + rotationAxis);
+            out(GOD_PULSE_TRACE_DB,"Spin GodPulse rotationAngle:" + rotationAngle);
+            spinSignature = spinSignature.getCompSpin();
+            rotationAxis = spinSignature.getAxis() ;
+            rotationAngle = spinSignature.getAngle() ;
+            rotationAxis.normalize();
 
-            deltaV.rotX(rotationDeltaVector.getX());
-            rot.rotY(rotationDeltaVector.getY());
-            deltaV.mul(rot);
-            rot.rotZ(rotationDeltaVector.getZ());
-            deltaV.mul(rot);
-//            out("Spin GodPulse deltaV:\n" + deltaV);
-            deltaV.transform(rotationAxis);
-//            out("Spin GodPulse after nudge rotationAxis:" + rotationAxis);
+            out(GOD_PULSE_DB,"Spin GodPulse new spinSignature:" + spinSignature);
+            out(GOD_PULSE_DB,"Spin GodPulse new rotationAxis:" + rotationAxis);
+            out(GOD_PULSE_DB,"Spin GodPulse new rotationAngle:" + rotationAngle);
         } else {
-            if(rotationDeltaVector == null) {
-                rotationAxis.x += Math.random() * 0.5;
-                rotationAxis.y += Math.random() * 0.5;
-                rotationAxis.z += Math.random() * 0.5;
-//                out(id + ":Spin GodPulse random nudge rotationAxis:" + rotationAxis);
+            double speedFactor = 1 / (shell * 0.2);
+            double delta = speedFactor * (100 - 400 * Math.random());
+            //        out("Spin GodPulse delta:" + delta);
+            spinSpeed += delta;
+            spinSpeed = Math.max(spinSpeed, 100);
+            spinSpeed = Math.min(spinSpeed, 60000);
+            if (rotationDeltaVector != null && !rotationDeltaVector.equals(ORIGIN)) {
+                Transform3D deltaV = new Transform3D();
+                Transform3D rot = new Transform3D();
+
+                deltaV.rotX(rotationDeltaVector.getX());
+                rot.rotY(rotationDeltaVector.getY());
+                deltaV.mul(rot);
+                rot.rotZ(rotationDeltaVector.getZ());
+                deltaV.mul(rot);
+                out(GOD_PULSE_DB,"Spin GodPulse deltaV:\n" + deltaV);
+                deltaV.transform(rotationAxis);
+                //            out("Spin GodPulse after nudge rotationAxis:" + rotationAxis);
+                rotationAxis.normalize();
             } else {
-//                out(id + ":Spin GodPulse NO nudge rotationAxis:" + rotationAxis);
+                if (rotationDeltaVector == null) {
+                    rotationAngle += Math.PI/2 ;
+                    randomize(rotationAxis, 0.5);
+                    rotationAxis.normalize();
+                    out(GOD_PULSE_DB,id + ":Spin GodPulse random nudge rotationAxis:" + rotationAxis);
+                } else {
+                    out(id + ":Spin GodPulse NO nudge rotationAxis:" + rotationAxis);
+                }
             }
         }
-        rotationAxis.normalize();
 //        out("Spin GodPulse spinSpeed:" + spinSpeed);
 //        out("Spin GodPulse rotationAxis:" + rotationAxis);
     }
