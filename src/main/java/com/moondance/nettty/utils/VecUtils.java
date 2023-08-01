@@ -25,6 +25,9 @@ public class VecUtils {
         return vec3d ;
     }
 
+    public static String simpleTupleStr(Tuple3d tuple){
+        return tuple.x + " " + tuple.y + " " + tuple.z ;
+    }
     public static Vector3d normal(double x, double y, double z){
         Vector3d v3d = new Vector3d(x,y,z);
         v3d.normalize();

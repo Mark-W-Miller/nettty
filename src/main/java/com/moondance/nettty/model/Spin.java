@@ -44,6 +44,13 @@ public class Spin implements Comparable, Cloneable {
     public Spin() {
         id = "S-" + nextId++;
     }
+
+    public Spin(SpinSignature spinSignature) {
+        this();
+        rotationAxis = spinSignature.getAxis();
+        rotationAngle = spinSignature.getAngle() ;
+    }
+
     @SneakyThrows
     public Spin clone() {
         Spin clone =  (Spin) super.clone();
@@ -109,8 +116,15 @@ public class Spin implements Comparable, Cloneable {
             spinSignature = spinSignature.getCompSpin();
             rotationAxis = spinSignature.getAxis() ;
             rotationAngle = spinSignature.getAngle() ;
+            float min = 0.0f ;
+            float max = (float) (Math.PI * 2.0f);
+            if(rotationAngle < 0){
+                min = (float) (Math.PI * 2.0f) ;
+                max =  0.0f  ;
+            }
             rotationAxis.normalize();
-
+            rotator.setMaximumAngle(max);
+            rotator.setMinimumAngle(min);
             out(GOD_PULSE_DB,"Spin GodPulse new spinSignature:" + spinSignature);
             out(GOD_PULSE_DB,"Spin GodPulse new rotationAxis:" + rotationAxis);
             out(GOD_PULSE_DB,"Spin GodPulse new rotationAngle:" + rotationAngle);

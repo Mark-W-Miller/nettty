@@ -1,4 +1,4 @@
-package com.moondance.nettty.model;
+package com.moondance.nettty.scripts;
 
 import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.model.Particle;
@@ -23,11 +23,11 @@ public class Script {
             e.printStackTrace();
         }
     }
+
     public static Nett loadNett(String referenceFileName, String fileName) throws IOException {
 
         out("NetttyApp loadNett fileName:" + fileName);
         out("NetttyApp loadNett referenceFileName:" + referenceFileName);
-        String yamlReference = new String(Files.readAllBytes(scriptsDirectory.resolve(referenceFileName)));
         Map<String, Particle> reference = getNett(referenceFileName).makeParticleLookup();
 
         Nett nett1 = getNett(fileName);
@@ -40,14 +40,14 @@ public class Script {
         String yamlFile = new String(Files.readAllBytes(scriptsDirectory.resolve(fileName)));
         Yaml yaml = new Yaml(new Constructor(Nett.class));
         for (Object details : yaml.loadAll(yamlFile)) {
-            Nett nett = (Nett) details ;
+            Nett nett = (Nett) details;
             out("Nett:" + fileName + " " + nett.toString());
             return nett;
         }
         return null;
     }
 
-    public static Nett readNett(String nettScript){
+    public static Nett readNett(String nettScript) {
         return null;
     }
 }

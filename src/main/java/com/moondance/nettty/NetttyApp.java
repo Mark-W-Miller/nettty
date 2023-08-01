@@ -70,7 +70,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.moondance.nettty.model.Script.loadNett;
+import static com.moondance.nettty.scripts.Script.loadNett;
 import static com.moondance.nettty.graphics.GraphicsUtils.*;
 import static com.moondance.nettty.model.Nett.Nettty;
 import static com.moondance.nettty.utils.DB.NETTYAPP_FLOW_DB;
@@ -451,7 +451,7 @@ public class NetttyApp extends JFrame
             CURRENT_SCRIPT = args[0];
         }
         if (args.length > 1) {
-            CURRENT_REFERENCE = args[01];
+            CURRENT_REFERENCE = args[1];
         }
         out("CURRENT_REFERENCE:" + CURRENT_REFERENCE);
         out("CURRENT_SCRIPT:" + CURRENT_SCRIPT);

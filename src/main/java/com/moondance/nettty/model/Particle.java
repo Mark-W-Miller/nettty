@@ -12,6 +12,7 @@ import org.jogamp.java3d.TransformGroup;
 import org.jogamp.vecmath.Point3d;
 import org.jogamp.vecmath.Vector3d;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,18 +26,27 @@ import static com.moondance.nettty.utils.VecUtils.*;
 public class Particle implements Comparable, Cloneable, Addressable {
     private static int nextId = 0 ;
     String id ;
-    String idRef ;
+    transient String idRef ;
     Point3d position = new Point3d();
     Vector3d motionVector = new Vector3d(0,0,0);
     List<Spin> spins = new ArrayList<>();
     boolean sentinel = false ;
-    double cast = 10;
-    TransformGroup currentParticleTransform ;
-    Nett nett ;
-    int numCopiesInitial = 1 ;
     boolean wiggleWhenWalking = false ;
+    transient TransformGroup currentParticleTransform ;
+    transient Nett nett ;
+    transient int numCopiesInitial = 1 ;
+    transient double cast = 10;
     public Particle() {
         id = "P-" + nextId++;
+    }
+    static public Particle makeSentinel(Point3d position, SpinSignature spinSignature){
+        Particle particle = new Particle();
+        particle.id = "S-" + nextId++;
+        particle.position = position ;
+        Spin spin = new Spin(spinSignature);
+        particle.getSpins().add(spin);
+        particle.sentinel = true ;
+        return particle ;
     }
 
     @Override

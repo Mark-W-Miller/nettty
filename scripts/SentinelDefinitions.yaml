@@ -1,13 +1,13 @@
 particles:
 #About Y-Axis CW-CCW
-  - id: Sent_Y_CW
+  - id: Y_CW
     sentinel: true
     spins:
       - id: 0
         spinSpeed: 10000
         shell: 1
         spinSignatureStr: Y_CW
-  - id: Sent_Y_CCW
+  - id: Y_CCW
     sentinel: true
     spins:
       - id: 0
@@ -15,14 +15,14 @@ particles:
         shell: 1
         spinSignatureStr: Y_CCW
 #About Z-Axis CW-CCW
-  - id: Sent_Z_CW
+  - id: Z_CW
     sentinel: true
     spins:
       - id: 0
         spinSpeed: 10000
         shell: 1
         spinSignatureStr: Z_CW
-  - id: Sent_Z_CCW
+  - id: Z_CCW
     sentinel: true
     spins:
       - id: 0
@@ -30,7 +30,7 @@ particles:
         shell: 1
         spinSignatureStr: Z_CCW
 #About X-Axis CW-CCW
-  - id: Sent_X_CW
+  - id: X_CW
     sentinel: true
     spins:
       - id: 0
@@ -38,7 +38,7 @@ particles:
         spinSpeed: 10000
         shell: 1
         spinSignatureStr: X_CW
-  - id: Sent_X_CCW
+  - id: X_CCW
     sentinel: true
     spins:
       - id: 0

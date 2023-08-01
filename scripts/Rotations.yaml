@@ -1,10 +1,10 @@
 particles:
 #About Y-Axis CW-CCW
-  - idRef: Sent_Y_CW(0 5 0)
-  - idRef: Sent_Y_CCW(2 5 0)
+  - idRef: Y_CW(0 5 0)
+  - idRef: Y_CCW(2 5 0)
 #About Z-Axis CW-CCW
-  - idRef: Sent_Z_CW(3 2 2)
-  - idRef: Sent_Z_CCW(5 2 2)
+  - idRef: Z_CW(3 2 2)
+  - idRef: Z_CCW(5 2 2)
 #About X-Axis CW-CCW
-  - idRef: Sent_X_CW(2 -2 0)
-  - idRef: Sent_X_CCW(2 0 0)
+  - idRef: X_CW(2 -2 0)
+  - idRef: X_CCW(2 0 0)

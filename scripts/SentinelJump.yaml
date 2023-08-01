@@ -1,21 +1,21 @@
 particles:
-  - idRef: Sent_Y_CW(0 0 0)
+  - idRef: Y_CW(0 0 0)
     numCopiesInitial: 1
-  - idRef: Sent_Z_CW(0 0 0)
-#    numCopiesInitial: 2
-#  - idRef: Sent_Y_CCW(0 0 0)
-#    numCopiesInitial: 2
-#  - idRef: Sent_Z_CW(0 0 0)
-#    numCopiesInitial: 2
-#  - idRef: Sent_Z_CCW(1 1 1)
-#    numCopiesInitial: 2
-#  - idRef: Sent_X_CW(1 1 0)
-#    numCopiesInitial: 2
-#  - idRef: Sent_X_CCW(1 0 0)
+  - idRef: Z_CW(0 0 0)
+    numCopiesInitial: 2
+  - idRef: Y_CCW(0 0 0)
+    numCopiesInitial: 2
+  - idRef: Z_CW(0 0 0)
+    numCopiesInitial: 2
+  - idRef: Z_CCW(1 1 1)
+    numCopiesInitial: 2
+  - idRef: X_CW(1 1 0)
+    numCopiesInitial: 2
+  - idRef: X_CCW(1 0 0)
   - id: 0
     positionStr: "0 0 0"
     spins:
       - id: 0
-        shell: 10
+        shell: 5
         rotationAngleStr: d-90
         rotationAxisStr: "0 1 0"
