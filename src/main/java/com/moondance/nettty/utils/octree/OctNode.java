@@ -23,7 +23,7 @@ public class OctNode<T> {
     boolean branchNode = false; //when true this will only hac=ve children and no data
     List<AddressedData<T>> data = new ArrayList<>();
     List<OctNode<T>> octants = new ArrayList<>(8);
-
+    BoundingBox boundingBox = null;
     public OctNode(OctAddress center, Octree<T> tree, double voxelSize) {
         this.center = center;
         this.tree = tree;
@@ -105,8 +105,11 @@ public class OctNode<T> {
     }
 
     public BoundingBox makeBoundingBox() {
+        if(boundingBox!= null){
+            return boundingBox ;
+        }
         Point3d c = getCenter().address;
         double half = getVoxelSize() / 2;
-        return new BoundingBox(c.x - half, c.y - half, c.z - half, getVoxelSize(), getVoxelSize(), getVoxelSize());
+        return boundingBox = new BoundingBox(c.x - half, c.y - half, c.z - half, getVoxelSize(), getVoxelSize(), getVoxelSize());
     }
 }

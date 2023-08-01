@@ -1,323 +1,221 @@
 package com.moondance.nettty.utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-/**
- * Wraps a Map&lt;S, List&lt;T&gt;&gt; with various convenience methods for
- * accessing the data. Implements a Map-like interface for easier transition.
- *
- * @param <K> the type of keys maintained by this map
- * @param <V> the type of mapped values
- * @author chris
- */
-public class MapOfLists<K,V>{
+@SuppressWarnings("serial")
+public class MapOfLists<K, V> extends LinkedHashMap<K, List<V>> {
 
-    /**
-     * Our internal map.
-     */
-    protected final SortedMap<K, List<V>> map;
+	public MapOfLists() {
+		super();
+	}
+	
+	public MapOfLists(Map<? extends K, ? extends List<V>> m) {
+		super(m);
+	}
+	/**
+	 * Looks for a list that is mapped to the given key. If there is not one then a
+	 * new one is created mapped and has the value added to it.
+	 * 
+	 * @param key
+	 * @param value
+	 * @return true if the list has already been created, false if a new list is
+	 *         created.
+	 */
+	
+	public boolean putOne(K key, V value) {
+		if (this.containsKey(key)) {
+			this.get(key).add(value);
+			return true;
+		} else {
+			List<V> values = new ArrayList<>();
+			values.add(value);
+			this.put(key, values);
+			return false;
+		}
+	}
+		
+	public boolean putKey(K key) {
+		if (this.containsKey(key)) {
+			return true;
+		} else {
+			List<V> values = new ArrayList<>();
+			this.put(key, values);
+			return false;
+		}
+	}
+	
+	public boolean putOneUnique(K key, V value) {
+		if (this.containsKey(key)) {
+			if(!this.get(key).contains(value))
+				this.get(key).add(value);
+			return true;
+		} else {
+			List<V> values = new ArrayList<>();
+			values.add(value);
+			this.put(key, values);
+			return false;
+		}
+	}
+	
+	public boolean putAll(K key, List<V> values) {
+		if (this.containsKey(key)) {
+			this.get(key).addAll(values);
+			return true;
+		} else {
+			this.put(key, values);
+			return false;
+		}
+	}
+	
+	public MapOfLists<K, V> transform(Consumer<? super List<V>> mapper) {
+		for(K key: keySet()) {
+			List<V> list = get(key);
+			if(list != null) {
+				mapper.accept(list);
+			}
+		}
+		return this;
+	}
+	
+	public List<V> allValues(){
+		return values().stream()
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+	}
+	
+	public List<V> allValues(List<K> keyOrder){
+		return keyOrder.stream()
+				.map(key->this.get(key))
+				.flatMap(List::stream)
+				.collect(Collectors.toList());
+	}
+	
+	public List<V> allValuesReversed(List<K> keyOrder){
+		List<V> finalList = new ArrayList<>();
+		for(K key: keyOrder) {
+			List<V> list = new ArrayList<>(this.get(key)) ;
+			Collections.reverse(list);
+			finalList.addAll(list);
+		}
+		return finalList;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void sortAllLists() {
+		 values().stream().forEach(list->{
+			List listV = list;
+			 Collections.sort(listV);
+		 });
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void sortAllLists(Comparator<V> comparator) {
+		 values().stream().forEach(list->{
+			 List listV = list;
+			 if(list.size()>1) {
+				 listV.sort(comparator);
+			 }
+		 });
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void ensure(K... keys){
+		
+		for(K key: keys) {
+			if(!containsKey(key)) {
+				put(key,new ArrayList<V>());				
+			}
+		}
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder(" MOL:\n\t");
+		this.entrySet().stream().forEach(entry -> {
+			builder.append("\n").append(entry.getKey());
+			builder.append(dumpList(entry.getValue()));
+		});
+		return builder.toString();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String toString(K... keys) {
+		StringBuilder builder = new StringBuilder(" MOL (Partial):" + Arrays.asList(keys).toString() + "\n\t");
+		this.entrySet().stream().forEach(entry -> {
+			
+			if(Arrays.asList(keys).stream().anyMatch(k->entry.getKey().toString().contains(k.toString()))){
+				builder.append("\n").append(entry.getKey());
+				builder.append(dumpList(entry.getValue()));
+			}
+		});
+		return builder.toString();
+		
+	}
+	
+	public String toStringListInteresting(String[] keys) {
+		StringBuilder builder = new StringBuilder("\n\tMOL (Partial):" + Arrays.asList(keys).toString() + "\n\t");
+		this.entrySet().stream().forEach(entry -> {
+//			builder.append(ModelDebug.dumpList(entry.getKey() + "=",entry.getValue(), keys));
+		});
+		return builder.toString();
+		
+	}
 
-    /**
-     * Creates a new, empty MapList.
-     */
-    public MapOfLists() {
-        map = new TreeMap<>();
-    }
+	private <T> String dumpList(List<T> list) {
+		StringBuilder builder = new StringBuilder("=");
+		list.stream().forEach(item->builder.append((item instanceof Integer) ? "," : "\n\t").append(item));
+		return builder.toString();
+	}
 
-    /**
-     * Creates a new MapList with the values from the specified list.
-     *
-     * @param list The MapList whose values should be used
-     */
-    public MapOfLists(final MapOfLists<K, V> list) {
-        map = list.map;
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<V> get(Object key) {
+		if(!containsKey(key)) {
+			List<V> list = new ArrayList<>();
+			put((K) key,list);
+			return list ;
+		}
+		return super.get(key);
+	}
 
-    /**
-     * Determines if this MapList is empty. An empty MapList is one that either
-     * contains no keys, or contains only keys which have no associated values.
-     *
-     * @return True if this MapList is empty, false otherwise
-     */
-    public boolean isEmpty() {
-        for (List<V> list : map.values()) {
-            if (!list.isEmpty()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Determines if this MapList contains the specified key.
-     *
-     * @param key The key to look for
-     * @return True if this MapList contains the specified key, false otherwise
-     */
-    public boolean containsKey(final K key) {
-        return map.containsKey(key);
-    }
-
-    /**
-     * Determines if this MapList contains the specified value as a child of
-     * the specified key.
-     *
-     * @param key   The key to search under
-     * @param value The value to look for
-     * @return True if this MapList contains the specified key/value pair,
-     * false otherwise
-     */
-    public boolean containsValue(final K key, final V value) {
-        return map.containsKey(key) && map.get(key).contains(value);
-    }
-
-    /**
-     * Retrieves the list of values associated with the specified key.
-     *
-     * @param key The key whose values are being retrieved
-     * @return The values belonging to the specified key
-     */
-//    public List<T> get(final S key) {
-//        return map.get(key);
-//    }
-
-//    public Entry<S,List<T>> entries(){
-//    	return map.e
-//    }
-
-    /**
-     * Retrieves the value at the specified offset of the specified key.
-     *
-     * @param key   The key whose values are being retrieved
-     * @param index The index of the value to retrieve
-     * @return The specified value of the key
-     */
-    public V get(final K key, final int index) {
-        return map.get(key).get(index);
-    }
-
-    /**
-     * Retrieves the list of values associated with the specified key, creating
-     * the key if neccessary.
-     *
-     * @param key The key to retrieve
-     * @return A list of the specified key's values
-     */
-    public List<V> safeGet(final K key) {
-        if (!map.containsKey(key)) {
-            map.put(key, new ArrayList<V>());
-        }
-
-        return map.get(key);
-    }
-
-    /**
-     * Adds the specified key to the MapList.
-     *
-     * @param key The key to be added
-     */
-    public void add(final K key) {
-        safeGet(key);
-    }
-
-    /**
-     * Adds the specified value as a child of the specified key. If the key
-     * didn't previous exist, it is created.
-     *
-     * @param key   The key to which the value is being added
-     * @param value The value to be added
-     */
-    public void add(final K key, final V value) {
-        safeGet(key).add(value);
-    }
-
-    /**
-     * Adds the specified set of values to the specified key. If the key
-     * didn't previous exist, it is created.
-     *
-     * @param key    The key to which the value is being added
-     * @param values The values to be added
-     */
-    public void add(final K key, final Collection<V> values) {
-        safeGet(key).addAll(values);
-    }
-
-    /**
-     * Adds everything in one MapList to this. If the key
-     * didn't previous exist, it is created.
-     *
-     * @param mapOfLists The mapList to add
-     */
-    public void add(MapOfLists<K, V> mapOfLists) {
-        mapOfLists.getMap()
-                .entrySet()
-                .stream().forEach(e -> {
-            add(e.getKey(), e.getValue());
-        });
-    }
-
-    /**
-     * Removes the specified key and all of its values.
-     *
-     * @param key The key to removeCard
-     */
-    public void remove(final K key) {
-        map.remove(key);
-    }
-
-    /**
-     * Removes the specified value from all keys.
-     *
-     * @param value The value to removeCard
-     */
-    public void removeFromAll(final V value) {
-        for (List<V> list : map.values()) {
-            list.remove(value);
-        }
-    }
-
-    public K findKey(V value) {
-
-        for (Map.Entry<K, List<V>> e : entrySet()) {
-            if (e.getValue().contains(value)) {
-                return e.getKey();
-            }
-        }
-        ;
-        return null;
-    }
-
-    /**
-     * Removes the specified value from the specified key.
-     *
-     * @param key   The key whose value is being removed
-     * @param value The value to be removed
-     */
-    public void remove(final K key, final V value) {
-        if (map.containsKey(key)) {
-            map.get(key).remove(value);
-        }
-    }
-
-    /**
-     * Entirely clears this MapList.
-     */
-    public void clear() {
-        map.clear();
-    }
-
-    /**
-     * Clears all values of the specified key.
-     *
-     * @param key The key to be cleared
-     */
-    public void clear(final K key) {
-        safeGet(key).clear();
-    }
-
-    /**
-     * Returns the set of all keys belonging to this MapList.
-     *
-     * @return This MapList's keyset
-     */
-    public Set<K> keySet() {
-        return map.keySet();
-    }
-
-    /**
-     * Returns a collection of all values belonging to the specified key.
-     *
-     * @param key The key whose values are being sought
-     * @return A collection of values belonging to the key
-     */
-    public Collection<V> values(final K key) {
-        return map.get(key);
-    }
-
-    /**
-     * Retrieves the entry set for this MapList.
-     *
-     * @return This MapList's entry set
-     */
-    public Set<Map.Entry<K, List<V>>> entrySet() {
-        return map.entrySet();
-    }
-
-    /**
-     * Retrieves the map behind this maplist.
-     *
-     * @return This MapList's map.
-     */
-    public SortedMap<K, List<V>> getMap() {
-        return map;
-    }
-
-    @Override
-    public String toString() {
-        return "[" + map + "]";
-    }
-
-    public int size() {
-        return map.size() ;
-    }
-    public String format(String title, int tabs) {
-        String kv = "%s = %s\n";
-        String t = tabs(tabs);
-        StringBuilder builder = new StringBuilder(title + "\n");
-
-        map.entrySet().forEach(e -> {
-            if (!e.getValue().isEmpty()) {
-                builder.append(t + e.getKey()).append("\n");
-                builder.append(formatList(e.getValue(), tabs));
-            }
-        });
-        return builder.toString();
-    }
-    static public String tabs(int tabs) {
-        char tab[] = new char[tabs];
-        Arrays.fill(tab,'\t');
-        return new String(tab);
-    }
-
-    private String formatList(List<V> list, int tabs) {
-        String t = tabs(tabs + 1);
-        StringBuilder builder = new StringBuilder();
-        list.forEach(s -> {
-            builder.append(t + s.toString()).append("\n");
-        });
-        return builder.toString();
-    }
-
-
-    public List<V> getAllValues() {
-        return getMap()
-                .values()
-                .stream()
-                .flatMap(List::stream)
-                .sorted()
-                .collect(Collectors.toList());
-    }
-
-    public void removeSmallerThan(int minSize) {
-        List<K> remove = map.keySet().stream()
-                .filter(s -> map.get(s).size() < minSize)
-                .collect(Collectors.toList());
-        remove.stream()
-                .forEach(s -> map.remove(s));
-    }
-
-
-//    @AllArgsConstructor
-//    @Getter
-//    public class KV implements Comparable<KV> {
-//        K key;
-//        List<V> value;
-//
-//        @Override
-//        public int compareTo(KV o) {
-//            return value.size() - o.value.size();
-//        }
-//    }
+	public void populateEmpty(K key, int size) {
+		List<V> list = new ArrayList<>(size);
+		IntStream.range(0, size).forEach(i->list.add(null));
+		put(key,list);
+	}
+	
+	public static MapOfLists<String,String> fromStringMap(Map<String, String[]> map){
+		MapOfLists<String,String> ret = new MapOfLists<>();
+		if(map != null) {
+			map.entrySet().stream().forEach(e->{
+				if(e.getValue() != null) {
+					ret.put(e.getKey(), Arrays.asList(e.getValue()));
+				} else {
+					ret.put(e.getKey(), new ArrayList<>());				
+				}
+			});
+		}
+		return ret ;
+	}
+	
+	public static Map<String,String[]> toStringMap(MapOfLists<String, String> map){
+		Map<String,String[]> ret = new LinkedHashMap<>();
+		map.entrySet().stream().forEach(e->{
+			if(e.getValue() != null) {
+				ret.put(e.getKey(), e.getValue().toArray(new String[0]));
+			} else {
+				ret.put(e.getKey(), new String[0]);				
+			}
+		});
+		return ret ;
+	}
 }

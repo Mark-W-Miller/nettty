@@ -82,8 +82,9 @@ public class GraphicsUtils {
             }
 
             @Override
-            public void visitBranch(OctNode<T> node, int level) {
+            public boolean visitBranch(OctNode<T> node, int level) {
                 makeOctNodeDecoration(node);
+                return true ;
             }
 
             private void makeOctNodeDecoration(OctNode<T> node) {

@@ -1,13 +1,17 @@
 package com.moondance.nettty.utils.octree;
 
+import javafx.geometry.Point3D;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.jogamp.vecmath.Point3d;
 
+import static com.moondance.nettty.graphics.GraphicsUtils.p3dToP3D;
 import static com.moondance.nettty.graphics.GraphicsUtils.tup3dStr;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class OctAddress implements Comparable<OctAddress>{
     public Point3d address ;
     public double radius ;
@@ -35,6 +39,16 @@ public class OctAddress implements Comparable<OctAddress>{
         this.radius = radius ;
     }
 
+    public OctAddress(OctAddress addressOfCenter, int x, int y, int z) {
+        address = (Point3d) addressOfCenter.address.clone();
+        address.add(new Point3d(x,y,z));
+        radius = addressOfCenter.radius ;
+    }
+
+    public Point3D addressP3D(){
+        return p3dToP3D(address);
+    }
+
     public Point3d deltaSigns(OctAddress point) {
         Point3d res = new Point3d();
         res.sub(point.address,address);
@@ -46,9 +60,12 @@ public class OctAddress implements Comparable<OctAddress>{
 
     @Override
     public int compareTo(OctAddress that) {
-        return Double.compare(radius,that.radius);
+        return Double.compare(fastSize(),that.fastSize());
     }
 
+    private double fastSize(){
+        return Math.abs(address.x) + Math.abs(address.y) + Math.abs(address.z)  ;
+    }
     @Override
     public String toString() {
         return "OctAddress:" + tup3dStr(address) ;

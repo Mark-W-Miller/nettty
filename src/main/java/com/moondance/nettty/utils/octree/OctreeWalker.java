@@ -1,18 +1,32 @@
 package com.moondance.nettty.utils.octree;
 
+import lombok.SneakyThrows;
+
+import static com.moondance.nettty.utils.DB.OCTWALK_DB;
+import static com.moondance.nettty.utils.Handy.out;
+
 abstract public class OctreeWalker<T> {
     OctNode<T> startNode ;
     public OctreeWalker(OctNode<T> startNode){
         this.startNode = startNode ;
-        walk(startNode,0);
+        try {
+            walk(startNode, 0);
+        } catch(OctreeException ex){
+            out(OCTWALK_DB,ex.getMessage());
+        }
     }
 
+    @SneakyThrows
+    public void stop(String message){
+        throw new OctreeException(message);
+    }
     private void walk(OctNode<T> node,int level) {
         if(node.branchNode){
-            visitBranch(node,level);
-            for(OctNode<T> subNode:node.octants){
-                if(subNode != null){
-                    walk(subNode,level + 1);
+            if(visitBranch(node,level)) {
+                for (OctNode<T> subNode : node.octants) {
+                    if (subNode != null) {
+                        walk(subNode, level + 1);
+                    }
                 }
             }
         } else {
@@ -21,5 +35,8 @@ abstract public class OctreeWalker<T> {
     }
 
     abstract public void visitLeaf(OctNode<T> node, int level) ;
-    abstract public void visitBranch(OctNode<T> node, int level) ;
+    public boolean visitBranch(OctNode<T> node, int level) {
+        return true ;
+    }
+
 }

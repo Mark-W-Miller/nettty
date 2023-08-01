@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.octree.Octree.dumpTree;
@@ -33,9 +34,19 @@ public class OctreeTest extends TestCase {
         out(addresses);
         for(OctAddress add: addresses){
             octree.add(add,add);
-            dumpTree(octree);
         }
-        OctAddress address = new OctAddress(0,0,0,1);
+        dumpTree(octree);
+        for(OctAddress add: addresses) {
+            out("Search for add:" + add);
+            List<OctAddress> adds = octree.lookup(add);
+            List<OctAddress> found = adds.stream().filter(a->a.equals(add)).collect(Collectors.toList());
+            assertEquals(adds.size(),found.size());
+        }
+        for(OctAddress add: addresses) {
+            out("ThreeBox Search for add:" + add);
+            ThreeBox<OctAddress> threeBox = new ThreeBox<>(octree,add);
+            out(threeBox);
+        }
     }
 
 

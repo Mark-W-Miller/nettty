@@ -1,10 +1,13 @@
 package com.moondance.nettty.utils.octree;
 
+import javafx.geometry.Point3D;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Objects;
+
+import static com.moondance.nettty.graphics.GraphicsUtils.p3dToP3D;
 
 @Setter
 @Getter
@@ -26,6 +29,9 @@ public class AddressedData<T> {
         return Objects.hash(octAddress);
     }
 
+    public Point3D addressP3D(){
+        return p3dToP3D(octAddress.getAddress());
+    }
     @Override
     public String toString() {
         return "AddressedData{" +
