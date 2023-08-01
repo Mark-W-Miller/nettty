@@ -18,13 +18,13 @@ import static com.moondance.nettty.utils.Handy.out;
 public class OctNode<T> {
 
     OctAddress center;
-    OctTree<T> tree;
+    Octree<T> tree;
     double voxelSize;
     boolean branchNode = false; //when true this will only hac=ve children and no data
     List<AddressedData<T>> data = new ArrayList<>();
     List<OctNode<T>> octants = new ArrayList<>(8);
 
-    public OctNode(OctAddress center, OctTree<T> tree, double voxelSize) {
+    public OctNode(OctAddress center, Octree<T> tree, double voxelSize) {
         this.center = center;
         this.tree = tree;
         this.voxelSize = voxelSize;

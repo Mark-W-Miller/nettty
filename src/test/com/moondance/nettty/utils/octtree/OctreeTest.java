@@ -6,10 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.moondance.nettty.utils.Handy.out;
-import static com.moondance.nettty.utils.Handy.tabs;
-import static com.moondance.nettty.utils.octtree.OctTree.dumpTree;
+import static com.moondance.nettty.utils.octtree.Octree.dumpTree;
 
-public class OctTreeTest extends TestCase {
+public class OctreeTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
@@ -19,7 +18,7 @@ public class OctTreeTest extends TestCase {
     }
 
     public void testAdd() {
-        OctTree<OctAddress> octTree = new OctTree<>(64);
+        Octree<OctAddress> octree = new Octree<>(64);
         List<OctAddress> addresses = new ArrayList<>();
 
         for(SubNode sn:SubNode.values()){
@@ -33,8 +32,8 @@ public class OctTreeTest extends TestCase {
         }
         out(addresses);
         for(OctAddress add: addresses){
-            octTree.add(add,add);
-            dumpTree(octTree);
+            octree.add(add,add);
+            dumpTree(octree);
         }
         OctAddress address = new OctAddress(0,0,0,1);
     }

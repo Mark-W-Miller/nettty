@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.moondance.nettty.utils.VecUtils.parsePoint3d;
-import static com.moondance.nettty.utils.octtree.OctTree.dumpTree;
 
 @Getter
 @Setter

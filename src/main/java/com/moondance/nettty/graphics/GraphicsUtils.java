@@ -1,8 +1,8 @@
 package com.moondance.nettty.graphics;
 
 import com.moondance.nettty.utils.octtree.OctNode;
-import com.moondance.nettty.utils.octtree.OctTree;
-import com.moondance.nettty.utils.octtree.OctTreeWalker;
+import com.moondance.nettty.utils.octtree.Octree;
+import com.moondance.nettty.utils.octtree.OctreeWalker;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Point3D;
 import org.jdesktop.j3d.examples.collision.Box;
@@ -67,14 +67,14 @@ public class GraphicsUtils {
         return String.format("BB X:[%.2f %.2f] Y[%.2f %.2f] Z[%.2f %.2f]",bb.getMinX(),bb.getMaxX(),bb.getMinY(),bb.getMaxY(),bb.getMinZ(),bb.getMaxZ());
     }
 
-    public static <T> Group makeOctTreeGroup(OctTree<T> tree) {
+    public static <T> Group makeOctTreeGroup(Octree<T> tree) {
         BranchGroup group = new BranchGroup();
         group.setCapability(BranchGroup.ALLOW_DETACH);
         Appearance boxApp = getDebugStructureAppearance(new Color3f(0, 1, 1), 0.95f, false);
         Appearance dotApp = getDebugStructureAppearance(new Color3f(0, 0, 1), 0.85f, false);
         Appearance crowdedApp = getDebugStructureAppearance(new Color3f(1, 0, 0), 0f, true);
         Appearance toNodeCenter = getDebugStructureAppearance(new Color3f(1, .64f, 0), 0.85f, true);
-        new OctTreeWalker<T>(tree.getRoot()) {
+        new OctreeWalker<T>(tree.getRoot()) {
 
             @Override
             public void visitLeaf(OctNode<T> node, int level) {

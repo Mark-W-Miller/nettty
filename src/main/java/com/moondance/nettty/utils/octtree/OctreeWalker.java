@@ -1,8 +1,8 @@
 package com.moondance.nettty.utils.octtree;
 
-abstract public class OctTreeWalker<T> {
+abstract public class OctreeWalker<T> {
     OctNode<T> startNode ;
-    public OctTreeWalker(OctNode<T> startNode){
+    public OctreeWalker(OctNode<T> startNode){
         this.startNode = startNode ;
         walk(startNode,0);
     }

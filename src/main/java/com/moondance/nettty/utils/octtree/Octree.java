@@ -18,12 +18,12 @@ import static com.moondance.nettty.utils.Handy.*;
 @Getter
 @Setter
 @ToString
-public class OctTree<T> {
+public class Octree<T> {
 
     OctNode<T> root;
     int voxelSize;
 
-    public OctTree(int voxelSize) {
+    public Octree(int voxelSize) {
         this.voxelSize = voxelSize;
         root = new OctNode<>(new OctAddress(), this, voxelSize);
     }
@@ -51,7 +51,7 @@ public class OctTree<T> {
 
     public List<T> getAllData() {
         List<T> allData = new ArrayList<>();
-        new OctTreeWalker<T>(root) {
+        new OctreeWalker<T>(root) {
 
             @Override
             public void visitLeaf(OctNode<T> node, int level) {
@@ -68,7 +68,7 @@ public class OctTree<T> {
     }
 
     public void verifyTree() {
-        new OctTreeWalker<T>(root) {
+        new OctreeWalker<T>(root) {
 
             @Override
             public void visitLeaf(OctNode<T> node, int level) {
@@ -90,9 +90,9 @@ public class OctTree<T> {
         };
     }
 
-    public static <T> void dumpTree(OctTree<T> octTree) {
-        out("dumpTree:-----------------------------------------------------------" + octTree.getVoxelSize());
-        new OctTreeWalker<T>(octTree.getRoot()){
+    public static <T> void dumpTree(Octree<T> octree) {
+        out("dumpTree:-----------------------------------------------------------" + octree.getVoxelSize());
+        new OctreeWalker<T>(octree.getRoot()){
 
             @Override
             public void visitLeaf(OctNode<T> node, int level) {

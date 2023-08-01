@@ -49,7 +49,7 @@ import com.moondance.nettty.graphics.NettGroup;
 import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.model.Particle;
 import com.moondance.nettty.utils.octtree.AddressedData;
-import com.moondance.nettty.utils.octtree.OctTree;
+import com.moondance.nettty.utils.octtree.Octree;
 import lombok.SneakyThrows;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.behaviors.vp.OrbitBehavior;
@@ -77,12 +77,12 @@ import static com.moondance.nettty.utils.DB.NETTYAPP_FLOW_DB;
 import static com.moondance.nettty.utils.DB.NETTYAPP_ORBIT_DB;
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.cast;
-import static com.moondance.nettty.utils.octtree.OctTree.dumpTree;
+import static com.moondance.nettty.utils.octtree.Octree.dumpTree;
 
 public class NetttyApp extends JFrame
         implements ActionListener {
     TransformGroup mainTransform;
-    OctTree<Particle> particleOctTree;
+    Octree<Particle> particleOctree;
     BranchGroup contentBranchGroup;
     OrbitBehavior orbit;
     double orbitSensitivity = 10;
@@ -199,10 +199,10 @@ public class NetttyApp extends JFrame
 
 
         Nett nettTemplate = loadNett(CURRENT_REFERENCE, CURRENT_SCRIPT);
-        particleOctTree = makeParticleLadenOctTreeFromTemplate(nettTemplate);
-        Nett nett = new Nett(particleOctTree.getAllData());
-        particleOctTree = makeParticleOctTree(nett);
-        dumpTree(particleOctTree);
+        particleOctree = makeParticleLadenOctTreeFromTemplate(nettTemplate);
+        Nett nett = new Nett(particleOctree.getAllData());
+        particleOctree = makeParticleOctTree(nett);
+        dumpTree(particleOctree);
 
         Transform3D t = new Transform3D();
         t.set(new Vector3f(0.0f, 0.1f, 0.0f));
@@ -215,7 +215,7 @@ public class NetttyApp extends JFrame
         mainTransform.addChild(makeAxis());
         mainTransform.addChild(content = new NettGroup(nett));
         if(showOctree) {
-            mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctTree));
+            mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctree));
         }
         addLights(objRoot);
         objRoot.addChild(mainTransform);
@@ -224,18 +224,18 @@ public class NetttyApp extends JFrame
     }
 
     private void rebuildParticleOctTree() {
-        particleOctTree = makeParticleOctTree(Nettty);
-        dumpTree(particleOctTree);
+        particleOctree = makeParticleOctTree(Nettty);
+        dumpTree(particleOctree);
         mainTransform.removeChild(octTreeGroup);
         if (showOctree) {
-            mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctTree));
+            mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctree));
             Transform3D t3D = new Transform3D();
             mainTransform.getTransform(t3D);
             out(NETTYAPP_FLOW_DB, "NettyApp rebuildParticleOctTree mainTransform:\n" + t3D);
         }
     }
 
-    OctTree<Particle> makeParticleLadenOctTreeFromTemplate(Nett nettty) {
+    Octree<Particle> makeParticleLadenOctTreeFromTemplate(Nett nettty) {
         List<AddressedData> data = new ArrayList<>();
 
         for (Particle particleTemplate : nettty.getParticles()) {
@@ -257,18 +257,18 @@ public class NetttyApp extends JFrame
         out(data);
         double finalMax = maxDimension(data);
         out("Octree Size Initial:" + finalMax);
-        OctTree<Particle> octTree = new OctTree<>((int) finalMax * 2);
+        Octree<Particle> octree = new Octree<>((int) finalMax * 2);
         for (AddressedData addressedParticle : data) {
-            octTree.add(addressedParticle);
+            octree.add(addressedParticle);
         }
-        octTree.verifyTree();
-        return octTree;
+        octree.verifyTree();
+        return octree;
     }
 
-    OctTree<Particle> makeParticleOctTree(Nett nettty) {
+    Octree<Particle> makeParticleOctTree(Nett nettty) {
         double finalMax = maxDimension(nettty);
         out("Octree Size:" + finalMax);
-        OctTree<Particle> octTree = new OctTree<>((int) finalMax * 2);
+        Octree<Particle> octree = new Octree<>((int) finalMax * 2);
         List<AddressedData> data = new ArrayList<>();
 
         for (Particle particle : nettty.getParticles()) {
@@ -276,9 +276,9 @@ public class NetttyApp extends JFrame
         }
 //        out(data);
         for (AddressedData addressedParticle : data) {
-            octTree.add(addressedParticle);
+            octree.add(addressedParticle);
         }
-        return octTree;
+        return octree;
     }
 
     private static double maxDimension(Nett nettty) {
