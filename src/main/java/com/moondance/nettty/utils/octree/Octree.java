@@ -1,4 +1,4 @@
-package com.moondance.nettty.utils.octtree;
+package com.moondance.nettty.utils.octree;
 
 import com.moondance.nettty.utils.MapOfLists;
 import javafx.geometry.BoundingBox;

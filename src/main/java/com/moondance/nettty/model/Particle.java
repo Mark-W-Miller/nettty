@@ -1,9 +1,9 @@
 package com.moondance.nettty.model;
 
-import com.moondance.nettty.utils.octtree.Addressable;
-import com.moondance.nettty.utils.octtree.AddressedData;
-import com.moondance.nettty.utils.octtree.OctAddress;
-import com.moondance.nettty.utils.octtree.SubNode;
+import com.moondance.nettty.utils.octree.Addressable;
+import com.moondance.nettty.utils.octree.AddressedData;
+import com.moondance.nettty.utils.octree.OctAddress;
+import com.moondance.nettty.utils.octree.SubNode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -12,7 +12,6 @@ import org.jogamp.java3d.TransformGroup;
 import org.jogamp.vecmath.Point3d;
 import org.jogamp.vecmath.Vector3d;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

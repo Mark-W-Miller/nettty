@@ -1,4 +1,4 @@
-package com.moondance.nettty.utils.octtree;
+package com.moondance.nettty.utils.octree;
 
 import junit.framework.TestCase;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.moondance.nettty.utils.Handy.out;
-import static com.moondance.nettty.utils.octtree.Octree.dumpTree;
+import static com.moondance.nettty.utils.octree.Octree.dumpTree;
 
 public class OctreeTest extends TestCase {
 

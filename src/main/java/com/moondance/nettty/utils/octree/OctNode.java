@@ -1,4 +1,4 @@
-package com.moondance.nettty.utils.octtree;
+package com.moondance.nettty.utils.octree;
 
 import javafx.geometry.BoundingBox;
 import lombok.Getter;

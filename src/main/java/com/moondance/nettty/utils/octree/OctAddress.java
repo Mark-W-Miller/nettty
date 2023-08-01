@@ -1,4 +1,4 @@
-package com.moondance.nettty.utils.octtree;
+package com.moondance.nettty.utils.octree;
 
 import lombok.Getter;
 import lombok.Setter;

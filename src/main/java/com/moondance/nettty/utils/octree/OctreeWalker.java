@@ -1,4 +1,4 @@
-package com.moondance.nettty.utils.octtree;
+package com.moondance.nettty.utils.octree;
 
 abstract public class OctreeWalker<T> {
     OctNode<T> startNode ;

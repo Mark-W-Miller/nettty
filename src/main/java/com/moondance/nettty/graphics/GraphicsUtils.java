@@ -1,8 +1,8 @@
 package com.moondance.nettty.graphics;
 
-import com.moondance.nettty.utils.octtree.OctNode;
-import com.moondance.nettty.utils.octtree.Octree;
-import com.moondance.nettty.utils.octtree.OctreeWalker;
+import com.moondance.nettty.utils.octree.OctNode;
+import com.moondance.nettty.utils.octree.Octree;
+import com.moondance.nettty.utils.octree.OctreeWalker;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Point3D;
 import org.jdesktop.j3d.examples.collision.Box;

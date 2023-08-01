@@ -48,8 +48,8 @@ import com.moondance.nettty.graphics.Images;
 import com.moondance.nettty.graphics.NettGroup;
 import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.model.Particle;
-import com.moondance.nettty.utils.octtree.AddressedData;
-import com.moondance.nettty.utils.octtree.Octree;
+import com.moondance.nettty.utils.octree.AddressedData;
+import com.moondance.nettty.utils.octree.Octree;
 import lombok.SneakyThrows;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.behaviors.vp.OrbitBehavior;
@@ -77,7 +77,7 @@ import static com.moondance.nettty.utils.DB.NETTYAPP_FLOW_DB;
 import static com.moondance.nettty.utils.DB.NETTYAPP_ORBIT_DB;
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.cast;
-import static com.moondance.nettty.utils.octtree.Octree.dumpTree;
+import static com.moondance.nettty.utils.octree.Octree.dumpTree;
 
 public class NetttyApp extends JFrame
         implements ActionListener {
