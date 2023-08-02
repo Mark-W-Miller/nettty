@@ -4,6 +4,7 @@ import javafx.geometry.BoundingBox;
 import lombok.Getter;
 import lombok.Setter;
 import org.jogamp.vecmath.Point3d;
+import org.jogamp.vecmath.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class OctNode<T> {
     private OctNode<T> getOctant(SubNode sn, double voxelSize) {
         if (octants.get(sn.index) == null) {
             double newVoxelSize = voxelSize / 2;
-            Point3d scaledOffset = sn.scaledOffset(newVoxelSize);
+            Vector3d scaledOffset = sn.scaledOffset(newVoxelSize);
             Point3d newCenterPoint = (Point3d) center.address.clone();
             newCenterPoint.add(scaledOffset);
             OctAddress newCenter = new OctAddress(newCenterPoint);
@@ -95,9 +96,9 @@ public class OctNode<T> {
     @Override
     public String toString() {
         return "OctNode{" +
-                ", data=" + data.size() +
+                "data=" + data.size() +
                 ", branchNode=" + branchNode +
-                "BB=" + bb2str(makeBoundingBox()) +
+                ", BB=" + bb2str(makeBoundingBox()) +
                 "center=" + tup3dStr(center.address) +
                 ", voxelSize=" + voxelSize +
                 ", octants=" + octantsStr() +

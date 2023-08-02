@@ -200,7 +200,7 @@ public class NetttyApp extends JFrame
 
         Nett nettTemplate = loadNett(CURRENT_REFERENCE, CURRENT_SCRIPT);
         particleOctree = makeParticleLadenOctTreeFromTemplate(nettTemplate);
-        Nett nett = new Nett(particleOctree.getAllData());
+        Nett nett = new Nett(particleOctree);
         particleOctree = makeParticleOctTree(nett);
         dumpTree(particleOctree);
 
@@ -278,6 +278,7 @@ public class NetttyApp extends JFrame
         for (AddressedData addressedParticle : data) {
             octree.add(addressedParticle);
         }
+        nettty.setOctree(octree);
         return octree;
     }
 
@@ -304,8 +305,6 @@ public class NetttyApp extends JFrame
     }
 
     private void reloadScript() throws IOException {
-        Nett nett = loadNett(CURRENT_REFERENCE, CURRENT_SCRIPT);
-        content = new NettGroup(nett);
         universe.addBranchGraph(createSceneGraph());
     }
 

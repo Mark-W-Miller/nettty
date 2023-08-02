@@ -46,6 +46,8 @@ public class OctreeTest extends TestCase {
             out("ThreeBox Search for add:" + add);
             ThreeBox<OctAddress> threeBox = new ThreeBox<>(octree,add);
             out(threeBox);
+            OctAddress found = threeBox.getBoxMap().get(add).get(0);
+            assertEquals(add,found);
         }
     }
 

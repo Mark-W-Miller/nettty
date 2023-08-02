@@ -56,10 +56,11 @@ import static com.moondance.nettty.graphics.GraphicsUtils.makeAxisAt;
 import static com.moondance.nettty.utils.VecUtils.makeRotationGroup;
 import static com.moondance.nettty.utils.VecUtils.makeTranslationGroup;
 
-public class ParticleGroup  extends Group {
+public class ParticleGroup  extends BranchGroup {
     Particle particle ;
     public ParticleGroup(Particle particle, Appearance appearence) {
         this.particle = particle;
+        particle.setParticleGroup(this);
         if (appearence == null) {
             appearence = getDefaultSpinAppearance();
         }
@@ -69,6 +70,7 @@ public class ParticleGroup  extends Group {
         BoundingSphere bounds =
                 new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 10000.0);
 
+        setCapability(BranchGroup.ALLOW_DETACH );
         Vector3d vec = new Vector3d();
         vec.set(particle.getPosition());
         TransformGroup trans = makeTranslationGroup(vec);
@@ -80,8 +82,6 @@ public class ParticleGroup  extends Group {
         for (Spin spin : particle.getSpins()) {
 
             spin.setParticle(particle);
-            Sphere sphere = makeSpinSphere(appearence, spin);
-
             TransformGroup cylinderXForm = makeSpinAxis(getDefaultSpinAppearance(), spin);
             TransformGroup fixedXForm = makeFixedSpinAxis(getAppearanceYPointer(), spin);
             spin.setFixedXForm(fixedXForm);
@@ -94,28 +94,50 @@ public class ParticleGroup  extends Group {
                     spin.getSpinSpeed(), 0, 0,
                     0, 0, 0);
 
-            TransformGroup rotatorTransform = new TransformGroup();
-            rotatorTransform.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+            TransformGroup rotatorTransformGroup = new TransformGroup();
+            rotatorTransformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+            rotatorTransformGroup.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
             float min = 0.0f ;
             float max = (float) (Math.PI * 2.0f);
             if(spin.getRotationAngle() < 0){
                 min = (float) (Math.PI * 2.0f) ;
                 max =  0.0f  ;
             }
-            RotationInterpolator rotator = new RotationInterpolator(rotor1Alpha, rotatorTransform, yAxis, min, max);
+            RotationInterpolator rotator = new RotationInterpolator(rotor1Alpha, rotatorTransformGroup, yAxis, min, max);
             rotator.setSchedulingBounds(bounds);
-            rotatorTransform.addChild(rotator);
-            trans.addChild(rotatorTransform);
-            rotatorTransform.addChild(sphere);
-            rotatorTransform.addChild(cylinderXForm);
+            rotatorTransformGroup.addChild(rotator);
+            trans.addChild(rotatorTransformGroup);
+            rotatorTransformGroup.addChild(cylinderXForm);
 
-            spin.setCurrentSpinTransform(rotatorTransform);
+            BranchGroup sphereHolderGroup = new BranchGroup() ;
+            spin.setSpinSphereHolderGroup(sphereHolderGroup);
+            rotatorTransformGroup.addChild(sphereHolderGroup);
+            sphereHolderGroup.setUserData("sphereHolderGroup");
+
+            sphereHolderGroup.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
+            sphereHolderGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+            sphereHolderGroup.setCapability(BranchGroup.ALLOW_DETACH);
+
+            BranchGroup sphereGroup = new BranchGroup() ;
+            sphereGroup.setUserData("sphereGroup");
+            sphereGroup.setCapability(BranchGroup.ALLOW_DETACH);
+            sphereGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+            spin.setSpinSphereGroup(sphereGroup);
+
+            sphereHolderGroup.addChild(sphereGroup);
+
+            Sphere sphere = makeSpinSphere(appearence, spin);
+            sphereGroup.addChild(sphere);
+            sphere.setCapability(BranchGroup.ALLOW_DETACH);
+
+
+            spin.setCurrentSpinTransform(rotatorTransformGroup);
             spin.setRotationAlpha(rotor1Alpha);
             spin.setRotator(rotator);
         }
     }
 
-    private static Sphere makeSpinSphere(Appearance app, Spin spin) {
+    public static Sphere makeSpinSphere(Appearance app, Spin spin) {
         Sphere sphere;
         sphere = new Sphere(
                 ((float)spin.getShell())/2,     // sphere radius
@@ -123,7 +145,8 @@ public class ParticleGroup  extends Group {
                 16,         // 16 divisions radially
                 app);      // it's appearance
         sphere.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
-        sphere.setUserData(spin);
+        sphere.setCapability(Shape3D.ALLOW_BOUNDS_WRITE);
+        sphere.setUserData(app);
         return sphere;
     }
 

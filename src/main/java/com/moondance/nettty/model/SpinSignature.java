@@ -14,16 +14,17 @@ import static com.moondance.nettty.utils.VecUtils.normal;
 @Getter
 public enum SpinSignature {
 
-    Y_CW(normal(0,1,0), Math.PI/2,XY),
-    Y_CCW(normal(0,1,0), -Math.PI/2,XY),
-    Z_CW(normal(1,0,0),-Math.PI/2,ZY),
-    Z_CCW(normal(-1,0,0),Math.PI/2,ZY),
-    X_CW(normal(0,0,-1), Math.PI/2,XZ),
-    X_CCW(normal(0,0,1),-Math.PI/2,XZ);
+    Y_CW(normal(0,1,0), Math.PI/2,XY,"+Y"),
+    Y_CCW(normal(0,1,0), -Math.PI/2,XY,"-Y"),
+    Z_CW(normal(1,0,0),-Math.PI/2,ZY,"+Z"),
+    Z_CCW(normal(-1,0,0),Math.PI/2,ZY,"-Z"),
+    X_CW(normal(0,0,-1), Math.PI/2,XZ,"+X"),
+    X_CCW(normal(0,0,1),-Math.PI/2,XZ,"-X");
 
     Vector3d axis ;
     Plane primaryPlane ;
     double angle ;
+    String shortHand ;
     private static Map<String,SpinSignature> mapFromName = new HashMap<>();
     private static Map<SpinSignature,SpinSignature> compSpin = new HashMap<>();
 
@@ -39,12 +40,21 @@ public enum SpinSignature {
     }
 
 
-    SpinSignature(Vector3d axis, double angle, Plane primaryPlane) {
+    SpinSignature(Vector3d axis, double angle, Plane primaryPlane,String shortHand) {
         this.axis = axis;
         this.angle = angle;
         this.primaryPlane = primaryPlane ;
+        this.shortHand = shortHand;
     }
 
+    public static SpinSignature from(Plane plane, double angle){
+        for(SpinSignature spinSig: SpinSignature.values()){
+            if(spinSig.getPrimaryPlane() == plane && Math.signum(spinSig.angle) == Math.signum(angle)){
+                return spinSig ;
+            }
+        }
+        throw new RuntimeException("Ooops:");
+    }
     public SpinSignature getCompSpin(){
         return compSpin.get(this);
     }

@@ -1,16 +1,17 @@
 package com.moondance.nettty.model;
 
+import com.moondance.nettty.graphics.Images;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.ToString;
-import org.jogamp.java3d.Alpha;
-import org.jogamp.java3d.RotationInterpolator;
-import org.jogamp.java3d.Transform3D;
-import org.jogamp.java3d.TransformGroup;
+import org.jogamp.java3d.*;
+import org.jogamp.java3d.utils.geometry.Sphere;
 import org.jogamp.vecmath.AxisAngle4d;
 import org.jogamp.vecmath.Vector3d;
 
+import static com.moondance.nettty.graphics.Appearences.makeSpinningTexture;
+import static com.moondance.nettty.graphics.ParticleGroup.makeSpinSphere;
 import static com.moondance.nettty.model.SpinSignature.Y_CW;
 import static com.moondance.nettty.utils.DB.GOD_PULSE_DB;
 import static com.moondance.nettty.utils.DB.GOD_PULSE_TRACE_DB;
@@ -36,6 +37,8 @@ public class Spin implements Comparable, Cloneable {
     Alpha rotationAlpha ;
     RotationInterpolator rotator ;
     TransformGroup fixedXForm;
+    BranchGroup spinSphereHolderGroup;
+    BranchGroup spinSphereGroup;
     public Spin(int shell,Vector3d rotationAxis) {
         id = "S-" + nextId++;
         this.shell = shell ;
@@ -51,6 +54,9 @@ public class Spin implements Comparable, Cloneable {
         rotationAngle = spinSignature.getAngle() ;
     }
 
+    public String shortHand(){
+        return spinSignature.shortHand + shell ;
+    }
     @SneakyThrows
     public Spin clone() {
         Spin clone =  (Spin) super.clone();
@@ -90,6 +96,9 @@ public class Spin implements Comparable, Cloneable {
             return Math.toRadians(Double.parseDouble(string.substring(1))) ;
         }
     }
+    public void incShell(int shell) {
+        this.shell += shell ;
+    }
 
     public void updateTransform() {
         out(GOD_PULSE_TRACE_DB,"Spin updateTransform spinSignature:" + spinSignature);
@@ -110,24 +119,7 @@ public class Spin implements Comparable, Cloneable {
 
     public void GodPulse(boolean sentinel) {
         if(sentinel){
-            out(GOD_PULSE_TRACE_DB,"Spin GodPulse spinSignature:" + spinSignature);
-            out(GOD_PULSE_TRACE_DB,"Spin GodPulse rotationAxis:" + rotationAxis);
-            out(GOD_PULSE_TRACE_DB,"Spin GodPulse rotationAngle:" + rotationAngle);
-            spinSignature = spinSignature.getCompSpin();
-            rotationAxis = spinSignature.getAxis() ;
-            rotationAngle = spinSignature.getAngle() ;
-            float min = 0.0f ;
-            float max = (float) (Math.PI * 2.0f);
-            if(rotationAngle < 0){
-                min = (float) (Math.PI * 2.0f) ;
-                max =  0.0f  ;
-            }
-            rotationAxis.normalize();
-            rotator.setMaximumAngle(max);
-            rotator.setMinimumAngle(min);
-            out(GOD_PULSE_DB,"Spin GodPulse new spinSignature:" + spinSignature);
-            out(GOD_PULSE_DB,"Spin GodPulse new rotationAxis:" + rotationAxis);
-            out(GOD_PULSE_DB,"Spin GodPulse new rotationAngle:" + rotationAngle);
+            handleSentinel();
         } else {
             double speedFactor = 1 / (shell * 0.2);
             double delta = speedFactor * (100 - 400 * Math.random());
@@ -159,7 +151,40 @@ public class Spin implements Comparable, Cloneable {
                 }
             }
         }
+        Appearance app = (particle.isSentinel()) ?
+                makeSpinningTexture(Images.getSpinTextureRock()):
+                makeSpinningTexture(Images.getSpinTextureEarth());
+//        spinSphereGroup.detach();
+        spinSphereHolderGroup.removeChild(spinSphereGroup);
+        spinSphereGroup = new BranchGroup() ;
+        spinSphereGroup.setCapability(BranchGroup.ALLOW_DETACH);
+        spinSphereGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+        Sphere spinSphere = makeSpinSphere(app,this);
+        spinSphereGroup.addChild(spinSphere);
+        spinSphereHolderGroup.addChild(spinSphereGroup);
 //        out("Spin GodPulse spinSpeed:" + spinSpeed);
 //        out("Spin GodPulse rotationAxis:" + rotationAxis);
     }
+
+    private void handleSentinel() {
+        out(GOD_PULSE_TRACE_DB,"Spin GodPulse spinSignature:" + spinSignature);
+        out(GOD_PULSE_TRACE_DB,"Spin GodPulse rotationAxis:" + rotationAxis);
+        out(GOD_PULSE_TRACE_DB,"Spin GodPulse rotationAngle:" + rotationAngle);
+        spinSignature = spinSignature.getCompSpin();
+        rotationAxis = spinSignature.getAxis() ;
+        rotationAngle = spinSignature.getAngle() ;
+        float min = 0.0f ;
+        float max = (float) (Math.PI * 2.0f);
+        if(rotationAngle < 0){
+            min = (float) (Math.PI * 2.0f) ;
+            max =  0.0f  ;
+        }
+        rotationAxis.normalize();
+        rotator.setMaximumAngle(max);
+        rotator.setMinimumAngle(min);
+        out(GOD_PULSE_DB,"Spin GodPulse new spinSignature:" + spinSignature);
+        out(GOD_PULSE_TRACE_DB,"Spin GodPulse new rotationAxis:" + rotationAxis);
+        out(GOD_PULSE_TRACE_DB,"Spin GodPulse new rotationAngle:" + rotationAngle);
+    }
+
 }

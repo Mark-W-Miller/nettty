@@ -53,26 +53,41 @@ import static com.moondance.nettty.graphics.Appearences.makeSpinningTexture;
 import static com.moondance.nettty.utils.VecUtils.ORIGIN;
 
 public class NettGroup
-        extends Group {
+        extends BranchGroup {
     Nett nett ;
     public NettGroup(Nett nett) {
         this.nett = nett ;
+        nett.setNettGroup(this);
         TransformGroup trans ;
         Vector3d vec = new Vector3d();
         vec.set(ORIGIN);
         Transform3D t3d = new Transform3D();
         t3d.setTranslation(vec);
+        setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
+        setCapability(BranchGroup.ALLOW_DETACH );
+        setCapability( BranchGroup.ALLOW_CHILDREN_WRITE);
         Appearance shaderApp = makeSpinningTexture(Images.getSpinTextureEarth());
         for (Particle particle: nett.getParticles()) {
             particle.setNett(nett);
+            BranchGroup removeHolder = new BranchGroup();
+            removeHolder.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
+            removeHolder.setCapability(BranchGroup.ALLOW_DETACH);
+            addChild(removeHolder);
             trans = new TransformGroup(t3d);
+            removeHolder.addChild(trans);
             particle.setCurrentParticleTransform(trans);
-            addChild(trans);
 
             ParticleGroup particleGroup = new ParticleGroup(particle,shaderApp);
+            particle.setNettGroup(this);
+            particle.setRemoveHolder(removeHolder);
             particleGroup.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
+            trans.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
             trans.addChild(particleGroup);
         }
+    }
+
+    public void removeParticleModels(Particle particle){
+        particle.getNettGroup().removeChild(particle.getRemoveHolder());
     }
 
 }

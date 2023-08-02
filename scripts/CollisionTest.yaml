@@ -1,0 +1,9 @@
+particles:
+  - idRef: Y_CW(0 0 0)
+  - idRef: Y_CW(0 0 0)
+#  - idRef: Y_CW(0 0 0)
+#  - idRef: Y_CW(0 0 0)
+#  - idRef: X_CW(1 0 0)
+#  - idRef: X_CCW(1 0 0)
+#  - idRef: Z_CW(0 1 0)
+#  - idRef: Z_CCW(0 1 0)

@@ -1,10 +1,12 @@
 package com.moondance.nettty.utils.octree;
 
+import com.sun.javafx.binding.StringFormatter;
 import javafx.geometry.Point3D;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.jogamp.vecmath.Point3d;
+import org.jogamp.vecmath.Tuple3d;
 
 import static com.moondance.nettty.graphics.GraphicsUtils.p3dToP3D;
 import static com.moondance.nettty.graphics.GraphicsUtils.tup3dStr;
@@ -12,7 +14,7 @@ import static com.moondance.nettty.graphics.GraphicsUtils.tup3dStr;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class OctAddress implements Comparable<OctAddress>{
+public class OctAddress implements Comparable<OctAddress>, OctMember{
     public Point3d address ;
     public double radius ;
 
@@ -21,8 +23,8 @@ public class OctAddress implements Comparable<OctAddress>{
         this.radius = 1d ;
 
     }
-    public OctAddress(Point3d address){
-        this.address = (Point3d) address.clone();
+    public OctAddress(Tuple3d address){
+        this.address = new Point3d(address.x, address.y ,address.z);
         this.radius = 1d ;
 
     }
@@ -34,8 +36,8 @@ public class OctAddress implements Comparable<OctAddress>{
         this.address = new Point3d(i,j,k);
         this.radius = radius ;
     }
-    public OctAddress(Point3d point, double radius){
-        this.address = point;
+    public OctAddress(Tuple3d point, double radius){
+        this.address = new Point3d((int) point.x, (int) point.y, (int) point.z);
         this.radius = radius ;
     }
 
@@ -69,5 +71,8 @@ public class OctAddress implements Comparable<OctAddress>{
     @Override
     public String toString() {
         return "OctAddress:" + tup3dStr(address) ;
+    }
+    public String shortHand(){
+        return String.format("%2d%2d%2d",Math.round(address.x),Math.round(address.y),Math.round(address.z));
     }
 }
