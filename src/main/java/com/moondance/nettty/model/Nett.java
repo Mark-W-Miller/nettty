@@ -3,7 +3,6 @@ package com.moondance.nettty.model;
 import com.moondance.nettty.graphics.NettGroup;
 import com.moondance.nettty.model.rulesof3.ParticleOnlyRuleSentinel;
 import com.moondance.nettty.model.rulesof3.RuleOfThree;
-import com.moondance.nettty.model.rulesof3.WriteStateRule;
 import com.moondance.nettty.utils.octree.OctAddress;
 import com.moondance.nettty.utils.octree.Octree;
 import com.moondance.nettty.utils.octree.ThreeBox;
@@ -17,7 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.moondance.nettty.utils.DB.GOD_PULSE_DB;
+import static com.moondance.nettty.utils.DB.DB_GOD_PULSE;
+import static com.moondance.nettty.utils.DB.DB_GOD_PULSE_TRACE;
 import static com.moondance.nettty.utils.Handy.formatList;
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.parsePoint3d;
@@ -92,15 +92,12 @@ public class Nett {
         for(RuleOfThree rule: ruleOfThrees){
             rule.apply(this,threeBox);
         }
-        out(GOD_PULSE_DB,"Nett processThreeBox Before Kill particles:\n" + formatList(particles));
-        particles.stream().filter(part->!part.isKill()).forEach(part->{
-
-        });
+        out(DB_GOD_PULSE_TRACE,"Nett processThreeBox Before Kill particles:\n" + formatList(particles));
         List<Particle> dead = particles.stream().filter(part->part.isKill()).collect(Collectors.toList());
         dead.stream().forEach(part->{
             nettGroup.removeParticleModels(part);
         });
         particles = particles.stream().filter(part->!part.isKill()).collect(Collectors.toList());
-        out(GOD_PULSE_DB,"Nett processThreeBox After Kill particles:\n" + formatList(particles));
+        out(DB_GOD_PULSE_TRACE,"Nett processThreeBox After Kill particles:\n" + formatList(particles));
     }
 }

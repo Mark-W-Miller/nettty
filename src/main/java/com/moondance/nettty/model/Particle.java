@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.moondance.nettty.utils.DB.GOD_PULSE_DB;
+import static com.moondance.nettty.utils.DB.DB_GOD_PULSE;
+import static com.moondance.nettty.utils.DB.DB_RULE_TRACE;
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.*;
 
@@ -113,13 +114,18 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
     public void bounce(int energy){
         Vector3d change = SubNode.randomDirection();
         change.scale(energy);
-        setMotionVector(change);
+        if(motionVector == null) {
+            setMotionVector(change);
+        } else {
+            motionVector.add(change);
+        }
+        out(DB_RULE_TRACE,"Particle bounce id:" + id + " by:" + motionVector);
     }
 
     public void GodPulse(int i) {
         if (isSentinel()) {
-            spins.stream().forEach(spin -> spin.GodPulse(isSentinel()));
             nett.processThreeBox(this);
+            spins.stream().forEach(spin -> spin.GodPulse(isSentinel()));
             if (motionVector != null) {
                 position.add(motionVector);
                 motionVector = null;
@@ -133,7 +139,7 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
                 if (wiggleWhenWalking) {
                     randomize(position, 0.5d);
                 }
-                out(GOD_PULSE_DB, "Particle GodPulse position:" + position);
+                out(DB_GOD_PULSE, "Particle GodPulse position:" + position);
             } else {
                 position.x += 0.5 - Math.random();
                 position.y += 0.5 - Math.random();

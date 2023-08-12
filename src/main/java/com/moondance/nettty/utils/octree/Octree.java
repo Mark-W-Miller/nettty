@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.moondance.nettty.utils.DB.OCTREE_DUMP_DB;
-import static com.moondance.nettty.utils.DB.OCTWALK_DB;
+import static com.moondance.nettty.utils.DB.DB_OCTREE_DUMP;
+import static com.moondance.nettty.utils.DB.DB_OCTWALK;
 import static com.moondance.nettty.utils.Handy.*;
 
 @Getter
@@ -45,20 +45,20 @@ public class Octree<T> {
 
             @Override
             public void visitLeaf(OctNode<T> node, int level) {
-                out(OCTWALK_DB, tabs(level) + ANSI_RED + "LEAF level:" + level + " " + node);
+                out(DB_OCTWALK, tabs(level) + ANSI_RED + "LEAF level:" + level + " " + node);
                 if (node.makeBoundingBox().contains(octAddress.addressP3D())) {
                     result.addAll(node.getData().stream().map(ad -> ad.getData()).collect(Collectors.toList()));
-                    out(OCTWALK_DB, tabs(level) + ANSI_RED + "FOND level:" + level + " " + node);
+                    out(DB_OCTWALK, tabs(level) + ANSI_RED + "FOND level:" + level + " " + node);
                     stop("FOUND at:" + node.getCenter() + "\n" + result);
                 } else {
-                    out(OCTWALK_DB, tabs(level) + ANSI_RED + "NOT FOUND level:" + level + " " + node);
+                    out(DB_OCTWALK, tabs(level) + ANSI_RED + "NOT FOUND level:" + level + " " + node);
                 }
             }
 
             @Override
             public boolean visitBranch(OctNode<T> node, int level) {
                 boolean skipNode = node.makeBoundingBox().contains(octAddress.addressP3D());
-                out(OCTWALK_DB, tabs(level) + "BRCH skipNode:" + skipNode + " " + node);
+                out(DB_OCTWALK, tabs(level) + "BRCH skipNode:" + skipNode + " " + node);
                 return skipNode;
             }
         };
@@ -115,12 +115,12 @@ public class Octree<T> {
             @Override
             public void visitLeaf(OctNode<T> node, int level) {
                 boolean crowded = node.data.size() > 2;
-                out(OCTREE_DUMP_DB, tabs(level) + ((crowded) ? ANSI_GREEN : ANSI_RED) + "LEAF:" + node);
+                out(DB_OCTREE_DUMP, tabs(level) + ((crowded) ? ANSI_GREEN : ANSI_RED) + "LEAF:" + node);
             }
 
             @Override
             public boolean visitBranch(OctNode<T> node, int level) {
-                out(OCTREE_DUMP_DB, tabs(level) + "BRCH:" + node);
+                out(DB_OCTREE_DUMP, tabs(level) + "BRCH:" + node);
                 return true;
             }
         };

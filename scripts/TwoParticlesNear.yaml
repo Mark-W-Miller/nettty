@@ -48,6 +48,7 @@ particles:
   - id: 2
     motionVectorStr: "-1 0 0"
     positionStr: "10 0 0"
+    numCopiesInitial: 40
     wiggleWhenWalking: true
     spins:
       - id: 0

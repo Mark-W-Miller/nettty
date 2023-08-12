@@ -53,6 +53,9 @@ import org.jogamp.vecmath.*;
 
 import static com.moondance.nettty.graphics.Appearences.*;
 import static com.moondance.nettty.graphics.GraphicsUtils.makeAxisAt;
+import static com.moondance.nettty.utils.DB.DB_RULE;
+import static com.moondance.nettty.utils.DB.DB_RULE_TRACE;
+import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.makeRotationGroup;
 import static com.moondance.nettty.utils.VecUtils.makeTranslationGroup;
 
@@ -138,6 +141,7 @@ public class ParticleGroup  extends BranchGroup {
     }
 
     public static Sphere makeSpinSphere(Appearance app, Spin spin) {
+        out(DB_RULE_TRACE,"makeSpinSphere:" + spin);
         Sphere sphere;
         sphere = new Sphere(
                 ((float)spin.getShell())/2,     // sphere radius

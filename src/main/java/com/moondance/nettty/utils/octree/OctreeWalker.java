@@ -2,7 +2,7 @@ package com.moondance.nettty.utils.octree;
 
 import lombok.SneakyThrows;
 
-import static com.moondance.nettty.utils.DB.OCTWALK_DB;
+import static com.moondance.nettty.utils.DB.DB_OCTWALK;
 import static com.moondance.nettty.utils.Handy.out;
 
 abstract public class OctreeWalker<T> {
@@ -12,7 +12,7 @@ abstract public class OctreeWalker<T> {
         try {
             walk(startNode, 0);
         } catch(OctreeException ex){
-            out(OCTWALK_DB,ex.getMessage());
+            out(DB_OCTWALK,ex.getMessage());
         }
     }
 

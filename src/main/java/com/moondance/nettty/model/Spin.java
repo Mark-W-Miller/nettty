@@ -13,8 +13,8 @@ import org.jogamp.vecmath.Vector3d;
 import static com.moondance.nettty.graphics.Appearences.makeSpinningTexture;
 import static com.moondance.nettty.graphics.ParticleGroup.makeSpinSphere;
 import static com.moondance.nettty.model.SpinSignature.Y_CW;
-import static com.moondance.nettty.utils.DB.GOD_PULSE_DB;
-import static com.moondance.nettty.utils.DB.GOD_PULSE_TRACE_DB;
+import static com.moondance.nettty.utils.DB.DB_GOD_PULSE;
+import static com.moondance.nettty.utils.DB.DB_GOD_PULSE_TRACE;
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.*;
 
@@ -101,9 +101,9 @@ public class Spin implements Comparable, Cloneable {
     }
 
     public void updateTransform() {
-        out(GOD_PULSE_TRACE_DB,"Spin updateTransform spinSignature:" + spinSignature);
-        out(GOD_PULSE_TRACE_DB,"Spin updateTransform rotationAxis:" + rotationAxis);
-        out(GOD_PULSE_TRACE_DB,"Spin updateTransform rotationAngle:" + rotationAngle);
+        out(DB_GOD_PULSE_TRACE,"Spin updateTransform spinSignature:" + spinSignature);
+        out(DB_GOD_PULSE_TRACE,"Spin updateTransform rotationAxis:" + rotationAxis);
+        out(DB_GOD_PULSE_TRACE,"Spin updateTransform rotationAngle:" + rotationAngle);
         //ROTATION
         Transform3D yAxis = new Transform3D();
         AxisAngle4d aa = new AxisAngle4d(rotationAxis,rotationAngle);
@@ -136,7 +136,7 @@ public class Spin implements Comparable, Cloneable {
                 deltaV.mul(rot);
                 rot.rotZ(rotationDeltaVector.getZ());
                 deltaV.mul(rot);
-                out(GOD_PULSE_DB,"Spin GodPulse deltaV:\n" + deltaV);
+                out(DB_GOD_PULSE,"Spin GodPulse deltaV:\n" + deltaV);
                 deltaV.transform(rotationAxis);
                 //            out("Spin GodPulse after nudge rotationAxis:" + rotationAxis);
                 rotationAxis.normalize();
@@ -145,7 +145,7 @@ public class Spin implements Comparable, Cloneable {
                     rotationAngle += Math.PI/2 ;
                     randomize(rotationAxis, 0.5);
                     rotationAxis.normalize();
-                    out(GOD_PULSE_DB,id + ":Spin GodPulse random nudge rotationAxis:" + rotationAxis);
+                    out(DB_GOD_PULSE,id + ":Spin GodPulse random nudge rotationAxis:" + rotationAxis);
                 } else {
                     out(id + ":Spin GodPulse NO nudge rotationAxis:" + rotationAxis);
                 }
@@ -167,10 +167,10 @@ public class Spin implements Comparable, Cloneable {
     }
 
     private void handleSentinel() {
-        out(GOD_PULSE_TRACE_DB,"Spin GodPulse spinSignature:" + spinSignature);
-        out(GOD_PULSE_TRACE_DB,"Spin GodPulse rotationAxis:" + rotationAxis);
-        out(GOD_PULSE_TRACE_DB,"Spin GodPulse rotationAngle:" + rotationAngle);
-        spinSignature = spinSignature.getCompSpin();
+        out(DB_GOD_PULSE_TRACE,"Spin GodPulse spinSignature:" + spinSignature);
+        out(DB_GOD_PULSE_TRACE,"Spin GodPulse rotationAxis:" + rotationAxis);
+        out(DB_GOD_PULSE_TRACE,"Spin GodPulse rotationAngle:" + rotationAngle);
+//        spinSignature = spinSignature.getCompSpin();
         rotationAxis = spinSignature.getAxis() ;
         rotationAngle = spinSignature.getAngle() ;
         float min = 0.0f ;
@@ -182,9 +182,9 @@ public class Spin implements Comparable, Cloneable {
         rotationAxis.normalize();
         rotator.setMaximumAngle(max);
         rotator.setMinimumAngle(min);
-        out(GOD_PULSE_DB,"Spin GodPulse new spinSignature:" + spinSignature);
-        out(GOD_PULSE_TRACE_DB,"Spin GodPulse new rotationAxis:" + rotationAxis);
-        out(GOD_PULSE_TRACE_DB,"Spin GodPulse new rotationAngle:" + rotationAngle);
+        out(DB_GOD_PULSE_TRACE,"Spin GodPulse new spinSignature:" + spinSignature);
+        out(DB_GOD_PULSE_TRACE,"Spin GodPulse new rotationAxis:" + rotationAxis);
+        out(DB_GOD_PULSE_TRACE,"Spin GodPulse new rotationAngle:" + rotationAngle);
     }
 
 }

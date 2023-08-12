@@ -73,8 +73,8 @@ import java.util.List;
 import static com.moondance.nettty.scripts.Script.loadNett;
 import static com.moondance.nettty.graphics.GraphicsUtils.*;
 import static com.moondance.nettty.model.Nett.Nettty;
-import static com.moondance.nettty.utils.DB.NETTYAPP_FLOW_DB;
-import static com.moondance.nettty.utils.DB.NETTYAPP_ORBIT_DB;
+import static com.moondance.nettty.utils.DB.DB_NETTYAPP_FLOW;
+import static com.moondance.nettty.utils.DB.DB_NETTYAPP_ORBIT;
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.cast;
 import static com.moondance.nettty.utils.octree.Octree.dumpTree;
@@ -175,9 +175,9 @@ public class NetttyApp extends JFrame
         t3D.get(v3d);
 
         orbit.getViewingPlatform().getViewPlatformTransform().getTransform(t3D);
-        out(NETTYAPP_ORBIT_DB,prefix + " center:" + tup3dStr(center));
-        out(NETTYAPP_ORBIT_DB,prefix + " VP t3D:" + tup3dStr(v3d));
-        out(NETTYAPP_ORBIT_DB,prefix + " VP t3D:\n" + t3D);
+        out(DB_NETTYAPP_ORBIT,prefix + " center:" + tup3dStr(center));
+        out(DB_NETTYAPP_ORBIT,prefix + " VP t3D:" + tup3dStr(v3d));
+        out(DB_NETTYAPP_ORBIT,prefix + " VP t3D:\n" + t3D);
 
     }
 
@@ -231,7 +231,7 @@ public class NetttyApp extends JFrame
             mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctree));
             Transform3D t3D = new Transform3D();
             mainTransform.getTransform(t3D);
-            out(NETTYAPP_FLOW_DB, "NettyApp rebuildParticleOctTree mainTransform:\n" + t3D);
+            out(DB_NETTYAPP_FLOW, "NettyApp rebuildParticleOctTree mainTransform:\n" + t3D);
         }
     }
 

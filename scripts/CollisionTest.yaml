@@ -1,9 +1,34 @@
 particles:
+  - idRef: Z_CCW(0 0 0)
+    numCopiesInitial: 12
   - idRef: Y_CW(0 0 0)
+  - idRef: Z_CW(0 0 0)
+  - idRef: X_CCW(0 0 0)
+  - idRef: X_CW(1 0 0)
+  - idRef: X_CCW(1 0 0)
+  - idRef: Z_CW(0 1 0)
+  - idRef: Z_CCW(0 1 0)
   - idRef: Y_CW(0 0 0)
-#  - idRef: Y_CW(0 0 0)
-#  - idRef: Y_CW(0 0 0)
-#  - idRef: X_CW(1 0 0)
-#  - idRef: X_CCW(1 0 0)
-#  - idRef: Z_CW(0 1 0)
-#  - idRef: Z_CCW(0 1 0)
+    numCopiesInitial: 12
+#  - idRef: Z_CW(0 0 0)
+#    numCopiesInitial: 211
+#  - idRef: Y_CCW(0 0 0)
+#    numCopiesInitial: 23
+#  - idRef: Z_CW(0 0 0)
+#    numCopiesInitial: 24
+#  - idRef: Z_CCW(1 1 1)
+#    numCopiesInitial: 26
+#  - idRef: X_CW(1 1 0)
+#    numCopiesInitial: 27
+  - id: 0
+    positionStr: "10 10 10"
+    spins:
+      - id: 0
+        shell: 1
+        spinSignatureStr: Y_CW
+  - id: 0
+    positionStr: "20 20 20"
+    spins:
+      - id: 0
+        shell: 1
+        spinSignatureStr: Y_CCW
