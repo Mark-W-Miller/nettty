@@ -9,7 +9,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.moondance.nettty.utils.Handy.out;
 
@@ -21,6 +25,15 @@ public class Script {
             scriptsDirectory = Files.createDirectories(Paths.get("./scripts"));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    public static List<String> listScriptFiles() throws IOException {
+        try (Stream<Path> stream = Files.list(scriptsDirectory.toAbsolutePath())) {
+            return stream
+                    .filter(file -> !Files.isDirectory(file))
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .collect(Collectors.toList());
         }
     }
 

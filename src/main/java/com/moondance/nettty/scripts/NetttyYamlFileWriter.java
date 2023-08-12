@@ -15,7 +15,6 @@ public class NetttyYamlFileWriter {
     static public void writeNetttyFile(String name, StringBuilder stringBuilder) throws IOException {
         final Path scriptDir = Files.createDirectories(Paths.get(NETTY_SCRIPT_DIR));
         Files.write(scriptDir.resolve(name + ".yaml"), stringBuilder.toString().getBytes());
-
     }
 
     public static List<String> getFile(String fileName) {

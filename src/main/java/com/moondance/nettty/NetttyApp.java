@@ -48,6 +48,7 @@ import com.moondance.nettty.graphics.Images;
 import com.moondance.nettty.graphics.NettGroup;
 import com.moondance.nettty.model.Nett;
 import com.moondance.nettty.model.Particle;
+import com.moondance.nettty.scripts.Script;
 import com.moondance.nettty.utils.octree.AddressedData;
 import com.moondance.nettty.utils.octree.Octree;
 import lombok.SneakyThrows;
@@ -73,8 +74,8 @@ import java.util.List;
 import static com.moondance.nettty.scripts.Script.loadNett;
 import static com.moondance.nettty.graphics.GraphicsUtils.*;
 import static com.moondance.nettty.model.Nett.Nettty;
-import static com.moondance.nettty.utils.DB.DB_NETTYAPP_FLOW;
-import static com.moondance.nettty.utils.DB.DB_NETTYAPP_ORBIT;
+import static com.moondance.nettty.utils.DB.*;
+import static com.moondance.nettty.utils.Handy.formatList;
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.cast;
 import static com.moondance.nettty.utils.octree.Octree.dumpTree;
@@ -95,9 +96,7 @@ public class NetttyApp extends JFrame
     JButton goHome;
     JTextField numberOfPulsesPerFrame;
     JTextField numberOfFrames;
-    JComboBox appMaterialColor;
-    JComboBox altAppScoping;
-    JComboBox override;
+    JComboBox scriptFile;
     private NettGroup content = null;
     private Group octTreeGroup = null;
     BoundingSphere worldBounds;
@@ -110,6 +109,7 @@ public class NetttyApp extends JFrame
     static String CURRENT_SCRIPT = "TwoParticlesNear.yaml";
     static String CURRENT_REFERENCE = "SentinelDefinitions.yaml";
 
+    List<String> scriptFiles = new ArrayList<>();
     private SimpleUniverse universe;
 
     public NetttyApp() {
@@ -122,10 +122,11 @@ public class NetttyApp extends JFrame
     }
 
     public void init() throws IOException {
-        this.setSize(new Dimension(1500, 700));
+        this.setSize(new Dimension(1800, 900));
         System.setProperty("sun.awt.noerasebackground", "true");
         Container contentPane = getContentPane();
-
+        scriptFiles = Script.listScriptFiles() ;
+        out(DB_SCRIPTS,"Scripts:" + formatList(scriptFiles));
         Canvas3D canvas3D = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
         contentPane.add("Center", canvas3D);
 
@@ -350,7 +351,7 @@ public class NetttyApp extends JFrame
         toggleOctTree = new JButton("Toggle OT");
         toggleOctTree.addActionListener(this);
         numberOfPulsesPerFrame = new JTextField("1", 4);
-        numberOfFrames = new JTextField("1", 4);
+        numberOfFrames = new JTextField("1000", 4);
         setHome = new JButton("Set Home");
         setHome.addActionListener(this);
         goHome = new JButton("GoHome");
@@ -375,6 +376,13 @@ public class NetttyApp extends JFrame
 
         reloadScript = new JButton("Reload Script:" + CURRENT_SCRIPT);
         reloadScript.addActionListener(this);
+
+        scriptFile = new JComboBox(scriptFiles.toArray());
+        scriptFile.addActionListener(this);
+        scriptFile.setSelectedIndex(2);
+
+//        panel.add(new JLabel("Script"));
+        panel.add(scriptFile);
         panel.add(reloadScript);
         return panel;
     }
@@ -394,6 +402,14 @@ public class NetttyApp extends JFrame
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
+        } else if (target == scriptFile) {
+            keepRunning = false;
+            CURRENT_SCRIPT = scriptFiles.get(scriptFile.getSelectedIndex());
+            out(DB_SCRIPTS, "New Script File:" + CURRENT_SCRIPT);
+            reloadScript.setText("Reload Script:" + CURRENT_SCRIPT);
+            reloadScript();
+            homeTransformation = new Transform3D();
+            orbit.getViewingPlatform().getViewPlatformTransform().getTransform(homeTransformation);
         } else if (target == GodPulse) {
             dumpOrbit("Orbit Before God Pulse");
             int numFrames = getIntFromTextField(numberOfFrames);

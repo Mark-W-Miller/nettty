@@ -12,6 +12,9 @@ public class DB {
     public static boolean DB_WRITE_RULE_TRACE = false;
     public static boolean DB_RULE = false;
     public static boolean DB_RULE_TRACE = false;
+    public static boolean DB_SCRIPTS = true;
+
+
 
 
 }
