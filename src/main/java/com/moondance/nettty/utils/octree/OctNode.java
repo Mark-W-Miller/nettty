@@ -16,7 +16,7 @@ import static com.moondance.nettty.utils.Handy.out;
 
 @Getter
 @Setter
-public class OctNode<T> {
+public class OctNode<T extends OctMember> {
 
     OctAddress center;
     Octree<T> tree;

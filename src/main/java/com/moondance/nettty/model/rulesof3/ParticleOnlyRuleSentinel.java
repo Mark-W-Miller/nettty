@@ -6,6 +6,7 @@ import com.moondance.nettty.model.Plane;
 import com.moondance.nettty.model.SpinSignature;
 import com.moondance.nettty.utils.MapOfLists;
 import com.moondance.nettty.utils.octree.ThreeBox;
+import org.jogamp.vecmath.Vector3d;
 
 import java.util.List;
 import java.util.Map;
@@ -23,20 +24,15 @@ public class ParticleOnlyRuleSentinel extends Rule3 implements RuleOfThree {
             super.apply(nett,threeBox);
             out(DB_RULE,"Particle Pileup:" + threeBox.getAddressOfCenter());
             out(DB_RULE,"         Data:\n"+ formatList(threeBox.getDataCenter()));
-            Particle p0 = data.get(0);
-//            for(int ix = 1 ; ix < data.size() ; ix++){
-//                Particle pN = data.get(ix);
-//                collide(p0,pN);
-//            }
             MapOfLists<Plane,Particle> planeMap = makeInfluenceMap(data);
-            out(DB_RULE_TRACE,"Plane Map:" + planeMap.toString());
+            out(DB_RULE_TRACE,"Plane Map:" + planeMap);
             collideThePlanes(planeMap);
         }
     }
 
     /**
      * Oh, what a method name! Right up (down) there with GodPulse.
-     * Who doesn't want
+     * Who doesn't want to write that?!
      * @param planeMap
      */
     private void collideThePlanes(MapOfLists<Plane,Particle> planeMap){
@@ -50,18 +46,35 @@ public class ParticleOnlyRuleSentinel extends Rule3 implements RuleOfThree {
         value.stream().forEach(part->spins.putOne(part.getFirstSpinSignature(),part));
         out(DB_RULE_TRACE,"collideBagOfCats Spins Map:" + spins);
         spins.values().stream().forEach(list->{
-            compressSympathetic(list);
+            if(list.size() > 1) {
+                compressSympathetic(list);
+            }
         });
     }
 
+    /**
+     * Two Same become 1
+     *      Jump perpendicular to the plane
+     *      Create a new counter spin particle in new location
+     * @param sympatheticParticles
+     */
+
     private void compressSympathetic(List<Particle> sympatheticParticles) {
-        int totalEnergy = sympatheticParticles.stream().mapToInt(part->part.getFirstSpin().getShell()).sum();
-        //The first particle becomes all of them
-        //and sympathy happens first, antipathy happens second
-        Particle collector = sympatheticParticles.get(0);
-        //combine into one super particle and kill the rest
-        collector.getFirstSpin().setShell(totalEnergy);
-        sympatheticParticles.subList(1,sympatheticParticles.size()).forEach(particle -> particle.setKill(true));
+        int numNew = sympatheticParticles.size();
+        boolean odd = sympatheticParticles.size() % 2 == 1 ;
+        if(odd)
+            numNew--;
+        for(int ix = 0; ix < numNew; ix+=2){
+            Particle a = sympatheticParticles.get(ix);
+            Particle b = sympatheticParticles.get(ix+1);
+            b.setKill(true);
+            out(DB_RULE_TRACE,"compressSympathetic kill:" + b);
+            int shell = a.getFirstSpin().combineShells(b.getFirstSpin().getShell());
+            Vector3d crossVec = (Vector3d) a.getFirstSpinSignature().getNaturalMotion().clone();
+            crossVec.scale(shell);
+            a.setMotionVector(crossVec);
+            out(DB_RULE_TRACE,"compressSympathetic merge to:" + a);
+        }
     }
 
     private MapOfLists<Plane,Particle> makeInfluenceMap(List<Particle> particles){

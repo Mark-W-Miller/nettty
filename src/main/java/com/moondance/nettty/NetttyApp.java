@@ -1,45 +1,6 @@
 /*
  * $RCSfile$
  *
- * Copyright (c) 2007 Sun Microsystems, Inc. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * - Redistribution of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer.
- *
- * - Redistribution in binary form must reproduce the above copyright
- *   notice, this list of conditions and the following disclaimer in
- *   the documentation and/or other materials provided with the
- *   distribution.
- *
- * Neither the name of Sun Microsystems, Inc. or the names of
- * contributors may be used to endorse or promote products derived
- * from this software without specific prior written permission.
- *
- * This software is provided "AS IS," without a warranty of any
- * kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
- * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY
- * EXCLUDED. SUN MICROSYSTEMS, INC. ("SUN") AND ITS LICENSORS SHALL
- * NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF
- * USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS
- * DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE LIABLE FOR
- * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
- * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
- * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
- * INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGES.
- *
- * You acknowledge that this software is not designed, licensed or
- * intended for use in the design, construction, operation or
- * maintenance of any nuclear facility.
- *
- * $Revision$
- * $Date$
- * $State$
  */
 
 package com.moondance.nettty;
@@ -96,16 +57,10 @@ public class NetttyApp extends JFrame
     JButton goHome;
     JTextField numberOfPulsesPerFrame;
     JTextField numberOfFrames;
-    JComboBox scriptFile;
-    private NettGroup content = null;
+    JComboBox<Object> scriptFile;
     private Group octTreeGroup = null;
     BoundingSphere worldBounds;
     // Globally used colors
-    Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
-    Color3f red = new Color3f(1.0f, 0.0f, 0.0f);
-    Color3f green = new Color3f(0.0f, 1.0f, 0.0f);
-    Color3f blue = new Color3f(0.0f, 0.0f, 1.0f);
-    Color3f[] colors = {white, red, green, blue};
     static String CURRENT_SCRIPT = "TwoParticlesNear.yaml";
     static String CURRENT_REFERENCE = "SentinelDefinitions.yaml";
 
@@ -214,13 +169,14 @@ public class NetttyApp extends JFrame
         mainTransform.setCapability(TransformGroup.ALLOW_CHILDREN_WRITE);
         mainTransform.setCapability(Group.ALLOW_CHILDREN_EXTEND);
         mainTransform.addChild(makeAxis());
-        mainTransform.addChild(content = new NettGroup(nett));
+        mainTransform.addChild(new NettGroup(nett));
         if(showOctree) {
             mainTransform.addChild(octTreeGroup = makeOctTreeGroup(particleOctree));
         }
         addLights(objRoot);
         objRoot.addChild(mainTransform);
         contentBranchGroup = objRoot;
+        setHomeTransformation();
         return objRoot;
     }
 
@@ -237,16 +193,18 @@ public class NetttyApp extends JFrame
     }
 
     Octree<Particle> makeParticleLadenOctTreeFromTemplate(Nett nettty) {
-        List<AddressedData> data = new ArrayList<>();
+        List<AddressedData<Particle>> data = new ArrayList<>();
 
         for (Particle particleTemplate : nettty.getParticles()) {
 
             if (particleTemplate.getNumCopiesInitial() > 1) {
 
                 int particlesRemaining = particleTemplate.getNumCopiesInitial();
-                while(particlesRemaining-- >= 0) {
+                while(particlesRemaining-- > 0) {
                     Particle particle = particleTemplate.clone();
-                    particle.setPosition(cast(particle.getPosition(), particle.getCast()));
+                    if(particle.getCast() > 0) {
+                        particle.setPosition(cast(particle.getPosition(), particle.getCast()));
+                    }
                     data.add(particle.makeAddressableData());
                 }
             } else {
@@ -257,9 +215,12 @@ public class NetttyApp extends JFrame
         }
         out(data);
         double finalMax = maxDimension(data);
+        if(finalMax < 1){
+            finalMax  = 1 ;
+        }
         out("Octree Size Initial:" + finalMax);
         Octree<Particle> octree = new Octree<>((int) finalMax * 2);
-        for (AddressedData addressedParticle : data) {
+        for (AddressedData<Particle> addressedParticle : data) {
             octree.add(addressedParticle);
         }
         octree.verifyTree();
@@ -270,13 +231,13 @@ public class NetttyApp extends JFrame
         double finalMax = maxDimension(nettty);
         out("Octree Size:" + finalMax);
         Octree<Particle> octree = new Octree<>((int) finalMax * 2);
-        List<AddressedData> data = new ArrayList<>();
+        List<AddressedData<Particle>> data = new ArrayList<>();
 
         for (Particle particle : nettty.getParticles()) {
             data.add(particle.makeAddressableData());
         }
 //        out(data);
-        for (AddressedData addressedParticle : data) {
+        for (AddressedData<Particle> addressedParticle : data) {
             octree.add(addressedParticle);
         }
         nettty.setOctree(octree);
@@ -290,19 +251,17 @@ public class NetttyApp extends JFrame
             max.y = Math.max(max.y, Math.abs(particle.getPosition().getY()));
             max.z = Math.max(max.z, Math.abs(particle.getPosition().getZ()));
         }
-        double finalMax = Math.max(max.x, Math.max(max.y, max.z)) * 1.1;
-        return finalMax;
+        return Math.max(Math.max(max.x, Math.max(max.y, max.z)) * 1.1,1);
     }
 
-    private static double maxDimension(List<AddressedData> data) {
+    private static <T> double maxDimension(List<AddressedData<T>> data) {
         Point3d max = new Point3d();
-        for (AddressedData ad : data) {
+        for (AddressedData<T> ad : data) {
             max.x = Math.max(max.x, Math.abs(ad.getOctAddress().getAddress().getX()));
             max.y = Math.max(max.y, Math.abs(ad.getOctAddress().getAddress().getY()));
             max.z = Math.max(max.z, Math.abs(ad.getOctAddress().getAddress().getZ()));
         }
-        double finalMax = Math.max(max.x, Math.max(max.y, max.z)) * 1.1;
-        return finalMax;
+        return Math.max(max.x, Math.max(max.y, max.z)) * 1.1;
     }
 
     private void reloadScript() throws IOException {
@@ -311,7 +270,7 @@ public class NetttyApp extends JFrame
 
     private void addLights(BranchGroup objRoot) {
         // Add lights
-        DirectionalLight light1 = null;
+        DirectionalLight light1;
         light1 = new DirectionalLight();
         light1.setEnable(true);
         light1.setColor(new Color3f(0.2f, 0.2f, 0.2f));
@@ -341,7 +300,6 @@ public class NetttyApp extends JFrame
         JPanel panel = new JPanel();
         panel.setBorder(new TitledBorder("Good Pulse"));
 
-        String[] colorVals = {"WHITE", "RED", "GREEN", "BLUE"};
         GodPulse = new JButton("God Pulse:");
         GodPulse.addActionListener(this);
         runNettty = new JButton("Run");
@@ -377,10 +335,14 @@ public class NetttyApp extends JFrame
         reloadScript = new JButton("Reload Script:" + CURRENT_SCRIPT);
         reloadScript.addActionListener(this);
 
-        scriptFile = new JComboBox(scriptFiles.toArray());
+        scriptFile = new JComboBox<>(scriptFiles.toArray());
+        scriptFile.setSelectedIndex(0);
         scriptFile.addActionListener(this);
-        scriptFile.setSelectedIndex(2);
-
+        int ix = scriptFiles.indexOf(CURRENT_SCRIPT) ;
+        if(ix != -1) {
+            scriptFile.setSelectedIndex(ix);
+            out(DB_SCRIPTS,"Selecting Script Initial:" + CURRENT_SCRIPT);
+        }
 //        panel.add(new JLabel("Script"));
         panel.add(scriptFile);
         panel.add(reloadScript);
@@ -397,8 +359,7 @@ public class NetttyApp extends JFrame
             try {
                 keepRunning = false;
                 reloadScript();
-                homeTransformation = new Transform3D();
-                orbit.getViewingPlatform().getViewPlatformTransform().getTransform(homeTransformation);
+                setHomeTransformation();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -408,8 +369,7 @@ public class NetttyApp extends JFrame
             out(DB_SCRIPTS, "New Script File:" + CURRENT_SCRIPT);
             reloadScript.setText("Reload Script:" + CURRENT_SCRIPT);
             reloadScript();
-            homeTransformation = new Transform3D();
-            orbit.getViewingPlatform().getViewPlatformTransform().getTransform(homeTransformation);
+            setHomeTransformation();
         } else if (target == GodPulse) {
             dumpOrbit("Orbit Before God Pulse");
             int numFrames = getIntFromTextField(numberOfFrames);
@@ -443,14 +403,18 @@ public class NetttyApp extends JFrame
         } else if (target == stopNettty) {
             keepRunning = false;
         } else if (target == setHome) {
-            homeTransformation = new Transform3D();
-            orbit.getViewingPlatform().getViewPlatformTransform().getTransform(homeTransformation);
+            setHomeTransformation();
         } else if (target == goHome) {
             if (homeTransformation != null) {
                 orbit.setHomeTransform(homeTransformation);
                 orbit.goHome();
             }
         }
+    }
+
+    private void setHomeTransformation() {
+        homeTransformation = new Transform3D();
+        orbit.getViewingPlatform().getViewPlatformTransform().getTransform(homeTransformation);
     }
 
     Transform3D homeTransformation;
@@ -470,12 +434,7 @@ public class NetttyApp extends JFrame
         }
         out("CURRENT_REFERENCE:" + CURRENT_REFERENCE);
         out("CURRENT_SCRIPT:" + CURRENT_SCRIPT);
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new NetttyApp();
-            }
-        });
+        javax.swing.SwingUtilities.invokeLater(NetttyApp::new);
     }
 
 }			   

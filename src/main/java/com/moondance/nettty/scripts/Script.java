@@ -45,8 +45,7 @@ public class Script {
 
         Nett nett1 = getNett(fileName);
         nett1.applyReference(reference);
-        if (nett1 != null) return nett1;
-        return null;
+        return nett1;
     }
 
     private static Nett getNett(String fileName) throws IOException {

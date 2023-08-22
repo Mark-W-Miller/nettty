@@ -13,8 +13,7 @@ import org.jogamp.vecmath.Vector3d;
 import static com.moondance.nettty.graphics.Appearences.makeSpinningTexture;
 import static com.moondance.nettty.graphics.ParticleGroup.makeSpinSphere;
 import static com.moondance.nettty.model.SpinSignature.Y_CW;
-import static com.moondance.nettty.utils.DB.DB_GOD_PULSE;
-import static com.moondance.nettty.utils.DB.DB_GOD_PULSE_TRACE;
+import static com.moondance.nettty.utils.DB.*;
 import static com.moondance.nettty.utils.Handy.out;
 import static com.moondance.nettty.utils.VecUtils.*;
 
@@ -96,6 +95,7 @@ public class Spin implements Comparable, Cloneable {
             return Math.toRadians(Double.parseDouble(string.substring(1))) ;
         }
     }
+
     public void incShell(int shell) {
         this.shell += shell ;
     }
@@ -154,7 +154,6 @@ public class Spin implements Comparable, Cloneable {
         Appearance app = (particle.isSentinel()) ?
                 makeSpinningTexture(Images.getSpinTextureRock()):
                 makeSpinningTexture(Images.getSpinTextureEarth());
-//        spinSphereGroup.detach();
         spinSphereHolderGroup.removeChild(spinSphereGroup);
         spinSphereGroup = new BranchGroup() ;
         spinSphereGroup.setCapability(BranchGroup.ALLOW_DETACH);
@@ -173,6 +172,7 @@ public class Spin implements Comparable, Cloneable {
 //        spinSignature = spinSignature.getCompSpin();
         rotationAxis = spinSignature.getAxis() ;
         rotationAngle = spinSignature.getAngle() ;
+        //make sphere rotate the correct
         float min = 0.0f ;
         float max = (float) (Math.PI * 2.0f);
         if(rotationAngle < 0){
@@ -187,4 +187,9 @@ public class Spin implements Comparable, Cloneable {
         out(DB_GOD_PULSE_TRACE,"Spin GodPulse new rotationAngle:" + rotationAngle);
     }
 
+    public int combineShells(int shell) {
+        this.shell = (this.shell + shell)/2 + 1;
+        out(DB_RULE_TRACE,"Spin combineShells this.shell:" + this.shell + " with Shell:" + shell);
+        return shell ;
+    }
 }

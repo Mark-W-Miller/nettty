@@ -18,7 +18,7 @@ import static com.moondance.nettty.utils.Handy.*;
 @Getter
 @Setter
 @ToString
-public class Octree<T> {
+public class Octree<T extends OctMember> {
 
     OctNode<T> root;
     int voxelSize;
@@ -47,8 +47,9 @@ public class Octree<T> {
             public void visitLeaf(OctNode<T> node, int level) {
                 out(DB_OCTWALK, tabs(level) + ANSI_RED + "LEAF level:" + level + " " + node);
                 if (node.makeBoundingBox().contains(octAddress.addressP3D())) {
-                    result.addAll(node.getData().stream().map(ad -> ad.getData()).collect(Collectors.toList()));
-                    out(DB_OCTWALK, tabs(level) + ANSI_RED + "FOND level:" + level + " " + node);
+                    result.addAll(node.getData().stream().filter(om->!om.getData().isKill()).map(AddressedData::getData).collect(Collectors.toList()));
+                    result.forEach(p->p.setIn3Box(true));
+                    out(DB_OCTWALK, tabs(level) + ANSI_RED + "FOUND level:" + level + " " + node);
                     stop("FOUND at:" + node.getCenter() + "\n" + result);
                 } else {
                     out(DB_OCTWALK, tabs(level) + ANSI_RED + "NOT FOUND level:" + level + " " + node);
@@ -69,10 +70,9 @@ public class Octree<T> {
      * @param address i,j,k of the address of the cell
      * @return a map of all objects within one space, by filling a ThreeBox.
      */
-    public ThreeBox findThreeBox(OctAddress address) {
+    public ThreeBox<T> findThreeBox(OctAddress address) {
 
-        ThreeBox threeBox = new ThreeBox(this, address);
-        return threeBox;
+        return new ThreeBox<>(this, address);
     }
 
     public List<T> getAllData() {
@@ -108,7 +108,7 @@ public class Octree<T> {
         };
     }
 
-    public static <T> void dumpTree(Octree<T> octree) {
+    public static <T extends OctMember> void dumpTree(Octree<T> octree) {
         out("dumpTree:-----------------------------------------------------------" + octree.getVoxelSize());
         new OctreeWalker<T>(octree.getRoot()) {
 

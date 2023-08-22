@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 import static com.moondance.nettty.utils.DB.DB_OCTWALK;
 import static com.moondance.nettty.utils.Handy.out;
 
-abstract public class OctreeWalker<T> {
+abstract public class OctreeWalker<T extends OctMember> {
     OctNode<T> startNode ;
     public OctreeWalker(OctNode<T> startNode){
         this.startNode = startNode ;

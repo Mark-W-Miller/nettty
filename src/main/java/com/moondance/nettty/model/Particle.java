@@ -28,15 +28,16 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
     String id;
     transient String idRef;
     Point3d position = new Point3d();
-    Vector3d motionVector = new Vector3d(0, 0, 0);
+    Vector3d motionVector = null;
     List<Spin> spins = new ArrayList<>();
     boolean kill = false;
     boolean sentinel = false;
     boolean wiggleWhenWalking = false;
+    boolean in3Box = false;
     transient TransformGroup currentParticleTransform;
     transient Nett nett;
     transient int numCopiesInitial = 1;
-    transient double cast = 10;
+    transient double cast = 0;
     transient NettGroup nettGroup ;
     transient ParticleGroup particleGroup ;
     transient BranchGroup removeHolder ;
@@ -58,7 +59,9 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
     @SneakyThrows
     public Particle clone() {
         Particle clone = (Particle) super.clone();
-        clone.motionVector = (Vector3d) motionVector.clone();
+        if(motionVector != null) {
+            clone.motionVector = (Vector3d) motionVector.clone();
+        }
         clone.position = (Point3d) position.clone();
         clone.spins = spins.stream().map(spin -> spin.clone()).collect(Collectors.toList());
         clone.setId("SC-" + nextId++);
@@ -122,16 +125,15 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
         out(DB_RULE_TRACE,"Particle bounce id:" + id + " by:" + motionVector);
     }
 
+    public boolean notProcessed(){
+        return motionVector != null || !kill ;
+    }
     public void GodPulse(int i) {
         if (isSentinel()) {
-            nett.processThreeBox(this);
             spins.stream().forEach(spin -> spin.GodPulse(isSentinel()));
             if (motionVector != null) {
                 position.add(motionVector);
                 motionVector = null;
-            } else {
-//                Vector3d change = SubNode.randomDirection();
-//                position.add(change);
             }
         } else {
             if (motionVector != null) {
@@ -160,11 +162,10 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
 
     @Override
     public String toString() {
-        return "Particle{" +
+        return (kill ? "*" : "") + (sentinel ? "Sentinel" : "Particle") + "{" +
                 "id=" + id +
                 ", position=" + position +
                 ", motionVector=" + motionVector +
-                ", kill=" + kill +
                 ", spins=" + spins.stream().map(s->s.shortHand()).collect(Collectors.joining(":")) +
                 '}';
     }
@@ -173,4 +174,6 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
     public String shortHand() {
         return spins.stream().map(s -> s.shortHand()).collect(Collectors.joining());
     }
+
+
 }

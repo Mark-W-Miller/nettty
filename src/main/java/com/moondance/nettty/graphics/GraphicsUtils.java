@@ -1,5 +1,6 @@
 package com.moondance.nettty.graphics;
 
+import com.moondance.nettty.utils.octree.OctMember;
 import com.moondance.nettty.utils.octree.OctNode;
 import com.moondance.nettty.utils.octree.Octree;
 import com.moondance.nettty.utils.octree.OctreeWalker;
@@ -67,7 +68,7 @@ public class GraphicsUtils {
         return String.format("BB X:[%.2f %.2f] Y[%.2f %.2f] Z[%.2f %.2f]",bb.getMinX(),bb.getMaxX(),bb.getMinY(),bb.getMaxY(),bb.getMinZ(),bb.getMaxZ());
     }
 
-    public static <T> Group makeOctTreeGroup(Octree<T> tree) {
+    public static <T extends OctMember> Group makeOctTreeGroup(Octree<T> tree) {
         BranchGroup group = new BranchGroup();
         group.setCapability(BranchGroup.ALLOW_DETACH);
         Appearance boxApp = getDebugStructureAppearance(new Color3f(0, 1, 1), 0.95f, false);

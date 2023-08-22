@@ -3,6 +3,7 @@ package com.moondance.nettty.model;
 import com.moondance.nettty.graphics.NettGroup;
 import com.moondance.nettty.model.rulesof3.ParticleOnlyRuleSentinel;
 import com.moondance.nettty.model.rulesof3.RuleOfThree;
+import com.moondance.nettty.model.rulesof3.WriteStateRule;
 import com.moondance.nettty.utils.octree.OctAddress;
 import com.moondance.nettty.utils.octree.Octree;
 import com.moondance.nettty.utils.octree.ThreeBox;
@@ -45,6 +46,13 @@ public class Nett {
 
     public void GodPulse(int number) {
         for (int ix = 0; ix < number; ix++) {
+            particles.stream().forEach(p->p.setIn3Box(false));
+            List<ThreeBox<Particle>> threeBoxs = particles.stream().
+                    filter(p->!p.isIn3Box())
+                    .map(p->octree.findThreeBox(new OctAddress(p.position)))
+                    .collect(Collectors.toList());
+            out(DB_GOD_PULSE_TRACE,"ThreeBoxes" + formatList(threeBoxs));
+            threeBoxs.stream().forEach(three->processThreeBox(three));
             particles.stream().forEach(particle -> particle.GodPulse(1));
         }
         updateTransforms();
@@ -84,11 +92,11 @@ public class Nett {
     }
 
     private void initRules(){
-        ruleOfThrees.add(new ParticleOnlyRuleSentinel());
 //        ruleOfThrees.add(new WriteStateRule());
+        ruleOfThrees.add(new ParticleOnlyRuleSentinel());
     }
-    public void processThreeBox(Particle particle) {
-        ThreeBox<Particle> threeBox = octree.findThreeBox(new OctAddress(particle.position));
+    public void processThreeBox(ThreeBox<Particle> threeBox) {
+        out(DB_GOD_PULSE,"!!!!!!!!!!!!!!!!!Nett processThreeBox threeBox:" + threeBox);
         for(RuleOfThree rule: ruleOfThrees){
             rule.apply(this,threeBox);
         }

@@ -1,6 +1,5 @@
 package com.moondance.nettty.utils.octree;
 
-import com.sun.javafx.binding.StringFormatter;
 import javafx.geometry.Point3D;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import static com.moondance.nettty.graphics.GraphicsUtils.tup3dStr;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class OctAddress implements Comparable<OctAddress>, OctMember{
+public class OctAddress implements Comparable<OctAddress>, OctMember {
     public Point3d address ;
     public double radius ;
 
@@ -74,5 +73,19 @@ public class OctAddress implements Comparable<OctAddress>, OctMember{
     }
     public String shortHand(){
         return String.format("%2d%2d%2d",Math.round(address.x),Math.round(address.y),Math.round(address.z));
+    }
+
+    @Override
+    public boolean isIn3Box() {
+        return false;
+    }
+
+    @Override
+    public void setIn3Box(boolean in3Box) {
+    }
+
+    @Override
+    public boolean isKill() {
+        return false;
     }
 }

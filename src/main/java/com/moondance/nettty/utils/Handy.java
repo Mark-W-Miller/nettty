@@ -1,5 +1,7 @@
 package com.moondance.nettty.utils;
 
+import org.jogamp.vecmath.Color3f;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -8,6 +10,12 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class Handy {
+	public static Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
+	public static Color3f red = new Color3f(1.0f, 0.0f, 0.0f);
+	public static Color3f green = new Color3f(0.0f, 1.0f, 0.0f);
+	public static Color3f blue = new Color3f(0.0f, 0.0f, 1.0f);
+    public Color3f[] colors = {white, red, green, blue};
+
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_BLACK = "\u001B[30m";
 	public static final String ANSI_RED = "\u001B[31m";
@@ -39,7 +47,7 @@ public final class Handy {
 		return (prefix+ "------ " + title + " -----------------------------------------------------------");
 	}
 	static public String tabs(int tabs) {
-		char tab[] = new char[tabs];
+		char[] tab = new char[tabs];
 		Arrays.fill(tab,'\t');
 		return new String(tab);
 	}

@@ -1,20 +1,23 @@
 package com.moondance.nettty.model;
 
+import lombok.Getter;
 import org.jogamp.vecmath.Point2d;
 import org.jogamp.vecmath.Vector3d;
 
 import javax.management.RuntimeErrorException;
 import java.util.ArrayList;
 import java.util.List;
-
+@Getter
 public enum Plane {
-    XY(new Vector3d(1d, 1d, 0d)),
-    ZY(new Vector3d(0d, 1d, 1d)),
-    XZ(new Vector3d(1d, 0d, 1d));
+    XY(new Vector3d(1d, 1d, 0d),new Vector3d(0d, 0d, 1d)),
+    ZY(new Vector3d(0d, 1d, 1d),new Vector3d(1d, 0d, 0d)),
+    XZ(new Vector3d(1d, 0d, 1d),new Vector3d(0d, 1d, 0d));
     Vector3d planes;
+    Vector3d cross;
 
-    Plane(Vector3d planes) {
+    Plane(Vector3d planes,Vector3d cross) {
         this.planes = planes;
+        this.cross = cross ;
     }
 
     static public Point2d ijDirs[] = {

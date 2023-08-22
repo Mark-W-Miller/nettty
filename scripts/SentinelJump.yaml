@@ -1,85 +1,32 @@
 particles:
-  - idRef: Y_CW(0 0 0)
-    numCopiesInitial: 12
-  - idRef: Z_CW(0 0 0)
-    numCopiesInitial: 211
-  - idRef: Y_CCW(0 0 0)
-    numCopiesInitial: 23
-  - idRef: Z_CW(0 0 0)
-    numCopiesInitial: 24
-  - idRef: Z_CCW(1 1 1)
-    numCopiesInitial: 26
-  - idRef: X_CW(1 1 0)
-    numCopiesInitial: 27
-  - idRef: X_CCW(1 0 0)
-  - id: 0
-    positionStr: "0 0 0"
-    spins:
-      - id: 0
-        shell: 3
-        rotationAngleStr: d-90
-        rotationAxisStr: "0 1 0"
-  - id: 0
-    positionStr: "0 0 0"
-    wiggleWhenWalking: false
-    numCopiesInitial: 1
-    spins:
-      - id: 0
-        shell: 30
-        rotationAngleStr: d-90
-        rotationAxisStr: "0 1 0"
-  #  - id: 0
-  #    positionStr: "50 0 0"
-  #    motionVectorStr: "0 0 0"
-  #    wiggleWhenWalking: false
-  #    numCopiesInitial: 1
-  #    spins:
-  #      - id: 0
-  #        shell: 30
-  #        rotationAngleStr: d-90
-  #        rotationAxisStr: "0 1 0"
-  - id: 0
-    positionStr: "0 0 0"
-    motionVectorStr: "3 0 0"
-    wiggleWhenWalking: false
-    numCopiesInitial: 1
-    spins:
-      - id: 0
-        shell: 10
-        rotationAngleStr: d-90
-        rotationAxisStr: "0 1 0"
-  - id: 0
-    positionStr: "10 0 0"
-    motionVectorStr: "3 0 3"
-    wiggleWhenWalking: true
-    numCopiesInitial: 20
-    spins:
-      - id: 0
-        shell: 1
-        rotationAngleStr: d-90
-        rotationAxisStr: "0 1 0"
-  - id: 1
-    positionStr: "2 0 0"
-    wiggleWhenWalking: true
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "0 1 0"
-  - id: 2
-    motionVectorStr: "-1 0 0"
-    positionStr: "10 0 0"
-    wiggleWhenWalking: true
-    spins:
-      - id: 0
-        shell: 1
-        rotationAxisStr: "0 1 0"
-      - id: 0
-        shell: 2
-        rotationAxisStr: "0 1 0"
-      - id: 0
-        shell: 3
-        rotationAxisStr: "0 1 0"
-      - id: 0
-        shell: 4
-        rotationAxisStr: "0 1 0"
+  - idRef: X_CW(0 0 0)
+    numCopiesInitial: 3
+#  - idRef: X_CCW(5 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Y_CW(10 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Y_CCW(15 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Z_CW(20 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Z_CCW(25 0 0)
+#    numCopiesInitial: 3
 
+#  - idRef: Y_CW(0 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Z_CW(0 0 0)
+#    numCopiesInitial: 3
+#  - idRef: X_CCW(0 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Y_CCW(0 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Z_CCW(0 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Z_CW(0 0 0)
+#    numCopiesInitial: 5
+#  - idRef: Z_CCW(1 1 1)
+#    numCopiesInitial: 5
+#  - idRef: X_CW(1 1 0)
+#    numCopiesInitial: 5
+#  - idRef: X_CCW(1 0 0)
+#    numCopiesInitial: 5
