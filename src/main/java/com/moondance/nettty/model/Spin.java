@@ -38,6 +38,7 @@ public class Spin implements Comparable, Cloneable {
     TransformGroup fixedXForm;
     BranchGroup spinSphereHolderGroup;
     BranchGroup spinSphereGroup;
+    @SuppressWarnings("unused")
     public Spin(int shell,Vector3d rotationAxis) {
         id = "S-" + nextId++;
         this.shell = shell ;
@@ -54,7 +55,7 @@ public class Spin implements Comparable, Cloneable {
     }
 
     public String shortHand(){
-        return spinSignature.shortHand + shell ;
+        return spinSignature.getShortHand() + shell ;
     }
     @SneakyThrows
     public Spin clone() {
@@ -65,22 +66,24 @@ public class Spin implements Comparable, Cloneable {
         return clone ;
     }
 
-    @Override
     public int compareTo(Object o) {
         Spin that = (Spin) o;
         return Integer.compare(this.shell, that.shell);
     }
-
+    @SuppressWarnings("unused")
     public void setRotationDeltaVectorStr(String string){
         rotationDeltaVector = parseVector3d(string);
     }
+    @SuppressWarnings("unused")
     public void setRotationAxisStr(String string){
         rotationAxis = parseVector3d(string);
         rotationAxis.normalize();
     }
+    @SuppressWarnings("unused")
     public void setRotationAngleStr(String string){
         rotationAngle = parseAngleStr(string);
     }
+    @SuppressWarnings("unused")
     public void setSpinSignatureStr(String string){
         spinSignature = SpinSignature.valueOf(string.trim());
         rotationAxis = spinSignature.getAxis() ;

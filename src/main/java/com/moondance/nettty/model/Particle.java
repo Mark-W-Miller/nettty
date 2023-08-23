@@ -23,7 +23,7 @@ import static com.moondance.nettty.utils.VecUtils.*;
 
 @Getter
 @Setter
-public class Particle implements Comparable, Cloneable, Addressable, OctMember {
+public class Particle implements Comparable<Particle>, Cloneable, Addressable<Particle>, OctMember {
     private static int nextId = 0;
     String id;
     transient String idRef;
@@ -45,6 +45,7 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
         id = "P-" + nextId++;
     }
 
+    @SuppressWarnings("unused")
     static public Particle makeSentinel(Point3d position, SpinSignature spinSignature) {
         Particle particle = new Particle();
         particle.id = "S-" + nextId++;
@@ -63,14 +64,14 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
             clone.motionVector = (Vector3d) motionVector.clone();
         }
         clone.position = (Point3d) position.clone();
-        clone.spins = spins.stream().map(spin -> spin.clone()).collect(Collectors.toList());
+        clone.spins = spins.stream().map(Spin::clone).collect(Collectors.toList());
         clone.setId("SC-" + nextId++);
         return clone;
     }
 
     public void populateFromReference(Particle referenceParticle) {
         sentinel = referenceParticle.isSentinel();
-        spins = referenceParticle.getSpins().stream().map(spin -> spin.clone()).collect(Collectors.toList());
+        spins = referenceParticle.getSpins().stream().map(Spin::clone).collect(Collectors.toList());
         id = referenceParticle.getId() + "-" + nextId++;
     }
 
@@ -89,7 +90,7 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
         }
     }
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(Particle o) {
         Particle that = (Particle) o;
         return Integer.compare(this.spins.size(), that.spins.size());
     }
@@ -106,10 +107,12 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
         }
     }
 
+    @SuppressWarnings("unused")
     public void setMotionVectorStr(String string) {
         motionVector = parseVector3d(string);
     }
 
+    @SuppressWarnings("unused")
     public void setPositionStr(String string) {
         position = parsePoint3d(string);
     }
@@ -124,13 +127,15 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
         }
         out(DB_RULE_TRACE,"Particle bounce id:" + id + " by:" + motionVector);
     }
-
-    public boolean notProcessed(){
-        return motionVector != null || !kill ;
+    @SuppressWarnings("unused")
+    public boolean notProcessed() {
+        return motionVector != null || !kill;
     }
+
+    @SuppressWarnings("unused")
     public void GodPulse(int i) {
         if (isSentinel()) {
-            spins.stream().forEach(spin -> spin.GodPulse(isSentinel()));
+            spins.forEach(spin -> spin.GodPulse(isSentinel()));
             if (motionVector != null) {
                 position.add(motionVector);
                 motionVector = null;
@@ -147,7 +152,7 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
                 position.y += 0.5 - Math.random();
                 position.z += 0.5 - Math.random();
             }
-            spins.stream().forEach(spin -> spin.GodPulse(isSentinel()));
+            spins.forEach(spin -> spin.GodPulse(isSentinel()));
         }
     }
 
@@ -166,13 +171,13 @@ public class Particle implements Comparable, Cloneable, Addressable, OctMember {
                 "id=" + id +
                 ", position=" + position +
                 ", motionVector=" + motionVector +
-                ", spins=" + spins.stream().map(s->s.shortHand()).collect(Collectors.joining(":")) +
+                ", spins=" + spins.stream().map(Spin::shortHand).collect(Collectors.joining(":")) +
                 '}';
     }
 
     @Override
     public String shortHand() {
-        return spins.stream().map(s -> s.shortHand()).collect(Collectors.joining());
+        return spins.stream().map(Spin::shortHand).collect(Collectors.joining());
     }
 
 

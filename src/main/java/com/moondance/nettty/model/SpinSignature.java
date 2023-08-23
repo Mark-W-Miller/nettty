@@ -1,13 +1,11 @@
 package com.moondance.nettty.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jogamp.vecmath.Vector3d;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.moondance.nettty.model.Axis.*;
 import static com.moondance.nettty.model.Plane.*;
 import static com.moondance.nettty.utils.VecUtils.normal;
 
@@ -21,14 +19,14 @@ public enum SpinSignature {
     X_CW(normal(0,0,-1), Math.PI/2,XZ,"+X",new Vector3d(1,0,0)),
     X_CCW(normal(0,0,1),-Math.PI/2,XZ,"-X",new Vector3d(-1,0,0));
 
-    Vector3d axis ;
-    Plane primaryPlane ;
-    double angle ;
-    String shortHand ;
-    Vector3d naturalMotion ;
+    final private Vector3d axis ;
+    final private Plane primaryPlane ;
+    final private double angle ;
+    final private String shortHand ;
+    final private Vector3d naturalMotion ;
 
-    private static Map<String,SpinSignature> mapFromName = new HashMap<>();
-    private static Map<SpinSignature,SpinSignature> compSpin = new HashMap<>();
+    final private static Map<String,SpinSignature> mapFromName = new HashMap<>();
+    final private static Map<SpinSignature,SpinSignature> compSpin = new HashMap<>();
 
     static {
         compSpin.put(X_CCW,X_CW);

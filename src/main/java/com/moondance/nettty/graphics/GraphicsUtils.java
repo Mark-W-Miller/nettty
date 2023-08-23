@@ -17,7 +17,6 @@ public class GraphicsUtils {
 
     public static Group makeAxis() {
         BranchGroup group = new BranchGroup();
-        LineArray lineArr = new LineArray(6, LineArray.COORDINATES);
         group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(1000, 0, 0),new Color3f(1,0,0), null));
         group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 1000, 0),new Color3f(0,1,0), null));
         group.addChild(makeColorLineShape(new Point3d(0, 0, 0), new Point3d(0, 0, 1000),new Color3f(0,0,1), null));
@@ -44,14 +43,13 @@ public class GraphicsUtils {
         ColoringAttributes ca = new ColoringAttributes();
         ca.setColor(color);
         appearance.setColoringAttributes(ca);
-        Shape3D shape = new Shape3D(lineArr, appearance);
-        return shape ;
+        return new Shape3D(lineArr, appearance);
     }
 
     public static void verifyBB(BoundingBox bb) {
         if (bb.getMinX() >= bb.getMaxX() ||
                 bb.getMinY() >= bb.getMaxY() ||
-                bb.getMinY() >= bb.getMaxY()) {
+                bb.getMinZ() >= bb.getMaxZ()) {
             err("Bad Bounding Box:" + bb);
         }
     }
@@ -128,7 +126,7 @@ public class GraphicsUtils {
         objTrans.addChild(sphere);
         return objTrans;
     }
-
+    @SuppressWarnings("unused")
     private static Appearance getDebugStructureAppearance() {
         Appearance appearance = new Appearance();
 

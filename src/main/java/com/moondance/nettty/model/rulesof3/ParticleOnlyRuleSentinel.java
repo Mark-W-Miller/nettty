@@ -9,8 +9,6 @@ import com.moondance.nettty.utils.octree.ThreeBox;
 import org.jogamp.vecmath.Vector3d;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.moondance.nettty.utils.DB.DB_RULE;
 import static com.moondance.nettty.utils.DB.DB_RULE_TRACE;
@@ -33,19 +31,16 @@ public class ParticleOnlyRuleSentinel extends Rule3 implements RuleOfThree {
     /**
      * Oh, what a method name! Right up (down) there with GodPulse.
      * Who doesn't want to write that?!
-     * @param planeMap
      */
     private void collideThePlanes(MapOfLists<Plane,Particle> planeMap){
-        planeMap.entrySet().stream().forEach(e->{
-            collideBagOfCats(e.getValue());
-        });
+        planeMap.entrySet().forEach(e-> collideBagOfCats(e.getValue()));
     }
 
     private void collideBagOfCats(List<Particle> value) {
         MapOfLists<SpinSignature,Particle> spins = new MapOfLists<>();
-        value.stream().forEach(part->spins.putOne(part.getFirstSpinSignature(),part));
+        value.forEach(part->spins.putOne(part.getFirstSpinSignature(),part));
         out(DB_RULE_TRACE,"collideBagOfCats Spins Map:" + spins);
-        spins.values().stream().forEach(list->{
+        spins.values().forEach(list->{
             if(list.size() > 1) {
                 compressSympathetic(list);
             }
@@ -56,7 +51,6 @@ public class ParticleOnlyRuleSentinel extends Rule3 implements RuleOfThree {
      * Two Same become 1
      *      Jump perpendicular to the plane
      *      Create a new counter spin particle in new location
-     * @param sympatheticParticles
      */
 
     private void compressSympathetic(List<Particle> sympatheticParticles) {
@@ -79,12 +73,10 @@ public class ParticleOnlyRuleSentinel extends Rule3 implements RuleOfThree {
 
     private MapOfLists<Plane,Particle> makeInfluenceMap(List<Particle> particles){
         MapOfLists<Plane,Particle> map = new MapOfLists<>();
-        particles.stream().forEach(part->{
-            map.putOne(part.getFirstSpinSignature().getPrimaryPlane(),part);
-        });
+        particles.forEach(part-> map.putOne(part.getFirstSpinSignature().getPrimaryPlane(),part));
         return map ;
     }
-
+    @SuppressWarnings("unused")
     private void collide(Particle p0, Particle pN) {
         out(DB_RULE,ANSI_GREEN  + "!!!!!!!!!!!!! collide p0:" + p0);
         out(DB_RULE,ANSI_GREEN  + "!!!!!!!!!!!!!    with pN:" + pN);

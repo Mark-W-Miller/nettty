@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
+@SuppressWarnings("unused")
 public final class Handy {
 	public static Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
 	public static Color3f red = new Color3f(1.0f, 0.0f, 0.0f);

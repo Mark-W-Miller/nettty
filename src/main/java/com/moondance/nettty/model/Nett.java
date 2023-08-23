@@ -33,11 +33,12 @@ public class Nett {
     List<Particle> particles = new ArrayList<>();
     Octree<Particle> octree ;
     transient NettGroup nettGroup ;
+    @SuppressWarnings("unused")
     public Nett() {
         Nettty = this;
     }
 
-    public Nett(Octree octree) {
+    public Nett(Octree<Particle> octree) {
         Nettty = this;
         this.octree = octree ;
         this.particles = octree.getAllData();
@@ -46,14 +47,14 @@ public class Nett {
 
     public void GodPulse(int number) {
         for (int ix = 0; ix < number; ix++) {
-            particles.stream().forEach(p->p.setIn3Box(false));
+            particles.forEach(p->p.setIn3Box(false));
             List<ThreeBox<Particle>> threeBoxs = particles.stream().
                     filter(p->!p.isIn3Box())
                     .map(p->octree.findThreeBox(new OctAddress(p.position)))
                     .collect(Collectors.toList());
             out(DB_GOD_PULSE_TRACE,"ThreeBoxes" + formatList(threeBoxs));
-            threeBoxs.stream().forEach(three->processThreeBox(three));
-            particles.stream().forEach(particle -> particle.GodPulse(1));
+            threeBoxs.forEach(this::processThreeBox);
+            particles.forEach(particle -> particle.GodPulse(1));
         }
         updateTransforms();
     }
@@ -65,11 +66,11 @@ public class Nett {
     }
 
     public Map<String, Particle> makeParticleLookup() {
-        return particles.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
+        return particles.stream().collect(Collectors.toMap(Particle::getId, p -> p));
     }
 
     public void applyReference(Map<String, Particle> reference) {
-        particles.stream().forEach(particle -> {
+        particles.forEach(particle -> {
             String refName = particle.getId() ;
             if (particle.getIdRef() != null) {
                 refName = refName(particle.getIdRef());
@@ -83,8 +84,7 @@ public class Nett {
         });
     }
     private String refName(String string) {
-        String name = string.substring(0,string.indexOf("("));
-        return name;
+        return string.substring(0,string.indexOf("("));
     }
     private Point3d refPos(String string) {
         String posStr = string.substring(string.indexOf("(")+1,string.indexOf(")"));
@@ -101,10 +101,8 @@ public class Nett {
             rule.apply(this,threeBox);
         }
         out(DB_GOD_PULSE_TRACE,"Nett processThreeBox Before Kill particles:\n" + formatList(particles));
-        List<Particle> dead = particles.stream().filter(part->part.isKill()).collect(Collectors.toList());
-        dead.stream().forEach(part->{
-            nettGroup.removeParticleModels(part);
-        });
+        List<Particle> dead = particles.stream().filter(Particle::isKill).collect(Collectors.toList());
+        dead.forEach(part-> nettGroup.removeParticleModels(part));
         particles = particles.stream().filter(part->!part.isKill()).collect(Collectors.toList());
         out(DB_GOD_PULSE_TRACE,"Nett processThreeBox After Kill particles:\n" + formatList(particles));
     }

@@ -372,7 +372,7 @@ public class NetttyApp extends JFrame
             setHomeTransformation();
         } else if (target == GodPulse) {
             dumpOrbit("Orbit Before God Pulse");
-            int numFrames = getIntFromTextField(numberOfFrames);
+//            int numFrames = getIntFromTextField(numberOfFrames);
             int pulsesPerFrame = getIntFromTextField(numberOfPulsesPerFrame);
             Nettty.GodPulse(pulsesPerFrame);
             rebuildParticleOctTree();

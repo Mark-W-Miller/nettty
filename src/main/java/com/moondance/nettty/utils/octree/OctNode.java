@@ -70,7 +70,7 @@ public class OctNode<T extends OctMember> {
             Point3d newCenterPoint = (Point3d) center.address.clone();
             newCenterPoint.add(scaledOffset);
             OctAddress newCenter = new OctAddress(newCenterPoint);
-            octants.set(sn.index, new OctNode<T>(newCenter, tree, newVoxelSize));
+            octants.set(sn.index, new OctNode<>(newCenter, tree, newVoxelSize));
             BoundingBox bb = octants.get(sn.index).makeBoundingBox();
             verifyBB(bb);
             octants.get(sn.index).makeBoundingBox();

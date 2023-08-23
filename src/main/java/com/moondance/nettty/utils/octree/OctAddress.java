@@ -27,10 +27,12 @@ public class OctAddress implements Comparable<OctAddress>, OctMember {
         this.radius = 1d ;
 
     }
+    @SuppressWarnings("unused")
     public OctAddress(double x, double y, double z, double radius){
         this.address = new Point3d((int) x, (int) y, (int) z);
         this.radius = radius ;
     }
+    @SuppressWarnings("unused")
     public OctAddress(int i, int j, int k, double radius){
         this.address = new Point3d(i,j,k);
         this.radius = radius ;

@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,10 +41,10 @@ public class Script {
 
         out("NetttyApp loadNett fileName:" + fileName);
         out("NetttyApp loadNett referenceFileName:" + referenceFileName);
-        Map<String, Particle> reference = getNett(referenceFileName).makeParticleLookup();
+        Map<String, Particle> reference = Objects.requireNonNull(getNett(referenceFileName)).makeParticleLookup();
 
         Nett nett1 = getNett(fileName);
-        nett1.applyReference(reference);
+        Objects.requireNonNull(nett1).applyReference(reference);
         return nett1;
     }
 
@@ -58,7 +58,7 @@ public class Script {
         }
         return null;
     }
-
+    @SuppressWarnings("unused")
     public static Nett readNett(String nettScript) {
         return null;
     }
