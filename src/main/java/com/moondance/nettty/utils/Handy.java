@@ -167,17 +167,17 @@ public final class Handy {
 	}
 
 	public static <T> String formatList(List<T> list) {
-		String result = list.stream().map(o -> o.toString() + "\n").collect(Collectors.joining());
-		return result;
+		return list.stream().map(o -> o.toString() + "\n").collect(Collectors.joining());
 	}
 
 	public static <K, V extends Map<K,V>> String formatMapOfMaps(Map<K, V> map, int tabs) {
 
 		String t = tabs(tabs);
 		StringBuilder b = new StringBuilder();
-		map.entrySet().forEach(e ->
-				b.append(t + e.getKey() + "\n")
-						.append(formatMap(e.getValue(), tabs + 1) + "\n"));
+		map.entrySet().forEach(e -> {
+			b.append(t + e.getKey() + "\n")
+					.append(formatMap(e.getValue(), tabs + 1) + "\n");
+		});
 		return b.toString();
 	}
 
@@ -185,9 +185,10 @@ public final class Handy {
 
 		String t = tabs(tabs);
 		StringBuilder b = new StringBuilder();
-		map.entrySet().forEach(e->
-				b.append(t + e.getKey() +"\n")
-						.append(tabs(tabs+1) + e.getValue()+"\n") );
+		for (Map.Entry<K, V> e : map.entrySet()) {
+			b.append(t + e.getKey() + "\n")
+					.append(tabs(tabs + 1) + e.getValue() + "\n");
+		}
 		return b.toString();
 	}
 

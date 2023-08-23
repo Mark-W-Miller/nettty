@@ -66,8 +66,7 @@ public class Spin implements Comparable<Spin>, Cloneable {
         return clone ;
     }
 
-    public int compareTo(Spin o) {
-        Spin that = (Spin) o;
+    public int compareTo(Spin that) {
         return Integer.compare(this.shell, that.shell);
     }
     @SuppressWarnings("unused")
