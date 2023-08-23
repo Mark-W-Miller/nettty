@@ -3,7 +3,6 @@ package com.moondance.nettty.model;
 import com.moondance.nettty.graphics.NettGroup;
 import com.moondance.nettty.model.rulesof3.ParticleOnlyRuleSentinel;
 import com.moondance.nettty.model.rulesof3.RuleOfThree;
-import com.moondance.nettty.model.rulesof3.WriteStateRule;
 import com.moondance.nettty.utils.octree.OctAddress;
 import com.moondance.nettty.utils.octree.Octree;
 import com.moondance.nettty.utils.octree.ThreeBox;

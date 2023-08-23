@@ -20,7 +20,7 @@ import static com.moondance.nettty.utils.VecUtils.*;
 @Getter
 @Setter
 @ToString
-public class Spin implements Comparable, Cloneable {
+public class Spin implements Comparable<Spin>, Cloneable {
     private static int nextId = 0 ;
     @ToString.Exclude Particle particle ;
     String id ;
@@ -66,7 +66,7 @@ public class Spin implements Comparable, Cloneable {
         return clone ;
     }
 
-    public int compareTo(Object o) {
+    public int compareTo(Spin o) {
         Spin that = (Spin) o;
         return Integer.compare(this.shell, that.shell);
     }

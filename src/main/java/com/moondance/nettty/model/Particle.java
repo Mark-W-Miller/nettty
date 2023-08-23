@@ -90,8 +90,7 @@ public class Particle implements Comparable<Particle>, Cloneable, Addressable<Pa
         }
     }
     @Override
-    public int compareTo(Particle o) {
-        Particle that = (Particle) o;
+    public int compareTo(Particle that) {
         return Integer.compare(this.spins.size(), that.spins.size());
     }
 

@@ -68,7 +68,7 @@ public final class Handy {
 		return line ;
 	}
 
-	static public String empty(Object v){ return v==null ? "" : v.toString() + " ";}
+	static public String empty(Object v){ return v==null ? "" : v + " ";}
 	static public String quote(String v){ return v.trim().isEmpty() ? "" : "'" + v.trim() + "'";}
 
 	static public int parseInt(String token){
@@ -82,7 +82,7 @@ public final class Handy {
 	}
 
 	static public Point parsePoint(String line){
-		String bits[] = line.split(",");
+		String[] bits = line.split(",");
 		int x = parseInt(bits[0]);
 		int y = parseInt((bits[1]));
 		return new Point(x,y);
@@ -92,8 +92,7 @@ public final class Handy {
 		for (E e : java.util.EnumSet.allOf(elemType)) {
 			if(Pattern.compile(",")
 					.splitAsStream(list)
-					.filter(s->s.equals(e.name()))
-							.findFirst().isPresent()){
+					.anyMatch(s->s.equals(e.name()))){
 				return e ;
 			}
 		}
@@ -172,11 +171,11 @@ public final class Handy {
 		return result;
 	}
 
-	public static <K, V extends Map> String formatMapOfMaps(Map<K, V> map, int tabs) {
+	public static <K, V extends Map<K,V>> String formatMapOfMaps(Map<K, V> map, int tabs) {
 
 		String t = tabs(tabs);
 		StringBuilder b = new StringBuilder();
-		map.entrySet().stream().forEach(e ->
+		map.entrySet().forEach(e ->
 				b.append(t + e.getKey() + "\n")
 						.append(formatMap(e.getValue(), tabs + 1) + "\n"));
 		return b.toString();
@@ -186,7 +185,7 @@ public final class Handy {
 
 		String t = tabs(tabs);
 		StringBuilder b = new StringBuilder();
-		map.entrySet().stream().forEach(e->
+		map.entrySet().forEach(e->
 				b.append(t + e.getKey() +"\n")
 						.append(tabs(tabs+1) + e.getValue()+"\n") );
 		return b.toString();
