@@ -2,11 +2,9 @@ package com.moondance.nettty.utils.octree;
 
 import com.moondance.nettty.model.Particle;
 import javafx.geometry.BoundingBox;
-import javafx.geometry.Point3D;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.jogamp.vecmath.Point3d;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,12 +125,10 @@ public class Octree<T extends OctMember> {
         };
     }
 
-    public List<T> lookupDB(List<Particle> particles) {
-        List<T> result = new ArrayList<>();
+    public void lookupDB(List<Particle> particles) {
         particles.stream().forEach(part->{
             _lookUpDB(part.makeAddressableData().getOctAddress());
         });
-        return result;
     }
 
     private void _lookUpDB(OctAddress octAddress) {

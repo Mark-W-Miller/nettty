@@ -12,12 +12,12 @@ import static com.moondance.nettty.utils.VecUtils.normal;
 @Getter
 public enum SpinSignature {
 
-    Y_CW(normal(0,1,0), Math.PI/2,XY,"+Y",new Vector3d(0,1,0)),
-    Y_CCW(normal(0,1,0), -Math.PI/2,XY,"-Y",new Vector3d(0,-1,0)),
-    Z_CW(normal(1,0,0),-Math.PI/2,ZY,"+Z",new Vector3d(0,0,1)),
-    Z_CCW(normal(-1,0,0),Math.PI/2,ZY,"-Z",new Vector3d(0,0,-1)),
-    X_CW(normal(0,0,-1), Math.PI/2,XZ,"+X",new Vector3d(1,0,0)),
-    X_CCW(normal(0,0,1),-Math.PI/2,XZ,"-X",new Vector3d(-1,0,0));
+    Y_CW(normal(0,1,0), Math.PI/2,XY,"Y",new Vector3d(0,1,0)),
+    Y_CCW(normal(0,1,0), -Math.PI/2,XY,"y",new Vector3d(0,-1,0)),
+    Z_CW(normal(1,0,0),-Math.PI/2,ZY,"Z",new Vector3d(0,0,1)),
+    Z_CCW(normal(-1,0,0),Math.PI/2,ZY,"z",new Vector3d(0,0,-1)),
+    X_CW(normal(0,0,-1), Math.PI/2,XZ,"X",new Vector3d(1,0,0)),
+    X_CCW(normal(0,0,1),-Math.PI/2,XZ,"x",new Vector3d(-1,0,0));
 
     final private Vector3d axis ;
     final private Plane primaryPlane ;

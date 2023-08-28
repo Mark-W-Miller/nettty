@@ -143,8 +143,9 @@ public class ParticleGroup  extends BranchGroup {
     public static Sphere makeSpinSphere(Appearance app, Spin spin) {
         out(DB_RULE_TRACE,"makeSpinSphere:" + spin);
         Sphere sphere;
+        float radius = spin.getParticle().isSentinel() ? ((float)spin.getShell())/5 : ((float)spin.getShell())/2;
         sphere = new Sphere(
-                ((float)spin.getShell())/2,     // sphere radius
+                radius,     // sphere radius
                 Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
                 16,         // 16 divisions radially
                 app);      // it's appearance
