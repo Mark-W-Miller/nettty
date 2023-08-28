@@ -1,5 +1,6 @@
 package com.moondance.nettty.utils.octree;
 
+import com.moondance.nettty.model.Particle;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Point3D;
 import lombok.Getter;
@@ -11,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.moondance.nettty.utils.DB.DB_OCTREE_DUMP;
-import static com.moondance.nettty.utils.DB.DB_OCTWALK;
+import static com.moondance.nettty.graphics.GraphicsUtils.bb2str;
+import static com.moondance.nettty.utils.DB.*;
 import static com.moondance.nettty.utils.Handy.*;
 
 @Getter
@@ -40,27 +41,29 @@ public class Octree<T extends OctMember> {
     }
 
     public List<T> lookup(OctAddress octAddress) {
+        out(DB_OCTWALK,ANSI_YELLOW + "Octree lookup:" + octAddress);
         List<T> result = new ArrayList<>();
         new OctreeWalker<T>(getRoot()) {
 
             @Override
             public void visitLeaf(OctNode<T> node, int level) {
-                out(DB_OCTWALK, tabs(level) + ANSI_RED + "LEAF level:" + level + " " + node);
-                if (node.makeBoundingBox().contains(octAddress.addressP3D())) {
+                if (node.inNode(octAddress)) {
+                    out(DB_OCTWALK, tabs(level) + ANSI_GREEN + "octAddress:" + octAddress + " In:" + bb2str(node.makeBoundingBox()));
+                    out(DB_OCTWALK, tabs(level) + ANSI_GREEN + "FOUND level:" + level + " " + node);
                     result.addAll(node.getData().stream().filter(om->!om.getData().isKill()).map(AddressedData::getData).collect(Collectors.toList()));
                     result.forEach(p->p.setIn3Box(true));
-                    out(DB_OCTWALK, tabs(level) + ANSI_RED + "FOUND level:" + level + " " + node);
                     stop("FOUND at:" + node.getCenter() + "\n" + result);
                 } else {
-                    out(DB_OCTWALK, tabs(level) + ANSI_RED + "NOT FOUND level:" + level + " " + node);
+                    out(DB_OCTWALK_TRACE, tabs(level) + ANSI_RED + "NOT FOUND level:" + level + " " + node);
                 }
             }
 
+
             @Override
             public boolean visitBranch(OctNode<T> node, int level) {
-                boolean skipNode = node.makeBoundingBox().contains(octAddress.addressP3D());
-                out(DB_OCTWALK, tabs(level) + "BRCH skipNode:" + skipNode + " " + node);
-                return skipNode;
+                boolean inNode = node.inNode(octAddress);
+                out(DB_OCTWALK_TRACE, tabs(level) + "visitBranch inNode:" + inNode + " " + node);
+                return inNode;
             }
         };
         return result;
@@ -97,11 +100,9 @@ public class Octree<T extends OctMember> {
                 BoundingBox bb = node.makeBoundingBox();
                 for (AddressedData<T> ad : node.getData()) {
 
-                    Point3d p3d = ad.getOctAddress().getAddress();
-                    Point3D p3D = new Point3D(p3d.x, p3d.y, p3d.z);
-                    if (!bb.contains(p3D)) {
+                    if (!node.inNode(ad.getOctAddress())) {
                         err("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!verifyTree NOT IN BOX:" + node + " voxelSize:" + node.getVoxelSize());
-                        err(tabs(8) + "verifyTree NOT IN bb:" + bb + "\n" + tabs(8) + " p3D:" + p3D);
+                        err(tabs(8) + "verifyTree NOT IN bb:" + bb + "\n" + tabs(8) + " ad:" + ad);
                     }
                 }
             }
@@ -115,13 +116,43 @@ public class Octree<T extends OctMember> {
             @Override
             public void visitLeaf(OctNode<T> node, int level) {
                 boolean crowded = node.data.size() > 2;
-                out(DB_OCTREE_DUMP, tabs(level) + ((crowded) ? ANSI_GREEN : ANSI_RED) + "LEAF:" + node);
+                out(DB_OCTREE_DUMP, tabs(level) + ((crowded) ? ANSI_GREEN : ANSI_RED) + "LEAF:" + node + "\n" + formatList(level + 1,node.getData()));
             }
 
             @Override
             public boolean visitBranch(OctNode<T> node, int level) {
-                out(DB_OCTREE_DUMP, tabs(level) + "BRCH:" + node);
+                out(DB_OCTREE_DUMP, tabs(level) + "BRCH:" + node );
                 return true;
+            }
+        };
+    }
+
+    public List<T> lookupDB(List<Particle> particles) {
+        List<T> result = new ArrayList<>();
+        particles.stream().forEach(part->{
+            _lookUpDB(part.makeAddressableData().getOctAddress());
+        });
+        return result;
+    }
+
+    private void _lookUpDB(OctAddress octAddress) {
+        out(DB_OCTREE_DUMP, ANSI_PURPLE + "_lookUpDB:" + octAddress);
+        new OctreeWalker<T>(getRoot()) {
+
+            @Override
+            public void visitLeaf(OctNode<T> node, int level) {
+                if (node.makeBoundingBox().contains(octAddress.addressP3D())) {
+                    out(DB_OCTREE_DUMP, tabs(level) + ANSI_GREEN + "visitLeaf In Node BB level:" + level + " Node:" + node + " octAddress:" + octAddress);
+                } else {
+                    out(DB_OCTREE_DUMP, tabs(level) + ANSI_RED + "visitLeaf NOT In Node BB FOUND level:" + level + " " + node);
+                }
+            }
+
+            @Override
+            public boolean visitBranch(OctNode<T> node, int level) {
+                boolean skipNode = node.makeBoundingBox().contains(octAddress.addressP3D());
+                out(DB_OCTREE_DUMP, tabs(level) + "visitBranch skipNode:" + skipNode + " " + node);
+                return skipNode;
             }
         };
     }

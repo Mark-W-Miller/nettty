@@ -29,6 +29,7 @@ public class ThreeBox<T extends OctMember> {
         return boxMap.get(addressOfCenter);
     }
     private void walkTree() {
+        out(DB_OCTWALK,"ThreeBox walkTree:" + addressOfCenter);
         for (int x = -1; x < 2; x++) {
             for (int y = -1; y < 2; y++) {
                 for (int z = -1; z < 2; z++) {

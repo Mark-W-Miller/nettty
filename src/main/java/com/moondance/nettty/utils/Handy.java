@@ -170,6 +170,11 @@ public final class Handy {
 		return list.stream().map(o -> o.toString() + "\n").collect(Collectors.joining());
 	}
 
+	public static <T> String formatList(int tabs,List<T> list) {
+
+		return list.stream().map(o -> tabs(tabs) + o.toString() + "\n" ).collect(Collectors.joining());
+	}
+
 	public static <K, V extends Map<K,V>> String formatMapOfMaps(Map<K, V> map, int tabs) {
 
 		String t = tabs(tabs);

@@ -52,6 +52,7 @@ public class Nett {
                     .map(p->octree.findThreeBox(new OctAddress(p.position)))
                     .collect(Collectors.toList());
             out(DB_GOD_PULSE_TRACE,"ThreeBoxes" + formatList(threeBoxs));
+            octree.lookupDB(particles);
             threeBoxs.forEach(this::processThreeBox);
             particles.forEach(particle -> particle.GodPulse(1));
         }

@@ -21,7 +21,7 @@ public class OctNode<T extends OctMember> {
     OctAddress center;
     Octree<T> tree;
     double voxelSize;
-    boolean branchNode = false; //when true this will only hac=ve children and no data
+    boolean branchNode = false; //when true this will only have children and no data
     List<AddressedData<T>> data = new ArrayList<>();
     List<OctNode<T>> octants = new ArrayList<>(8);
     BoundingBox boundingBox = null;
@@ -42,10 +42,11 @@ public class OctNode<T extends OctMember> {
             err("Point not in Octant addressedData:" + tup3dStr(addressedData.getOctAddress().getAddress()));
             err("Point not in Octant  assigned bb:" + bb2str(bb));
         }
-        boolean sameAddressAsOthers = data.stream().anyMatch(ad -> ad.equals(addressedData));
-        if (voxelSize <= 1 || !branchNode && data.isEmpty() || sameAddressAsOthers) {
+//        boolean sameAddressAsOthers = data.stream().anyMatch(ad -> ad.equals(addressedData));
+        if (voxelSize <= 1) {
             out(DB_OCTNODE,"OctNode Becomes Leaf:" + tup3dStr(addressedData.getOctAddress().getAddress()));
-            out(DB_OCTNODE,"OctNode Becomes sameAddressAsOthers:" + sameAddressAsOthers);
+//            out(DB_OCTNODE,"OctNode Becomes sameAddressAsOthers:" + sameAddressAsOthers);
+            branchNode = false;
             data.add(addressedData);
         } else {
             out(DB_OCTNODE,"OctNode Becomes Branch:" + tup3dStr(addressedData.getOctAddress().getAddress()));
@@ -61,6 +62,18 @@ public class OctNode<T extends OctMember> {
             OctNode<T> octant = getOctant(sn, voxelSize);
             octant.add(addressedData);
         }
+    }
+
+    public boolean inNode(OctAddress add) {
+        Point3d point = add.getAddress() ;
+        makeBoundingBox();
+        return point.getX() >= boundingBox.getMinX() &&
+                point.getX() < boundingBox.getMaxX() &&
+                point.getY() >= boundingBox.getMinY() &&
+                point.getY() < boundingBox.getMaxY() &&
+                point.getZ() >= boundingBox.getMinZ() &&
+                point.getZ() < boundingBox.getMaxZ();
+
     }
 
     private OctNode<T> getOctant(SubNode sn, double voxelSize) {
