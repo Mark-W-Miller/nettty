@@ -52,7 +52,10 @@ public class MapOfLists<K, V> extends LinkedHashMap<K, List<V>> {
 			return false;
 		}
 	}
-	
+
+	public List<Integer> sizeMap(){
+		return values().stream().map(List::size).collect(Collectors.toList());
+	}
 	public boolean putOneUnique(K key, V value) {
 		if (this.containsKey(key)) {
 			if(!this.get(key).contains(value))

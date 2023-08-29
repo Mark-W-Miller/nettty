@@ -219,7 +219,7 @@ public class NetttyApp extends JFrame
             finalMax  = 1 ;
         }
         out("Octree Size Initial:" + finalMax);
-        Octree<Particle> octree = new Octree<>((int) finalMax * 2);
+        Octree<Particle> octree = new Octree<>((int) finalMax * 4);
         for (AddressedData<Particle> addressedParticle : data) {
             octree.add(addressedParticle);
         }
@@ -230,7 +230,7 @@ public class NetttyApp extends JFrame
     Octree<Particle> makeParticleOctTree(Nett nettty) {
         double finalMax = maxDimension(nettty);
         out("Octree Size:" + finalMax);
-        Octree<Particle> octree = new Octree<>((int) finalMax * 2);
+        Octree<Particle> octree = new Octree<>((int) finalMax * 4);
         List<AddressedData<Particle>> data = new ArrayList<>();
 
         for (Particle particle : nettty.getParticles()) {

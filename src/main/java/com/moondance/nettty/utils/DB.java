@@ -5,6 +5,7 @@ public class DB {
     public static boolean DB_OCTNODE = false;
     public static boolean DB_OCTWALK = false;
     public static boolean DB_OCTWALK_TRACE = false;
+    public static boolean DB_THREEBOX = true;
     public static boolean DB_GOD_PULSE = true;
     public static boolean DB_GOD_PULSE_TRACE = false;
     public static boolean DB_NETTYAPP_FLOW = false;

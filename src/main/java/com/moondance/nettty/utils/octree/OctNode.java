@@ -38,7 +38,7 @@ public class OctNode<T extends OctMember> {
         out(DB_OCTNODE,"OctNode add add:" + tup3dStr(addressedData.getOctAddress().getAddress()));
         out(DB_OCTNODE,"OctNode add BBB:" + bb2str(makeBoundingBox()));
         BoundingBox bb = makeBoundingBox();
-        if (!bb.contains(p3dToP3D(addressedData.getOctAddress().getAddress()))) {
+        if (!inNode(addressedData.getOctAddress())) {
             err("Point not in Octant addressedData:" + tup3dStr(addressedData.getOctAddress().getAddress()));
             err("Point not in Octant  assigned bb:" + bb2str(bb));
         }

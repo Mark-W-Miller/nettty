@@ -8,7 +8,9 @@ import com.moondance.nettty.utils.MapOfLists;
 import com.moondance.nettty.utils.octree.ThreeBox;
 import org.jogamp.vecmath.Vector3d;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.moondance.nettty.utils.DB.DB_RULE;
 import static com.moondance.nettty.utils.DB.DB_RULE_TRACE;
@@ -33,19 +35,32 @@ public class ParticleOnlyRuleSentinel extends Rule3 implements RuleOfThree {
      * Who doesn't want to write that?!
      */
     private void collideThePlanes(MapOfLists<Plane,Particle> planeMap){
-        planeMap.entrySet().forEach(e-> collideBagOfCats(e.getValue()));
+        planeMap.entrySet().forEach(e-> compressSympathetic(e.getValue()));
+        planeMap.entrySet().forEach(e-> repelAntagonistic(e.getKey(),e.getValue()));
     }
 
-    private void collideBagOfCats(List<Particle> value) {
+    private void repelAntagonistic(Plane plane, List<Particle> particles) {
+        out(DB_RULE,"ParticleOnlyRuleSentinel repelAntagonistic plane:" + plane);
+        out(DB_RULE,"ParticleOnlyRuleSentinel repelAntagonistic particles:" + formatList(particles));
+        MapOfLists<SpinSignature,Particle> particleMap = new MapOfLists<>();
+        particles.forEach(part->particleMap.putOne(part.getFirstSpinSignature(),part));
+        List<Integer> sizes = particleMap.sizeMap();
+        if(particleMap.size() == 2){
+
+        }
+    }
+
+    private void compressSympathetic(List<Particle> value) {
         MapOfLists<SpinSignature,Particle> spins = new MapOfLists<>();
         value.forEach(part->spins.putOne(part.getFirstSpinSignature(),part));
         out(DB_RULE_TRACE,"collideBagOfCats Spins Map:" + spins);
         spins.values().forEach(list->{
             if(list.size() > 1) {
-                compressSympathetic(list);
+                List<Particle> living = doCompression(list);
             }
         });
     }
+
 
     /**
      * Two Same become 1
@@ -53,7 +68,8 @@ public class ParticleOnlyRuleSentinel extends Rule3 implements RuleOfThree {
      *      Create a new counter spin particle in new location
      */
 
-    private void compressSympathetic(List<Particle> sympatheticParticles) {
+    private List<Particle> doCompression(List<Particle> sympatheticParticles) {
+        List<Particle> living = new ArrayList<>();
         int numNew = sympatheticParticles.size();
         boolean odd = sympatheticParticles.size() % 2 == 1 ;
         if(odd)
@@ -69,6 +85,7 @@ public class ParticleOnlyRuleSentinel extends Rule3 implements RuleOfThree {
             a.setMotionVector(crossVec);
             out(DB_RULE_TRACE,"compressSympathetic merge to:" + a);
         }
+        return sympatheticParticles.stream().filter(part-> !part.isKill()).collect(Collectors.toList());
     }
 
     private MapOfLists<Plane,Particle> makeInfluenceMap(List<Particle> particles){

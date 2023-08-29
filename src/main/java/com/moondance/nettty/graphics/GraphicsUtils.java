@@ -69,7 +69,7 @@ public class GraphicsUtils {
     public static <T extends OctMember> Group makeOctTreeGroup(Octree<T> tree) {
         BranchGroup group = new BranchGroup();
         group.setCapability(BranchGroup.ALLOW_DETACH);
-        Appearance boxApp = getDebugStructureAppearance(new Color3f(0, 1, 1), 0.95f, false);
+        Appearance boxApp = getDebugStructureAppearance(new Color3f(0, 1, 1), 0.75f, false);
         Appearance dotApp = getDebugStructureAppearance(new Color3f(0, 0, 1), 0.85f, false);
         Appearance crowdedApp = getDebugStructureAppearance(new Color3f(1, 0, 0), 0f, true);
         Appearance toNodeCenter = getDebugStructureAppearance(new Color3f(1, .64f, 0), 0.85f, true);

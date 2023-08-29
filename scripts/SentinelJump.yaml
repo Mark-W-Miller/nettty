@@ -1,32 +1,32 @@
 particles:
   - idRef: X_CW(0 0 0)
-    numCopiesInitial: 9
-  - idRef: X_CCW(5 0 0)
-    numCopiesInitial: 9
-  - idRef: Y_CW(10 0 0)
-    numCopiesInitial: 9
-  - idRef: Y_CCW(15 0 0)
-    numCopiesInitial: 9
-  - idRef: Z_CW(20 0 0)
-    numCopiesInitial: 9
-  - idRef: Z_CCW(25 0 0)
-    numCopiesInitial: 9
-
-  - idRef: Y_CW(0 0 0)
-    numCopiesInitial: 3
-  - idRef: Z_CW(0 0 0)
-    numCopiesInitial: 3
+    numCopiesInitial: 1
   - idRef: X_CCW(0 0 0)
-    numCopiesInitial: 3
-  - idRef: Y_CCW(0 0 0)
-    numCopiesInitial: 3
-  - idRef: Z_CCW(0 0 0)
-    numCopiesInitial: 3
-  - idRef: Z_CW(0 0 0)
-    numCopiesInitial: 5
-  - idRef: Z_CCW(1 1 1)
-    numCopiesInitial: 5
-  - idRef: X_CW(1 1 0)
-    numCopiesInitial: 5
-  - idRef: X_CCW(1 0 0)
-    numCopiesInitial: 5
+    numCopiesInitial: 1
+  - idRef: Y_CW(3 0 0)
+    numCopiesInitial: 1
+  - idRef: Y_CCW(3 0 0)
+    numCopiesInitial: 1
+  - idRef: Z_CW(6 0 0)
+    numCopiesInitial: 1
+  - idRef: Z_CCW(6 0 0)
+    numCopiesInitial: 1
+#
+#  - idRef: Y_CW(0 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Z_CW(0 0 0)
+#    numCopiesInitial: 3
+#  - idRef: X_CCW(0 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Y_CCW(0 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Z_CCW(0 0 0)
+#    numCopiesInitial: 3
+#  - idRef: Z_CW(0 0 0)
+#    numCopiesInitial: 5
+#  - idRef: Z_CCW(1 1 1)
+#    numCopiesInitial: 5
+#  - idRef: X_CW(1 1 0)
+#    numCopiesInitial: 5
+#  - idRef: X_CCW(1 0 0)
+#    numCopiesInitial: 5
