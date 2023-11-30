@@ -1,16 +1,16 @@
 particles:
-  - idRef: X_CW(0 0 0)
-    numCopiesInitial: 1
-  - idRef: X_CCW(0 0 0)
-    numCopiesInitial: 1
+#  - idRef: X_CW(0 0 0)
+#    numCopiesInitial: 2
+#  - idRef: X_CCW(0 0 0)
+#    numCopiesInitial: 2
   - idRef: Y_CW(3 0 0)
     numCopiesInitial: 1
-  - idRef: Y_CCW(3 0 0)
-    numCopiesInitial: 1
-  - idRef: Z_CW(6 0 0)
-    numCopiesInitial: 1
-  - idRef: Z_CCW(6 0 0)
-    numCopiesInitial: 1
+#  - idRef: Y_CCW(3 0 0)
+#    numCopiesInitial: 2
+#  - idRef: Z_CW(6 0 0)
+#    numCopiesInitial: 1
+#  - idRef: Z_CCW(6 0 0)
+#    numCopiesInitial: 1
 #
 #  - idRef: Y_CW(0 0 0)
 #    numCopiesInitial: 3

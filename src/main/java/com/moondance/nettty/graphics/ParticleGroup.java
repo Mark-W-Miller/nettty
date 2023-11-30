@@ -46,6 +46,7 @@ package com.moondance.nettty.graphics;
 
 import com.moondance.nettty.model.Particle;
 import com.moondance.nettty.model.Spin;
+import com.moondance.nettty.model.SpinSignature;
 import org.jogamp.java3d.*;
 import org.jogamp.java3d.utils.geometry.Cylinder;
 import org.jogamp.java3d.utils.geometry.Sphere;
@@ -156,9 +157,15 @@ public class ParticleGroup  extends BranchGroup {
     }
 
 
+    /**
+     * Makes cylinder along axis of spin
+     * @param appearance
+     * @param spin
+     * @return
+     */
     private TransformGroup makeFixedSpinAxis(Appearance appearance, Spin spin) {
         TransformGroup group = makeRotationGroup( spin.getRotationAxis(),spin.getRotationAngle());
-        Cylinder cylinder = new Cylinder(0.05f, spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, appearance);
+        Cylinder cylinder = new Cylinder(0.01f, spin.getShell(), Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, appearance);
         cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         group.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         group.addChild(cylinder);
@@ -167,9 +174,15 @@ public class ParticleGroup  extends BranchGroup {
 
     private static TransformGroup makeSpinAxis(Appearance app, Spin spin) {
         TransformGroup group = makeTranslationGroup(new Vector3d(0,0,0));
-        TransformGroup cylinderXForm = makeTranslationGroup(new Vector3d(0,((float) spin.getShell())/4,0));
+        double y = ((float) spin.getShell())/4 ;
+        double x = 0 ;
+        if(spin.getSpinSignature() == SpinSignature.Y_CW || spin.getSpinSignature() == SpinSignature.Y_CCW){
+            x = y ;
+            y = 0;
+        }
+        TransformGroup cylinderXForm = makeTranslationGroup(new Vector3d(x,y,0));
         group.addChild(cylinderXForm);
-        Cylinder cylinder = new Cylinder(0.1f * spin.getShell()/2, ((float)spin.getShell())/2, Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
+        Cylinder cylinder = new Cylinder(0.01f * spin.getShell()/2, ((float)spin.getShell())/2, Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE,10 , 10, app);
         cylinder.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_WRITE);
         cylinderXForm.addChild(cylinder);
 
@@ -177,7 +190,7 @@ public class ParticleGroup  extends BranchGroup {
         group.addChild(ballXForm);
 
         Sphere sphere = new Sphere(
-                0.1f * ((float)spin.getShell())/2,     // sphere radius
+                0.02f * ((float)spin.getShell())/2,     // sphere radius
                 Sphere.GENERATE_NORMALS | Sphere.GENERATE_TEXTURE_COORDS,  // generate normals
                 8,         // 16 divisions radially
                 app);      // it's appearance

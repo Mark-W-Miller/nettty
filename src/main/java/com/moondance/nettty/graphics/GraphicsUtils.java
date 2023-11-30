@@ -94,7 +94,7 @@ public class GraphicsUtils {
                     boolean crowded = finalApp == crowdedApp ;
                     Point3d part = node.getData().get(0).getOctAddress().getAddress();
 //                    group.addChild(makeSphereAt(part, 0.5, finalApp, crowded ? 16 : 8));
-                    group.addChild(makeSphereAt(node.getCenter().getAddress(), 0.2, finalApp, crowded ? 16 : 8));
+                    group.addChild(makeSphereAt(node.getCenter().getAddress(), 0.1, finalApp, crowded ? 16 : 8));
                     group.addChild(makeColorLineShape(node.getCenter().getAddress(),part, new Color3f(1, .64f, 0), toNodeCenter));
                 }
             }
