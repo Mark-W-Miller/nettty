@@ -1,5 +1,5 @@
 'use strict';
-const {chapters, ramp, state, receivedCount, twirlRadius, duration} = NettyEvolution;
+const {chapters, ramp, state, receivedCount, twirlRadius, pumpTurns, duration} = NettyEvolution;
 const $ = id => document.getElementById(id);
 const canvas = $('universe');
 const mainContext = canvas.getContext('2d');
@@ -123,20 +123,27 @@ function orbit(center, radius, axis, phase, color, opacity, weight = .8) {
 function pinkField() {
   // Continuous filled surfaces, not particles. A slight red/white tightness difference
   // remains after the phases lock, producing the visible shared breath.
-  const visibility = (1 - scene.black * .9) * (1 - scene.blue * .8);
+  const visibility = Math.max(.18 * ramp(time, 18, 25), (1 - scene.black * .9) * (1 - scene.blue * .8));
   const center = project([0, 0, 0]);
+  const settled = ramp(time, 13, 23);
   for (let band = 0; band < 10; band++) {
+    const layerFade = band < 2 ? 1 : 1 - settled;
+    if (layerFade < .001) continue;
     const white = band % 2 === 1;
     const syncPhase = (1 - scene.sync) * band * 1.7;
     const pulse = Math.sin(time * 1.2 + syncPhase);
     const contraction = white ? 1 : 1 - .8 * scene.redRetraction;
-    const base = (139 - band * 6) * (white ? .94 : 1) * (1 + .09 * pulse) * contraction;
+    const looseBase = (139 - band * 6) * (white ? .94 : 1) * (1 + .09 * pulse) * contraction;
+    const base = looseBase * (1 - settled) + (white ? 43 : 39) * (1 + .025 * pulse) * settled;
+    const exchange = (white ? 1 : -1) * settled;
+    const driftX = Math.sin(time * .9) * 9 * exchange;
+    const driftY = Math.cos(time * .9) * 4 * exchange;
     ctx.beginPath();
     for (let j = 0; j <= 100; j++) {
       const a = j / 100 * TAU;
-      const r = base * (1 + .16 * Math.sin(a * 3 + time * .28 + syncPhase) + .09 * Math.cos(a * 5 - time * .18));
-      const x = center[0] + (Math.cos(a) * r + Math.sin(time * .32 + syncPhase) * 15) * center[2];
-      const y = center[1] + (Math.sin(a) * r * .9 + Math.cos(time * .25 + syncPhase) * 12) * center[2];
+      const r = base * (1 + (1 - settled) * (.16 * Math.sin(a * 3 + time * .28 + syncPhase) + .09 * Math.cos(a * 5 - time * .18)));
+      const x = center[0] + (Math.cos(a) * r + Math.sin(time * .32 + syncPhase) * 15 * (1 - settled) + driftX) * center[2];
+      const y = center[1] + (Math.sin(a) * r * (.9 + .1 * settled) + Math.cos(time * .25 + syncPhase) * 12 * (1 - settled) + driftY) * center[2];
       j ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
     }
     ctx.closePath();
@@ -144,26 +151,26 @@ function pinkField() {
     g.addColorStop(0, white ? '#fff5f3' : '#ff4666');
     g.addColorStop(.55, white ? '#f2b7c3' : '#b51d46');
     g.addColorStop(1, white ? '#ffbaca00' : '#6a153b00');
-    ctx.globalAlpha = visibility * (white ? .2 : .26);
+    ctx.globalAlpha = visibility * layerFade * ((white ? .2 : .26) + settled * .23);
     ctx.fillStyle = g; ctx.fill();
-    ctx.globalAlpha = visibility * .15;
+    ctx.globalAlpha = visibility * layerFade * (.15 + settled * .23);
     ctx.strokeStyle = white ? '#ffe9ed' : '#ff5b84'; ctx.lineWidth = 1; ctx.stroke();
   }
 }
 function twirl() {
-  const visible = scene.twirl * (1 - ramp(time, 36, 49)) + .18 * ramp(time, 85, 89) * (1 - scene.life * .85);
+  const visible = scene.twirl * (1 - ramp(time, 58, 64)) + .18 * ramp(time, 85, 89) * (1 - scene.life * .85);
   if (!visible) return;
   // Exactly two perpendicular rings. Radii sum to a constant and touch zero
   // in opposite phases. Luminous trails show spin even on a circular ring.
   for (let axis = 0; axis < 2; axis++) {
     const radius = twirlRadius(time, axis);
     const size = radius * (1 - scene.black * .58);
-    orbit([0, 0, 0], Math.max(.03, size), axis, time * (axis ? -2 : 2), '#f4f3ff', visible, 1.7);
+    orbit([0, 0, 0], Math.max(.03, size), axis, pumpTurns(time) * TAU * (axis ? -1 : 1), '#f4f3ff', visible, 1.7);
     const trail = [];
     for (let j = 0; j < 65; j++) {
       const ago = j * .018;
       const r = twirlRadius(time - ago, axis) * (1 - scene.black * .58);
-      const a = (time - ago) * (axis ? -2 : 2);
+      const a = pumpTurns(time - ago) * TAU * (axis ? -1 : 1);
       trail.push(axis ? [Math.cos(a) * r, 0, Math.sin(a) * r] : [0, Math.cos(a) * r, Math.sin(a) * r]);
     }
     stroke(trail, axis ? '#ffc9de' : '#ffffff', visible * .7, 2.2);

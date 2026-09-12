@@ -21,13 +21,17 @@
       redRetraction: ramp(t, 18, 21),
       black: 1 - Math.exp(-age / 5), blue: ramp(t, 62, 73),
       blackOpacity: 1 - ramp(t, 58, 64), cameraPush: 1 + 4 * ramp(t, 53, 64),
-      blackPopulation: Math.floor(2800 * (1 - Math.exp(-age / 5))),
+      blackPopulation: Math.max(0, Math.min(2800, Math.floor(pumpTurns(t) - pumpTurns(36)))),
       weave: ramp(t, 67, 84), wave: Math.max(0, (t - 87) * 36),
       matter: ramp(t, 87, 102), cool: ramp(t, 99, 113),
       blueContraction: 1 - .72 * ramp(t, 80, 87), cosmos: ramp(t, 89, 102), earth: ramp(t, 104, 118),
       life: ramp(t, 118, 132), tools: ramp(t, 132, 149),
       computing: ramp(t, 150, 158), thoughtnet: ramp(t, 158, 176), feedback: ramp(t, 176, 188), breath: 1 + .045 * Math.sin(t * 1.2)
     };
+  }
+  function pumpTurns(t) {
+    const age = Math.max(0, Math.min(t, 64) - 36);
+    return Math.max(0, Math.min(t, 36) - 18) * .2 + .2 / .33 * Math.expm1(.33 * age) + Math.max(0,t-64)*6;
   }
   function receivedCount(t, delay) {
     const elapsed = t - 76 - delay;
@@ -46,7 +50,7 @@
     }
     return changes;
   }
-  const api = { dnaRevision, chapters, clamp, ramp, state, receivedCount, twirlRadius, duration: 204 };
+  const api = { pumpTurns, dnaRevision, chapters, clamp, ramp, state, receivedCount, twirlRadius, duration: 204 };
   if (typeof module !== 'undefined') module.exports = api;
   else root.NettyEvolution = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

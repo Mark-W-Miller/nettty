@@ -95,3 +95,13 @@ Make Green tissue recognizable as cells: outer membranes, cytoplasm, organelles 
 ## Yellow slime-mold aside
 
 Mark requested a small joke during the inward DNA shot: “Unless of course you are a yellow mold,” with DNA distributed through its body. The onscreen adaptation is: “Unless you’re a yellow slime mold… Why settle for one nucleus? Bring thousands.” A little yellow body contains scattered nuclear dots. This preserves the joke while correcting the no-nucleus wording: plasmodial slime molds contain many nuclei within one shared cell. Reference: https://www.nps.gov/yose/blogs/wildlife-and-other-sightings-dog-vomit-slime-mold.htm
+
+## Pink settles as White begins
+
+By the time the central God particle spins up, the amorphous red/white wobble should have resolved into two smooth circles or spheres. Their positions exchange only slightly, enough to notice. The irregular deformation subsides into a stable breathing relationship. Keep the central perpendicular twirl distinct from these two underlying energy surfaces.
+
+The settled spheres never stop exchanging and breathing. That enduring motion is the pump itself, beneath every later structure and after the Big Bang's released energy fades. Their stability is stability of repeating motion, not stillness.
+
+## One rotation, one new Black sphere
+
+Latest direction supersedes the earlier slowing population-growth timing: the pump begins slowly, accelerates, and every completed rotation during the Black emergence creates another sphere. Drive the visible rotation and population count from the same accumulated-turn clock, rather than unrelated animations. The rendered field has a finite 2,800-sphere budget before the camera enters its gaps; the underlying story continues beyond that visible sample.

@@ -32,7 +32,8 @@ receivedCount(160, .2);
 assert.equal(receivedCount(103, .2), saved);
 console.log('Evolution checks passed: emergence, slowing growth, persistent spaces, counter-phase twirl, retained signal state.');
 
-assert(state(51).blackPopulation > 2500);
+assert(state(62).blackPopulation > 2500);
+for (const t of [36,40,45,50,55,60]) assert.equal(state(t).blackPopulation, Math.max(0,Math.min(2800,Math.floor(require("./evolution-model.js").pumpTurns(t)-require("./evolution-model.js").pumpTurns(36)))));
 assert(state(40).blackPopulation < state(50).blackPopulation);
 assert.equal(state(53).cameraPush, 1);
 assert(state(63).cameraPush > 4);
