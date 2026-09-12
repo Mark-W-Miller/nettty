@@ -55,3 +55,7 @@ assert.equal(duration, 204);
 assert.equal(state(176).feedback, 0);
 assert.equal(state(188).feedback, 1);
 console.log('DNA edit retention and learning-surface timing checks passed.');
+
+for (const t of [13,16,18,21,23,30]) {
+  assert(Math.abs(state(t).twirlScale - (1 - .68 * state(t).pairSettled)) < 1e-12);
+}

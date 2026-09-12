@@ -17,6 +17,7 @@
     const age = Math.max(0, t - 36);
     return {
       chapter: chapters.reduce((n, chapter, i) => t >= chapter.at ? i : n, 0),
+      pairSettled: ramp(t, 13, 23), twirlScale: 1 - .68 * ramp(t, 13, 23),
       sync: ramp(t, 4, 18), twirl: ramp(t, 18, 29),
       redRetraction: ramp(t, 18, 21),
       black: 1 - Math.exp(-age / 5), blue: ramp(t, 62, 73),

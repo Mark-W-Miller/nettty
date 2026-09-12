@@ -125,7 +125,7 @@ function pinkField() {
   // remains after the phases lock, producing the visible shared breath.
   const visibility = Math.max(.18 * ramp(time, 18, 25), (1 - scene.black * .9) * (1 - scene.blue * .8));
   const center = project([0, 0, 0]);
-  const settled = ramp(time, 13, 23);
+  const settled = scene.pairSettled;
   for (let band = 0; band < 10; band++) {
     const layerFade = band < 2 ? 1 : 1 - settled;
     if (layerFade < .001) continue;
@@ -164,12 +164,12 @@ function twirl() {
   // in opposite phases. Luminous trails show spin even on a circular ring.
   for (let axis = 0; axis < 2; axis++) {
     const radius = twirlRadius(time, axis);
-    const size = radius * (1 - scene.black * .58);
+    const size = radius * scene.twirlScale * (1 - scene.black * .58);
     orbit([0, 0, 0], Math.max(.03, size), axis, pumpTurns(time) * TAU * (axis ? -1 : 1), '#f4f3ff', visible, 1.7);
     const trail = [];
     for (let j = 0; j < 65; j++) {
       const ago = j * .018;
-      const r = twirlRadius(time - ago, axis) * (1 - scene.black * .58);
+      const r = twirlRadius(time - ago, axis) * state(time - ago).twirlScale * (1 - scene.black * .58);
       const a = pumpTurns(time - ago) * TAU * (axis ? -1 : 1);
       trail.push(axis ? [Math.cos(a) * r, 0, Math.sin(a) * r] : [0, Math.cos(a) * r, Math.sin(a) * r]);
     }

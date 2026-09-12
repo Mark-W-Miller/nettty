@@ -105,3 +105,5 @@ The settled spheres never stop exchanging and breathing. That enduring motion is
 ## One rotation, one new Black sphere
 
 Latest direction supersedes the earlier slowing population-growth timing: the pump begins slowly, accelerates, and every completed rotation during the Black emergence creates another sphere. Drive the visible rotation and population count from the same accumulated-turn clock, rather than unrelated animations. The rendered field has a finite 2,800-sphere budget before the camera enters its gaps; the underlying story continues beyond that visible sample.
+
+The central God-particle twirl shrinks in synchrony with the red/white surfaces settling into their beating pair. Use the same transition progress for both; the twirl remains a small, moving center within the stable pair.
