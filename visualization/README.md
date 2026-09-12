@@ -27,7 +27,7 @@ Visit http://127.0.0.1:8765/visualization/.
 | Time | Emergence |
 | --- | --- |
 | 0:00 | Pink: red/white deforming surfaces, slightly different tightness, phases gradually synchronizing |
-| 0:18 | White: one central twirl, two perpendicular rings with exactly opposite radial phases |
+| 0:18 | White: one central twirl, two perpendicular rings with exactly opposite radial phases; the red wobble retracts to one-fifth its radius over the first three seconds while white keeps breathing |
 | 0:36 | Black: connected spherical regions, imperfect gaps, growth with exponentially decreasing rate |
 | 0:58 | Blue: simple nested shells born in gaps; binding and repelling motion; asymmetric fibrous chains |
 | 1:16 | Blue processing: incoming patterned packets, retained node state changes, transformed outgoing packets |

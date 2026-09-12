@@ -111,7 +111,8 @@ function pinkField() {
     const white = band % 2 === 1;
     const syncPhase = (1 - scene.sync) * band * 1.7;
     const pulse = Math.sin(time * 1.2 + syncPhase);
-    const base = (139 - band * 6) * (white ? .94 : 1) * (1 + .09 * pulse);
+    const contraction = white ? 1 : 1 - .8 * scene.redRetraction;
+    const base = (139 - band * 6) * (white ? .94 : 1) * (1 + .09 * pulse) * contraction;
     ctx.beginPath();
     for (let j = 0; j <= 100; j++) {
       const a = j / 100 * TAU;

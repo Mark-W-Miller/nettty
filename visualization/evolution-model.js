@@ -3,7 +3,7 @@
   'use strict';
   const chapters = [
     { at: 0, name: 'Pink Zone', subtitle: 'The breathing energy', color: '#efa4b9', title: 'Before particles, a breath.', description: 'Red and white flow inside one another. Almost alike, one held a little tighter: a persistent gradient. The blobs change shape, organize, and gradually find a shared pulse.', motifs: 'TWO CHARACTERISTICS · ONE GRADIENT · A SHARED BREATH' },
-    { at: 18, name: 'White Space', subtitle: 'The single twirl', color: '#edf2ff', title: 'One particle. Two counter-pulses.', description: 'As the red and white synchronize, the center spins up. One horizontal ring and one vertical ring twirl in counter-sync: one contracts toward zero while the other expands.', motifs: 'ONE GOD PARTICLE · TWO RINGS · OPPOSITE PHASE' },
+    { at: 18, name: 'White Space', subtitle: 'The single twirl', color: '#edf2ff', title: 'One particle. Two counter-pulses.', description: 'As the red and white synchronize, the center spins up and the red wobble quickly pulls inward. One horizontal ring and one vertical ring twirl in counter-sync: one contracts toward zero while the other expands.', motifs: 'ONE GOD PARTICLE · TWO RINGS · OPPOSITE PHASE' },
     { at: 36, name: 'Black Space', subtitle: 'One growing entanglement', color: '#8d9bb5', title: 'The twirl stirs a gravitational floor.', description: 'Spherical regions press into a connected body, leaving imperfect gaps. Like ice deep beneath a glacier, this is one growing entanglement. Its growth slows exponentially, while the whole keeps breathing.', motifs: 'CONNECTED SPHERES · IMPERFECT GAPS · SLOWING GROWTH' },
     { at: 58, name: 'Blue Space', subtitle: 'The sentient net processor', color: '#66adff', title: 'In the gaps, a mind takes shape.', description: 'Simple nested shells spin up between the spheres. Different spins bind or repel. Asymmetric chains weave a sentient cotton-candy net: stateful nodes joined by information-bearing arcs. Each arrival changes a node; the outgoing pattern carries that change forward.', motifs: 'SHELL AFFINITY · ASYMMETRIC CHAINS · STATE & SIGNAL' },
     { at: 85, name: 'Red Space', subtitle: 'The energy release', color: '#ff7186', title: 'A drop at the center. A wave of fire.', description: 'The central gravity drops. An energy pulse travels through the Blue fabric, spinning up many protons and a few black holes. Each proton carries a complex Blue core. Swarms gather; cooling makes elements.', motifs: 'GRAVITY DROP · EXPANDING PULSE · BLUE CORES INSIDE MATTER' },
@@ -18,6 +18,7 @@
     return {
       chapter: chapters.reduce((n, chapter, i) => t >= chapter.at ? i : n, 0),
       sync: ramp(t, 4, 18), twirl: ramp(t, 18, 29),
+      redRetraction: ramp(t, 18, 21),
       black: 1 - Math.exp(-age / 11), blue: ramp(t, 58, 72),
       weave: ramp(t, 67, 84), wave: Math.max(0, (t - 87) * 36),
       matter: ramp(t, 87, 102), cool: ramp(t, 99, 113),
