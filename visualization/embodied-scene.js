@@ -103,6 +103,7 @@ function drawEmbodiedScene() {
     // Free energy is drawn inward, while the shell retains a fluctuating surplus.
     point(scale(path[Math.floor((time*.11+band*.1)%1*70)],1-(time*.2+band*.1)%1*.5),'#ffbfdb',1.5,visible*.45);
   }
+  drawHumanObserver(visible * tech);
   devices.filter(i=>depth(i)<0).forEach(i=>embodiedDevice(i,visible*tech));
   ctx.globalAlpha=1;
 }
@@ -288,4 +289,26 @@ function drawFlock() {
   const bird=flockBirds[0];
   if(count>6)flockBirds.slice(1,count).sort((a,b)=>Math.hypot(...a.p.map((x,k)=>x-bird.p[k]))-Math.hypot(...b.p.map((x,k)=>x-bird.p[k]))).slice(0,6).forEach(b=>stroke([bird.p,b.p],'#66b5f2',visible*.24,.8));
   orbit([24,8,0],17,1,0,'#787e8b',visible*.4);
+}
+
+// A human remains between the source and a screen, looking outward toward it.
+// The back of the head has no face markings; forearms reach toward the device.
+function drawHumanObserver(visible) {
+  if(visible<.001)return;
+  const a=.2+3*TAU/7;
+  const outward=[Math.sin(a),0,Math.cos(a)], side=[Math.cos(a),0,-Math.sin(a)];
+  const origin=add(scale(outward,76),[0,24,0]);
+  const at=(x,y,z=0)=>add(origin,add(scale(side,x),add([0,y,0],scale(outward,z))));
+  const line=(points,alpha=.65,weight=1.5)=>stroke(points.map(p=>at(...p)),'#ddcdb9',visible*alpha,weight);
+  const head=[];
+  for(let i=0;i<=36;i++){const t=i/36*TAU;head.push(at(Math.cos(t)*9,-39+Math.sin(t)*12,0));}
+  embodiedFace(head,'#9c938b',visible*.11);stroke(head,'#e3d4c0',visible*.75,1.5);
+  const torso=[at(-5,-27),at(-20,-21),at(-16,9),at(-11,18),at(12,18),at(17,9),at(21,-21),at(5,-27)];
+  embodiedFace(torso,'#baa891',visible*.09);stroke([...torso,torso[0]],'#d5c4ad',visible*.65,1.4);
+  line([[0,-25],[0,10]],.23);
+  for(const s of [-1,1]) {
+    line([[s*19,-20,0],[s*24,-3,10],[s*17,-10,26]],.7,2);
+    line([[s*8,18,0],[s*11,38,0],[s*13,57,3],[s*18,57,9]],.65,2);
+    point(at(s*17,-10,26),'#f0d9b6',2,visible*.8);
+  }
 }

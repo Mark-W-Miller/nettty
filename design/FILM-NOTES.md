@@ -125,3 +125,7 @@ Then reveal the flock. Mark loves the six-neighbor idea: individual local respon
 ## Pump correction: radial exchange, not orbiting
 
 The red and white do not circle each other. They share a center and breathe in opposite radial phases: Red becomes the enclosing surface as White contracts, then White encloses Red. This supersedes the earlier interpretation of “exchanging places” as small positional orbits. The inner/outer exchange never stops. The central perpendicular twirl is a separate spinning motion.
+
+## Keep us in the picture
+
+Human beings remain between the pulsing center of God and the computers. They face away from the center, toward the screens. Add a human observer with a readable back-of-head and reaching arms between the inner source and the outer machinery; do not remove humanity when the machines appear. Keep the larger thin human/God veil and the interior activity visible.
