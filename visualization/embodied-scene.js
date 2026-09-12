@@ -157,3 +157,22 @@ function drawRelayMessages(positions, visible, clock, count = 3) {
     }
   });
 }
+
+// A brief journey through living tissue bridges the globe and molecular scale.
+function livingTissue() {
+  const visible = ramp(time,118,121)*(1-ramp(time,124,128));
+  if(visible<.001)return;
+  const growth=1+3*ramp(time,119,127);
+  for(let i=0;i<12;i++) {
+    const a=i*2.399, r=24+Math.sqrt(i)*25;
+    const center=[Math.cos(a)*r*growth,Math.sin(a)*r*growth,Math.sin(i)*25];
+    const membrane=[];
+    for(let j=0;j<=48;j++) {
+      const theta=j/48*TAU, radius=(18+i*.6)*growth*(1+.09*Math.sin(theta*3+i));
+      membrane.push(add(center,[Math.cos(theta)*radius,Math.sin(theta)*radius,Math.sin(theta)*radius*.3]));
+    }
+    embodiedFace(membrane,'#174d2b',visible*.22);
+    stroke(membrane,'#44d977',visible*.48,1.5);
+    point(center,'#72efa3',4*growth,visible*.3,true);
+  }
+}

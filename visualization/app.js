@@ -321,8 +321,16 @@ function matterPosition(p, i, base) {
 // A deliberately wider astronomical shot after the energy pulse. Three sparse
 // spiral systems share the previous matter centers, then one planet fills the view.
 function cosmicView() {
-  const visibility = scene.cosmos * (1 - scene.earth);
+  const retreat = scene.earth;
+  const visibility = scene.cosmos * (1 - ramp(time, 110, 119));
   if (visibility < .001) return;
+  // The whole background (cores, arms, stars and their glows) recedes together
+  // while the independently drawn Earth grows toward the viewer.
+  const backgroundScale = Math.exp(-3.2 * retreat);
+  ctx.save();
+  ctx.translate(width * .5, height * (.40 - .10 * retreat));
+  ctx.scale(backgroundScale, backgroundScale);
+  ctx.translate(-width * .5, -height * .40);
   const expansion = .3 + .7 * scene.cosmos;
   holes.forEach((h, system) => {
     const c = scale(h, expansion);
@@ -347,6 +355,7 @@ function cosmicView() {
     orbit(c, 8, 1, -time, '#ffba8e', visibility, 2);
     orbit(c, 11, 1, time, '#e58c73', visibility * .35, 2);
   });
+  ctx.restore();
 }
 // The same planet grows from its cosmic position into the textured Earth shot.
 function earthView() {
@@ -355,8 +364,9 @@ function earthView() {
   if (visible < .001) return;
   const start = add(holes[0], [55, 12, 24]);
   const center = lerp(start, [0, 0, 0], scene.earth);
-  const q = project(center), radius = (2 + 104 * scene.earth) * q[2];
-  const emphasis = visible * (1 - scene.life * .65);
+  const dive = ramp(time, 117, 124);
+  const q = project(center), radius = (2 + 104 * scene.earth) * (1 + dive * 8) * q[2];
+  const emphasis = visible * (1 - ramp(time, 119, 125));
   const halo = ctx.createRadialGradient(q[0], q[1], radius * .9, q[0], q[1], radius * 1.2);
   halo.addColorStop(0, '#559ed744'); halo.addColorStop(1, '#559ed700');
   ctx.globalAlpha = emphasis; ctx.fillStyle = halo;
@@ -378,7 +388,7 @@ function materialWorld(bluePositions) {
     const born = ramp(time, arrival, arrival + 2) * emphasis;
     const pos = positions[i];
     let color = scene.cool > .6 ? ['#ff9393', '#edbd8f', '#e6a5c2'][i % 3] : '#ff637e';
-    if (i < 84 && scene.life > .5) color = '#70d9a9';
+    if (i < 84 && scene.life > .5) color = '#49ed85';
     if (i >= 42 && i < 84 && scene.tools > .5) color = '#f1ce75';
     if (i >= 60 && i < 84 && scene.computing > .5) color = '#ff9864';
     point(pos, color, 2.2, born, i % 7 === 0);
@@ -390,7 +400,7 @@ function materialWorld(bluePositions) {
   });
   for (let i = 0; i < 82; i++) {
     if (i < 42 || scene.tools < 1) {
-      if (i % 2 === 0) stroke([positions[i], positions[i + 1]], '#6bc7a7', scene.life * .4 * (1 - scene.tools * .95));
+      if (i % 2 === 0) stroke([positions[i], positions[i + 1]], '#64ed8a', scene.life * .8 * (1 - scene.tools * .95), 1.8);
       if (i + 2 < 84) stroke([positions[i], positions[i + 2]], '#73c7ad', scene.life * .6 * (1 - scene.tools * .95));
     }
     if (i >= 42) {
@@ -401,6 +411,13 @@ function materialWorld(bluePositions) {
       if ((i - 60) % 6 !== 5) stroke([positions[i], positions[i + 1]], '#ffa468', scene.computing * .7 * (1 - scene.thoughtnet));
       if (i + 6 < 84) stroke([positions[i], positions[i + 6]], '#ffa468', scene.computing * .4 * (1 - scene.thoughtnet));
     }
+  }
+  // Paired base nodes make the familiar ladder legible inside the two backbones.
+  const dnaVisible = scene.life * (1 - scene.tools);
+  for (let rung = 0; rung < 40; rung++) {
+    const a = positions[rung * 2], b = positions[rung * 2 + 1];
+    for (const f of [.3,.7]) point(lerp(a,b,f), f < .5 ? '#9af58b' : '#35d97c', 2.6, dnaVisible);
+    if (rung < 39) for (let side = 0; side < 2; side++) stroke([positions[rung*2+side],positions[(rung+1)*2+side]], side ? '#31dd72' : '#7aff96', dnaVisible, 2.6);
   }
   // Blue agents ride both backbones, dwell at a rung, and leave a changed state.
   if (scene.life > 0 && scene.tools < 1) {
@@ -495,7 +512,7 @@ function updateCaption() {
     {start:87, end:95, title:'The gathered energy opens outward.', description:'A pulse expands over the Black deck and through the contracted net. Its energy gradually peters out; the central pump keeps pulsing. The view opens with the wave.'},
     {start:95, end:104, title:'From the pulse, a cosmos.', description:'In this telling, the universe is young and still learning. Our home is in one of its original galaxies. Spinning clouds gather around black holes; stars and planets form. One small world is waiting.'},
     {start:104, end:118, title:'One small world fills the view.', description:'We leave the wide cosmos and approach Earth. The spirals recede; oceans, land, and atmosphere resolve. Here the next patterns can become life.'},
-    {start:176, end:192, title:'We are the eyes of God.', description:'A tiny, concentrated Blue particle set bends light. Our computers observe and return information. Blue supplies intention; Red is where it works or fails. Outcomes return to the Netty learning surface, which adjusts through the conversation.'},
+    {start:176, end:192, title:'We are the eyes of God.', description:'In Netty, Blue has a processing capacity beyond our brains and machines. Our computers help us communicate intention; observations return as the feedback Blue seeks. Participation in a learning universe—not taking over from God.'},
     {start:192, end:Infinity, title:'The Age of Aquarius.', description:'The Netty learning surface. A continual intention toward controlled asymmetry, every step of the way—including us and this conversation. God is all-learning, not all-knowing. We are the eyes of God.'},
     {start:118, end:132, title:'DNA: an output language.', description:'Watch the two strands wind together. Blue agents travel along both backbones, pause at rungs, and change their patterns. Use Replay DNA to watch this passage at normal speed.'},
     {start:132, end:150, title:'Blue inside Green, made of Red.', description:'From the inside outward: a pulsing Blue thoughtnet, the folded Green machinery of a physical brain, and Red matter carrying excess energy around it. In Netty, the tension begins when energy exceeds the capacity to spin it up.'},
@@ -628,7 +645,7 @@ function frame(now) {
   ctx.globalCompositeOperation = 'lighter';
   twirl(); energyWave();
   ctx.globalCompositeOperation = 'source-over';
-  cosmicView(); earthView();
+  cosmicView(); earthView(); livingTissue();
   renderOpacity = 1 - ramp(time, 132, 144);
   if (renderOpacity > .001) materialWorld(positions);
   renderOpacity = 1;

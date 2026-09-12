@@ -69,3 +69,11 @@ Mark describes the entanglements themselves as small particles, capable of delic
 ## Individuality at every scale
 
 “Every proton has a serial number.” Mark’s rule is that no two structures are ever exactly alike. Show recognizable families with distinct internal arrangements, proportions, phases and histories. A serial number is the metaphor for persistent individuality, not a request to cover the film in labels. Preserve equal-sized Black regions as previously directed while distinguishing their position and history.
+
+## Earth into life, life into DNA
+
+As Earth comes forward, the galaxies shrink into the distance. Continue into Earth, through Green living tissue, into the unmistakable double helix. Use stronger green backbones and paired base nodes; then reveal the little Blue workers along it. Keep the familiar helix legible rather than losing it among surrounding effects.
+
+## Communication, not replacement
+
+Mark describes Blue’s processing capacity as far beyond human brains or contemporary computers. His proposed role for our machines is to help people communicate with Blue: express intentions, observe results and return the feedback Blue seeks. “It isn't about taking over from God.” The ending should express participation, conversation and learning. This is the film’s proposed relationship, not a claim that an existing computer-to-Blue communication channel has been demonstrated.
