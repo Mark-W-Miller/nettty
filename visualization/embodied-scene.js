@@ -12,9 +12,9 @@ function embodiedFace(points, color, opacity) {
 }
 function cortexPoint(u, v, side, pulse) {
   const fold = 1 + side * .024 + .065 * Math.sin(u * 11 + Math.sin(v * 5) * 2) * Math.sin(v * 9 + side * .37);
-  return [side * 25 + Math.cos(u) * Math.sin(v) * 34 * fold,
+  return [side * 14 + Math.cos(u) * Math.sin(v) * 30 * fold,
     Math.cos(v) * 48 * fold - 3,
-    Math.sin(u) * Math.sin(v) * 47 * fold].map(n => n * pulse);
+    Math.sin(u) * Math.sin(v) * 32 * fold].map(n => n * pulse);
 }
 function embodiedDevice(index, visible) {
   const a = index * TAU / 7 + .2;
@@ -237,7 +237,7 @@ function humanVeil() {
   };
   // Broad drapery encloses the brain, the energy and the surrounding instruments.
   veil([[-55,-81,-18],[-100,-61,-10],[-145,-10,0],[-159,52,7],[-123,101,5],[-62,126,0],[25,119,0],[102,86,8],[136,31,5],[104,-28,-8],[61,-75,-18]],'#b9a6b3',.045,1.2);
-  veil([[-42,-66,-4],[-71,-45,0],[-80,18,4],[-60,77,0],[-21,100,0],[35,90,0],[69,38,0],[56,-39,0],[31,-68,0]],'#d6b7a3',.045);
+  veil([[-32,-69,-4],[-78,-55,0],[-83,-31,0],[-61,-15,0],[-53,78,0],[46,78,0],[53,-15,0],[79,-31,0],[73,-55,0],[27,-69,0]],'#d6b7a3',.045);
   // Head, brow, nose and beard: an older human, not an opaque character model.
   veil([[-24,-76,0],[-36,-94,0],[-35,-116,0],[-23,-132,0],[-5,-137,0],[14,-132,0],[25,-120,0],[26,-106,0],[34,-99,0],[25,-95,0],[25,-82,0],[12,-65,0],[-3,-59,0],[-20,-67,0]],'#ddcaba',.10,1.2);
   stroke([[-31,-110,0],[-18,-117,0],[-3,-114,0],[11,-115,0],[21,-110,0]],'#eee0d0',visible*.30,1.2);
