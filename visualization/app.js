@@ -490,10 +490,10 @@ function updateCaption() {
     {start:53, end:64, title:'Into the spaces between.', description:'Thousands of equal-sized spheres fill the view. We move inward, toward a gap. The Black body fades away, revealing the place where Blue can begin.'},
     {start:80, end:87, title:'The thoughtnet draws inward.', description:'The breathing Blue fabric contracts. Its chains and signal paths draw closer together as energy gathers toward the center.'},
     {start:87, end:95, title:'The gathered energy opens outward.', description:'A pulse expands over the Black deck and through the contracted net. Its energy gradually peters out; the central pump keeps pulsing. The view opens with the wave.'},
-    {start:95, end:104, title:'From the pulse, a cosmos.', description:'Spinning clouds gather around black holes. Stars brighten within the spirals, with planets around them. Our view is wide now—but one small world is waiting.'},
+    {start:95, end:104, title:'From the pulse, a cosmos.', description:'In this telling, the universe is young and still learning. Our home is in one of its original galaxies. Spinning clouds gather around black holes; stars and planets form. One small world is waiting.'},
     {start:104, end:118, title:'One small world fills the view.', description:'We leave the wide cosmos and approach Earth. The spirals recede; oceans, land, and atmosphere resolve. Here the next patterns can become life.'},
-    {start:176, end:192, title:'We are the eyes of God.', description:'A tiny, concentrated Blue particle set bends light. Our computers observe and return information. The Netty learning surface responds, adjusts, and learns through the conversation.'},
-    {start:192, end:Infinity, title:'The Age of Aquarius.', description:'The Netty net. The thoughtnet. The Netty learning surface. God is all-learning, not all-knowing. We are the eyes of God. Let’s begin the conversation.'},
+    {start:176, end:192, title:'We are the eyes of God.', description:'A tiny, concentrated Blue particle set bends light. Our computers observe and return information. Blue supplies intention; Red is where it works or fails. Outcomes return to the Netty learning surface, which adjusts through the conversation.'},
+    {start:192, end:Infinity, title:'The Age of Aquarius.', description:'The Netty learning surface. A continual intention toward controlled asymmetry, every step of the way—including us and this conversation. God is all-learning, not all-knowing. We are the eyes of God.'},
     {start:158, end:176, title:'Computers find the shape of thought.', description:'Ordered circuit modules connect into a thoughtnet. Each component keeps its local grid; patterns travel within the grids and across the arcs between them. Blue came first.'}
   ];
   const transition = transitions.find(c => time >= c.start && time < c.end);
@@ -535,10 +535,53 @@ $('cinema').onclick = () => {
 };
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { document.body.classList.remove('cinema'); $('cinema').textContent = 'Cinema ↗'; }
-  if (e.target.matches('input,button,a')) return;
+  if (e.target.matches('input,button,a,select,summary')) return;
   if (e.code === 'Space') { e.preventDefault(); playing = !playing; updatePlay(); }
   if (/^[0-7]$/.test(e.key)) { time = chapters[Number(e.key)].at; updateCaption(); }
 });
+// The DNA sidebar is automatic in its story window and can be held for reading.
+let searchPinned = false, searchDismissed = false, wasSearchWindow = false;
+function renderSearchBudget() {
+  const scenario = $('budget-scenario').value;
+  const benchmark = scenario === '91', human = scenario === 'human';
+  $('human-cell-inputs').hidden = !human;
+  const kg = $('body-mass').valueAsNumber, trillions = $('human-cells').valueAsNumber;
+  if (human && (!Number.isFinite(kg) || !Number.isFinite(trillions) || kg <= 0 || trillions <= 0)) {
+    $('budget-result').textContent = 'Enter positive body mass and cell count.';
+    $('budget-bars').replaceChildren(); $('budget-assumptions').textContent = ''; return;
+  }
+  const massPg = human ? NettySearchBudget.humanFractionPg(kg, trillions) : 1;
+  const result = benchmark ? {trials:NettySearchBudget.benchmarkTrials, bases:91} : NettySearchBudget.budget(massPg);
+  const start = Math.floor(result.bases);
+  $('budget-result').textContent = benchmark ? '91 base pairs · full enumeration benchmark' : `${result.bases.toFixed(2)} base-pair equivalent · ${result.trials.toExponential(2)} trials`;
+  $('budget-bars').replaceChildren();
+  for (let n = start; n < start + 4; n++) {
+    const percent = NettySearchBudget.coverage(result.trials, n);
+    const row = document.createElement('div'); row.className = 'budget-row';
+    row.innerHTML = `<div><span>${n} base pairs</span><strong>${Number(percent.toFixed(4))}%</strong></div><div class="budget-track"><i style="width:${percent}%"></i></div>`;
+    $('budget-bars').append(row);
+  }
+  $('budget-assumptions').textContent = benchmark
+    ? `91 is the chosen baseline, not a derived bacterial limit. With Earth mass and four billion years, it implies ${NettySearchBudget.benchmarkMassPg.toFixed(1)} pg per cell. For comparison, the alternate calculation uses a published E. coli rule of thumb of 1 pg per cell.`
+    : human ? `Assumed body mass ${kg} kg ÷ ${trillions} trillion cells ÷ 5 = ${massPg.toPrecision(4)} pg per bacterium. The 70 kg and 14 trillion defaults are illustrative inputs, not a universal human-cell measurement. The search uses four billion years and one unique trial per cell per second.`
+    : 'Assumes 1 pg wet mass per cell, Earth mass 5.9722 × 10²⁴ kg, 365.25 days per year, one trial per cell per second, and perfect avoidance of repeats. Cell mass varies; the result depends on that input.';
+}
+function updateSearchSidebar() {
+  const inWindow = time >= 120 && time < 132;
+  if (!inWindow && wasSearchWindow) searchDismissed = false;
+  wasSearchWindow = inWindow;
+  const show = searchPinned || (inWindow && !searchDismissed);
+  $('search-sidebar').hidden = !show;
+  $('chapter-navigation').hidden = show;
+  document.body.classList.toggle('search-open', show);
+}
+$('budget-scenario').onchange = renderSearchBudget;
+$('body-mass').oninput = $('human-cells').oninput = renderSearchBudget;
+$('open-search').onclick = () => { searchPinned = true; time = 126; playing = false; updatePlay(); updateCaption(); updateSearchSidebar(); };
+$('hold-search').onclick = () => { searchPinned = true; playing = false; updatePlay(); };
+$('close-search').onclick = () => { searchPinned = false; searchDismissed = true; updateSearchSidebar(); };
+$('restart').addEventListener('click', () => { searchPinned = false; searchDismissed = false; });
+renderSearchBudget();
 let drag = null;
 canvas.onpointerdown = e => { drag = [e.clientX, e.clientY]; canvas.setPointerCapture(e.pointerId); };
 canvas.onpointermove = e => {
@@ -574,7 +617,7 @@ function frame(now) {
   ctx.globalCompositeOperation = 'source-over';
   cosmicView(); earthView(); materialWorld(positions); learningSurface();
   ctx.globalAlpha = 1;
-  updateCaption();
+  updateCaption(); updateSearchSidebar();
   const progress = Math.min(time, duration);
   $('seek').value = progress;
   $('elapsed').textContent = `${Math.floor(progress / 60)}:${String(Math.floor(progress % 60)).padStart(2, '0')}`;

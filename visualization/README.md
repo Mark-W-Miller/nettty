@@ -63,3 +63,15 @@ Focused checks cover emergence continuity, exponentially slowing Black growth, p
 The Java / Java3D project remains independent in `src/`. This revision adds no narration or video export.
 
 The closing light-bending structure and learning conversation visualize Mark's film concept; they are authored choreography, not a reconstruction of an observed UAP or a live learning system.
+
+## DNA search sidebar
+
+At 2:00–2:12, the left rail shows Mark's thesis and a non-repeating exhaustive-search thought experiment. **Search sidebar** opens it at 2:06 and pauses the film; **Hold this thought** keeps it open for reading. Closing it returns to the chapter list without changing the playback setting.
+
+Three explicit scenarios are available:
+
+- One-fifth of a human cell: editable body mass and cell count. Illustrative defaults of 70 kg and 14 trillion cells imply 1,000 pg per bacterium and 89.49 base-pair equivalent.
+- 91-base benchmark: a chosen budget of 4^91, implying about 123 pg per cell under the time/mass assumptions. Coverage at 91–94 bases is 100%, 25%, 6.25%, 1.5625%.
+- 1 pg per cell: the BioNumbers E. coli rule of thumb yields 94.47 base-pair equivalent.
+
+The inputs use Earth mass 5.9722e24 kg, four billion Julian years, one unique trial per cell per second, and four choices per DNA position. The panel labels the philosophical claim as Mark's thesis and distinguishes exhaustive enumeration from a probability of evolution. Source links and full assumptions appear inside the panel. Test the calculation with `node visualization/search-budget.test.cjs`.
