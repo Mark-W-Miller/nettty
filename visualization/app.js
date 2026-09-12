@@ -70,6 +70,7 @@ function processorState() {
 }
 const holes = [[-80, -28, 35], [91, 32, -35], [10, -78, -68]];
 let scene;
+let renderOpacity = 1;
 function project(p) {
   const helixView = ramp(time, 116, 125) * (1 - ramp(time, 133, 142));
   const angle = (yaw + time * .014) * (1 - helixView) + (yaw + .1) * helixView;
@@ -85,7 +86,7 @@ function project(p) {
 }
 function stroke(points, color, opacity = 1, weight = 1, close = false) {
   if (opacity <= .001) return;
-  ctx.globalAlpha = Math.min(1, opacity);
+  ctx.globalAlpha = Math.min(1, opacity) * renderOpacity;
   ctx.strokeStyle = color;
   ctx.lineWidth = weight;
   ctx.beginPath();
@@ -96,7 +97,7 @@ function stroke(points, color, opacity = 1, weight = 1, close = false) {
 function point(p, color, radius = 2, opacity = 1, glow = false) {
   if (opacity <= .001) return;
   const q = project(p), r = Math.max(.25, radius * q[2]);
-  ctx.globalAlpha = Math.min(1, opacity);
+  ctx.globalAlpha = Math.min(1, opacity) * renderOpacity;
   if (glow) {
     const g = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], r * 5);
     g.addColorStop(0, color); g.addColorStop(.2, color + '99'); g.addColorStop(1, color + '00');
@@ -201,7 +202,7 @@ function blackBody() {
 function bluePosition(p, i) {
   const free = 1 - scene.weave;
   // Affine shells settle together; opposing spins visibly move apart before weaving.
-  return p.p.map((v, k) => (v * scene.breath + Math.sin(time * .8 * p.spin + p.phase + k) * (free * 10 + 1.6)) * scene.blueContraction);
+  return p.p.map((v, k) => (v * scene.breath + Math.sin(time * .8 * p.spin + p.phase + k) * (free * 10 + 1.6)) * scene.blueContraction * (k === 2 ? ramp(time, 69, 79) : 1));
 }
 function blueFabric(positions) {
   if (!scene.blue) return;
@@ -231,6 +232,7 @@ function blueFabric(positions) {
     }
   });
   const memory = processorState();
+  drawRelayMessages(positions, visible, time - 74, 5);
   routes.forEach((r, i) => {
     const elapsed = time - 76 - r.delay;
     if (elapsed < 0) return;
@@ -487,6 +489,7 @@ function learningSurface() {
 function updateCaption() {
   const chapter = state(time).chapter;
   const transitions = [
+    {start:18, end:29, title:'42. This is where we begin.', description:'Four beats, in two pairs. Knit one, purl two. In this telling, the answer is a heartbeat: the underlying tick-tock that sets the three-dimensional universe moving.'},
     {start:53, end:64, title:'Into the spaces between.', description:'Thousands of equal-sized spheres fill the view. We move inward, toward a gap. The Black body fades away, revealing the place where Blue can begin.'},
     {start:80, end:87, title:'The thoughtnet draws inward.', description:'The breathing Blue fabric contracts. Its chains and signal paths draw closer together as energy gathers toward the center.'},
     {start:87, end:95, title:'The gathered energy opens outward.', description:'A pulse expands over the Black deck and through the contracted net. Its energy gradually peters out; the central pump keeps pulsing. The view opens with the wave.'},
@@ -494,7 +497,9 @@ function updateCaption() {
     {start:104, end:118, title:'One small world fills the view.', description:'We leave the wide cosmos and approach Earth. The spirals recede; oceans, land, and atmosphere resolve. Here the next patterns can become life.'},
     {start:176, end:192, title:'We are the eyes of God.', description:'A tiny, concentrated Blue particle set bends light. Our computers observe and return information. Blue supplies intention; Red is where it works or fails. Outcomes return to the Netty learning surface, which adjusts through the conversation.'},
     {start:192, end:Infinity, title:'The Age of Aquarius.', description:'The Netty learning surface. A continual intention toward controlled asymmetry, every step of the way—including us and this conversation. God is all-learning, not all-knowing. We are the eyes of God.'},
-    {start:158, end:176, title:'Computers find the shape of thought.', description:'Ordered circuit modules connect into a thoughtnet. Each component keeps its local grid; patterns travel within the grids and across the arcs between them. Blue came first.'}
+    {start:118, end:132, title:'DNA: an output language.', description:'Watch the two strands wind together. Blue agents travel along both backbones, pause at rungs, and change their patterns. Use Replay DNA to watch this passage at normal speed.'},
+    {start:132, end:150, title:'Blue inside Green, made of Red.', description:'From the inside outward: a pulsing Blue thoughtnet, the folded Green machinery of a physical brain, and Red matter carrying excess energy around it. In Netty, the tension begins when energy exceeds the capacity to spin it up.'},
+    {start:150, end:176, title:'Thought, wrapped in machinery.', description:'The Blue core keeps pulsing inside living Green structure made of Red matter. Around it, ordered computer grids form in three dimensions. Support becomes powered legs, then a protective powered suit: machinery extending human ability. The grids acquire familiar screens. Drag to orbit and look inside.'}
   ];
   const transition = transitions.find(c => time >= c.start && time < c.end);
   const key = `${chapter}:${transition ? transition.start : 'chapter'}`;
@@ -581,6 +586,14 @@ $('open-search').onclick = () => { searchPinned = true; time = 126; playing = fa
 $('hold-search').onclick = () => { searchPinned = true; playing = false; updatePlay(); };
 $('close-search').onclick = () => { searchPinned = false; searchDismissed = true; updateSearchSidebar(); };
 $('restart').addEventListener('click', () => { searchPinned = false; searchDismissed = false; });
+$('replay-dna').onclick = () => {
+  wasSearchWindow = false; time = 118; speed = 1; playing = true; searchPinned = false; searchDismissed = true;
+  $('speed').value = 1; $('speed-label').value = '1×'; updatePlay(); updateCaption();
+};
+$('inside-out').onclick = () => {
+  time = 160; speed = 1; playing = true; searchPinned = false; searchDismissed = true;
+  $('speed').value = 1; $('speed-label').value = '1×'; yaw = .25; pitch = -.23; zoom = 1; updatePlay(); updateCaption();
+};
 renderSearchBudget();
 let drag = null;
 canvas.onpointerdown = e => { drag = [e.clientX, e.clientY]; canvas.setPointerCapture(e.pointerId); };
@@ -615,7 +628,18 @@ function frame(now) {
   ctx.globalCompositeOperation = 'lighter';
   twirl(); energyWave();
   ctx.globalCompositeOperation = 'source-over';
-  cosmicView(); earthView(); materialWorld(positions); learningSurface();
+  cosmicView(); earthView();
+  renderOpacity = 1 - ramp(time, 132, 144);
+  if (renderOpacity > .001) materialWorld(positions);
+  renderOpacity = 1;
+  drawEmbodiedScene();
+  drawAugmentation();
+  $('heartbeat').hidden = time < 18;
+  const beat = Math.floor((time - 18) * 1.8 / (Math.PI / 2)) % 4;
+  $('heartbeat').textContent = [0,1,2,3].map(i => (i === 2 ? '  ' : '') + (i === beat ? '●' : '○')).join(' ') + '   4 beats · 2 pairs · 42';
+  renderOpacity = .35;
+  learningSurface();
+  renderOpacity = 1;
   ctx.globalAlpha = 1;
   updateCaption(); updateSearchSidebar();
   const progress = Math.min(time, duration);

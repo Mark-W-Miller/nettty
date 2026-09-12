@@ -75,3 +75,9 @@ Three explicit scenarios are available:
 - 1 pg per cell: the BioNumbers E. coli rule of thumb yields 94.47 base-pair equivalent.
 
 The inputs use Earth mass 5.9722e24 kg, four billion Julian years, one unique trial per cell per second, and four choices per DNA position. The panel labels the philosophical claim as Mark's thesis and distinguishes exhaustive enumeration from a probability of evolution. Source links and full assumptions appear inside the panel. Test the calculation with `node visualization/search-budget.test.cjs`.
+
+## Inside-out composition and narration
+
+The late film now reveals a translucent folded Green brain with an interior Blue net, Red tissue points and an energy drape. Ordered boards surround it in depth and become screens. A miniature augmentation figure develops from a support to powered legs and a suit. Replay DNA starts that passage at normal speed without the automatic sidebar; Inside-out view jumps to the new composition. Four beat indicators, grouped into pairs, begin with White and the opening 42 caption.
+
+See [the production notes and voice-over draft](../design/FILM-NOTES.md) for the authored thesis, visual cues, retained phrases and future narration work.
