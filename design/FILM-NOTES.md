@@ -129,3 +129,7 @@ The red and white do not circle each other. They share a center and breathe in o
 ## Keep us in the picture
 
 Human beings remain between the pulsing center of God and the computers. They face away from the center, toward the screens. Add a human observer with a readable back-of-head and reaching arms between the inner source and the outer machinery; do not remove humanity when the machines appear. Keep the larger thin human/God veil and the interior activity visible.
+
+## The whitest white at the center
+
+Once it forms, the real God particle must always remain distinctly visible at the center. Render both perpendicular rings, their moving traces and their central point in pure white. This is a deliberate cutaway convention: later material, cells, people and screens must not hide the source.

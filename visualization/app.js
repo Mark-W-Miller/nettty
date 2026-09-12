@@ -158,14 +158,14 @@ function pinkField() {
   }
 }
 function twirl() {
-  const visible = scene.twirl * (1 - ramp(time, 58, 64)) + .18 * ramp(time, 85, 89) * (1 - scene.life * .85);
+  const visible = scene.twirl;
   if (!visible) return;
   // Exactly two perpendicular rings. Radii sum to a constant and touch zero
   // in opposite phases. Luminous trails show spin even on a circular ring.
   for (let axis = 0; axis < 2; axis++) {
     const radius = twirlRadius(time, axis);
     const size = radius * scene.twirlScale * (1 - scene.black * .58);
-    orbit([0, 0, 0], Math.max(.03, size), axis, pumpTurns(time) * TAU * (axis ? -1 : 1), '#f4f3ff', visible, 1.7);
+    orbit([0, 0, 0], Math.max(.03, size), axis, pumpTurns(time) * TAU * (axis ? -1 : 1), '#ffffff', visible, 2.1);
     const trail = [];
     for (let j = 0; j < 65; j++) {
       const ago = j * .018;
@@ -173,9 +173,9 @@ function twirl() {
       const a = pumpTurns(time - ago) * TAU * (axis ? -1 : 1);
       trail.push(axis ? [Math.cos(a) * r, 0, Math.sin(a) * r] : [0, Math.cos(a) * r, Math.sin(a) * r]);
     }
-    stroke(trail, axis ? '#ffc9de' : '#ffffff', visible * .7, 2.2);
+    stroke(trail, '#ffffff', visible * .9, 2.2);
   }
-  point([0, 0, 0], '#fff1f8', 2, visible, true);
+  point([0, 0, 0], '#ffffff', 3.2, visible, true);
 }
 function blackBody() {
   if (!scene.blackPopulation || scene.blackOpacity <= 0) return;
@@ -656,7 +656,7 @@ function frame(now) {
   const positions = particles.map(bluePosition);
   blackDeck(); blueFabric(positions);
   ctx.globalCompositeOperation = 'lighter';
-  twirl(); energyWave();
+  energyWave();
   ctx.globalCompositeOperation = 'source-over';
   cosmicView(); earthView(); livingTissue(); elementBridge();
   renderOpacity = 1 - ramp(time, 132, 144);
@@ -677,6 +677,8 @@ function frame(now) {
   renderOpacity = .35;
   learningSurface();
   renderOpacity = 1;
+  // Keep the source legible through every material layer as a film cutaway.
+  twirl();
   ctx.globalAlpha = 1;
   updateCaption(); updateSearchSidebar();
   const progress = Math.min(time, duration);
