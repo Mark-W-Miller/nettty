@@ -1,40 +1,53 @@
-# Netty Particle Map
+# Netty — continuous evolution
 
-An animated visual interpretation of the seven spaces in Mark William Miller's **Project Netty Anon.pdf**. The original Java application remains in `src/`; this browser study is independent and requires no build, package installation, fonts, or network services.
+A 2 minute 48 second animated film study of Mark William Miller's Netty. The Pink Zone precedes the seven spaces; each later form emerges within the same breathing field. At the end the assembled universe keeps moving. There is no automatic reset or cut back to the beginning.
 
-## Open
+The design PDF is the original brief. Mark's subsequent direction refines it: Pink energy is the red/white pre-particle field; White Space contains one twirl, not a binary particle grid; Black Space is one connected growing entanglement; Blue is a sentient net processor with stateful nodes and information-bearing arcs.
 
-Open `visualization/index.html` directly in a modern browser, or from the repository root run:
+## Watch and direct
+
+Open `visualization/index.html` directly in a browser. Everything works offline, without a build or dependency installation. Alternatively, from the repository root:
 
 ```sh
 python3 -m http.server 8765 --bind 127.0.0.1
 ```
 
-Then visit http://127.0.0.1:8765/visualization/.
+Visit http://127.0.0.1:8765/visualization/.
 
-## Direct the picture
+- Playback starts automatically, except when reduced motion is requested.
+- Pause with the round button or Space. Change tempo from 0.25× to 2×.
+- Scrub the timeline in either direction. Click a chapter to move to its beginning; playback continues if already running.
+- Drag to orbit; scroll to zoom; Reset view restores the camera.
+- Cinema hides the panels. Escape restores them. Keys 0–7 select Pink through Orange.
+- From the first breath restarts the film. At 2:48 the completed scene keeps breathing until paused.
+- Switching away from the browser tab pauses elapsed story time.
 
-- Select any of the seven spaces to study its behavior. **All layers together** restores the composite.
-- Drag the picture to orbit; scroll to zoom. **Reset view** restores the camera.
-- Pause/resume with the round playback button or Space. Tempo controls animation and journey speed.
-- **Play the seven-layer journey** gives each space 12 seconds at normal tempo, then returns to the composite. It is an 84-second silent visual sequence, ready to evolve alongside the movie script.
-- **Cinema** hides the panels. Escape restores them. Keys 1–7 select spaces; 0 selects the composite.
-- Reduced-motion preferences start the animation paused. Playback remains available explicitly.
+## Choreography
 
-## Visual direction
-
-All seven layers run on a shared animation clock. A spatial stack separates them for readability in the composite; it is a presentation choice, not a claim that the spaces are physically separated planes. The individual studies use the same field and camera.
-
-| Space | Choreography |
+| Time | Emergence |
 | --- | --- |
-| White | Binary points switching on and off with directional impulses |
-| Black | A stable grid of alternating spins on three axes |
-| Blue | Asymmetric connected nodes, shell particles, chaos-led trains, and mobile ring-like Turing Dust Bunnies |
-| Red | Dense nuclei, spinning envelopes, and molecular links |
-| Green | Paired helical chains with informational rungs |
-| Yellow | Hive-like constructed cells and a rotating mechanical element |
-| Orange | Circuit grids, processing cells, and traveling signals |
+| 0:00 | Pink: red/white deforming surfaces, slightly different tightness, phases gradually synchronizing |
+| 0:18 | White: one central twirl, two perpendicular rings with exactly opposite radial phases |
+| 0:36 | Black: connected spherical regions, imperfect gaps, growth with exponentially decreasing rate |
+| 0:58 | Blue: simple nested shells born in gaps; binding and repelling motion; asymmetric fibrous chains |
+| 1:16 | Blue processing: incoming patterned packets, retained node state changes, transformed outgoing packets |
+| 1:25 | Red: central collapse followed by an outward wave; protons form when the front reaches their Blue cores |
+| 1:30 onward | A few black holes, many proton swarms; cooling matter with complex nested Blue cores |
+| 1:50 | Green: a subset of existing matter continuously moves into paired living chains |
+| 2:12 | Yellow: some of those particles move into constructed hive cells; life remains |
+| 2:30 | Orange: another subset becomes circuitry, with signals returning toward Blue; all prior spaces remain |
 
-These are initial artistic motifs. Blue node memory changes, actual read/write interactions, a staged Red Space energy burst/cooling sequence, and the Orange-to-Blue interface are future choreography rather than implemented simulation. The supplied design is the source; explanatory copy is paraphrased. No narration or finished movie export is included.
+The camera and breathing clock are continuous. Shapes and node states are deterministic functions of film time, so reverse scrubbing reconstructs the same scene. Blue signal arrivals update four-state nodes; their state affects outgoing packet patterns. This is an authored visual processor, not a trained AI. Affinity, material organization, and gravity are choreographed representations.
 
-Implementation: dependency-free Canvas 2D with perspective projection, seeded layouts, and time-based animation. Device pixel ratio is capped at 2. Resize and pointer controls work on desktop and touch screens.
+The existing Java code supplies shell/axis/spin conventions (`Spin.java`, `SpinSignature.java`, `ParticleGroup.java`). An exact original two-ring twirl routine was not located: the new counter-phase motion follows Mark's spoken direction. The roughly 14-sided description of Black Space is represented with touching spherical regions and gaps, not an exact polyhedral tessellation.
+
+## Checks
+
+```sh
+node --check visualization/app.js
+node visualization/evolution-model.test.cjs
+```
+
+Focused checks cover emergence continuity, exponentially slowing Black growth, persistence of earlier spaces, exact counter-phase twirl radii, and reconstructable signal arrival state. Browser review covers the Pink, White, Black, Blue, energy-wave, and final combined scenes, scrubbing, playback, and responsive layout.
+
+The Java / Java3D project remains independent in `src/`. This revision adds no narration or video export.
