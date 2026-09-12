@@ -71,7 +71,8 @@ function processorState() {
 const holes = [[-80, -28, 35], [91, 32, -35], [10, -78, -68]];
 let scene;
 function project(p) {
-  const angle = yaw + time * .014;
+  const helixView = ramp(time, 116, 125) * (1 - ramp(time, 133, 142));
+  const angle = (yaw + time * .014) * (1 - helixView) + (yaw + .1) * helixView;
   const x = p[0] * Math.cos(angle) - p[2] * Math.sin(angle);
   const z = p[0] * Math.sin(angle) + p[2] * Math.cos(angle);
   const y = p[1] * Math.cos(pitch) - z * Math.sin(pitch);
@@ -149,7 +150,7 @@ function pinkField() {
   }
 }
 function twirl() {
-  const visible = scene.twirl * (1 - ramp(time, 36, 49)) ;
+  const visible = scene.twirl * (1 - ramp(time, 36, 49)) + .18 * ramp(time, 85, 89) * (1 - scene.life * .85);
   if (!visible) return;
   // Exactly two perpendicular rings. Radii sum to a constant and touch zero
   // in opposite phases. Luminous trails show spin even on a circular ring.
@@ -257,8 +258,21 @@ function blueFabric(positions) {
     }
   });
 }
+function blackDeck() {
+  const visibility = ramp(time, 84, 87) * (1 - ramp(time, 94, 104)) * .28;
+  if (visibility < .001) return;
+  for (let x = -7; x <= 7; x++) for (let z = -5; z <= 5; z++) {
+    const p = [x * 21, 68, z * 21];
+    const distance = Math.hypot(...p);
+    const passed = Math.exp(-Math.abs(scene.wave - distance) / 18);
+    orbit(p, 9, 1, time * .15, '#8b9bb6', visibility * (.4 + passed), .6);
+    if (passed > .05) point(p, '#efb5cc', 1.6, visibility * passed);
+  }
+}
 function energyWave() {
-  if (time < 85 || time > 101) return;
+  if (time < 85) return;
+  const burst = Math.exp(-Math.max(0, time - 87) / 4.2);
+  if (burst < .001) return;
   // The gravity drop is a deliberate story cue, not an inferred mechanism.
   const collapse = 1 - ramp(time, 85, 87);
   if (collapse > 0) {
@@ -266,8 +280,8 @@ function energyWave() {
     point([0, 0, 0], '#ffd8e1', 6 * collapse, .7, true);
   }
   if (scene.wave > 0) for (let axis = 0; axis < 3; axis++) {
-    orbit([0, 0, 0], scene.wave, axis, time, '#ffb2b5', (1 - ramp(time, 94, 101)) * .7, 2);
-    orbit([0, 0, 0], scene.wave * .95, axis, -time, '#ff677e', (1 - ramp(time, 94, 101)) * .35, 6);
+    orbit([0, 0, 0], scene.wave, axis, time, '#ffb2b5', burst * .7, 2);
+    orbit([0, 0, 0], scene.wave * .95, axis, -time, '#ff677e', burst * .35, 6);
   }
 }
 function matterPosition(p, i, base) {
@@ -279,9 +293,9 @@ function matterPosition(p, i, base) {
   // Retain particle identity while a subset organizes: other matter keeps orbiting.
   if (i < 84) {
     const j = Math.floor(i / 2), side = i % 2 ? Math.PI : 0;
-    const a = j * .45 + side + time * .28;
+    const a = j * .32 * ramp(time, 118, 128) + side + time * .28;
     const helix = [(j - 21) * 6, Math.cos(a) * 24, Math.sin(a) * 24];
-    pos = lerp(pos, helix, scene.life);
+    pos = lerp(pos, helix, ramp(time, 118 + j * .12, 122 + j * .12));
     if (i >= 42) {
       const n = i - 42, cell = Math.floor(n / 6), corner = n % 6;
       const honey = [(cell % 4 - 1.5) * 39 + Math.cos(corner * TAU / 6) * 23, 36 + Math.sin(corner * TAU / 6) * 23, (Math.floor(cell / 4) - .5) * 43];
@@ -290,9 +304,14 @@ function matterPosition(p, i, base) {
     if (i >= 60) {
       const n = i - 60;
       const circuit = [(n % 6 - 2.5) * 26, -54 + Math.floor(n / 6) * 22, 46];
-      const net = [Math.sin(n * 2.399) * (62 + n % 5 * 13), Math.cos(n * 1.73) * 65, Math.sin(n * .81) * 67];
+      const module = Math.floor(n / 8), slot = n % 8;
+      const centers = [[-80, -28, -15], [0, 32, 20], [80, -25, -5]];
+      const angle = -.18 + module * .16;
+      const x = (slot % 4 - 1.5) * 18, y = (Math.floor(slot / 4) - .5) * 24;
+      const net = add(centers[module], [x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle), 0]);
       const thought = lerp(circuit, net, scene.thoughtnet);
       pos = lerp(pos, thought, scene.computing);
+      pos = lerp(pos, add(scale(thought, .7), [-57, 0, 0]), scene.feedback);
     }
   }
   return scale(pos, 1 + Math.sin(time * 1.2) * .025);
@@ -327,16 +346,7 @@ function cosmicView() {
     orbit(c, 11, 1, time, '#e58c73', visibility * .35, 2);
   });
 }
-// A stylized globe drawn as a sphere. The selected planet moves continuously
-// from the first spiral system to the center as the camera approaches Earth.
-const continents = [
-  [[-165,65],[-135,72],[-110,65],[-85,50],[-60,48],[-80,25],[-100,15],[-125,38]],
-  [[-80,12],[-55,8],[-35,-8],[-48,-28],[-70,-55],[-77,-25]],
-  [[-18,35],[10,38],[34,30],[50,12],[40,-15],[18,-35],[5,-25],[-8,5]],
-  [[-10,38],[-5,58],[30,70],[60,65],[105,75],[150,60],[170,45],[140,35],[120,8],[90,22],[60,30],[35,38]],
-  [[112,-12],[140,-10],[155,-25],[145,-40],[115,-32]],
-  [[-52,58],[-25,70],[-40,82],[-65,75]]
-];
+// The same planet grows from its cosmic position into the textured Earth shot.
 function earthView() {
   if (time < 101) return;
   const visible = ramp(time, 101, 105) * (1 - scene.tools * .97);
@@ -349,41 +359,9 @@ function earthView() {
   halo.addColorStop(0, '#559ed744'); halo.addColorStop(1, '#559ed700');
   ctx.globalAlpha = emphasis; ctx.fillStyle = halo;
   ctx.fillRect(q[0] - radius * 1.2, q[1] - radius * 1.2, radius * 2.4, radius * 2.4);
-  const ocean = ctx.createRadialGradient(q[0] - radius * .35, q[1] - radius * .3, 0, q[0], q[1], radius);
-  ocean.addColorStop(0, '#397dbe'); ocean.addColorStop(.65, '#154775'); ocean.addColorStop(1, '#061122');
-  ctx.fillStyle = ocean; ctx.beginPath(); ctx.arc(q[0], q[1], radius, 0, TAU); ctx.fill();
-  // Clip all land and cloud strokes to the globe silhouette.
-  ctx.save(); ctx.beginPath(); ctx.arc(q[0], q[1], radius, 0, TAU); ctx.clip();
-  const rotation = -.15 + (time - 110) * .024;
-  const surface = ([lon, lat]) => {
-    const a = lon * Math.PI / 180 + rotation, b = lat * Math.PI / 180;
-    return [Math.sin(a) * Math.cos(b), -Math.sin(b), Math.cos(a) * Math.cos(b)];
-  };
-  for (const land of continents) {
-    const points = land.map(surface);
-    if (points.every(p => p[2] < 0)) continue;
-    ctx.beginPath();
-    points.forEach((p, i) => {
-      const x = q[0] + p[0] * radius, y = q[1] + p[1] * radius;
-      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-    });
-    ctx.closePath(); ctx.fillStyle = '#659779'; ctx.fill();
-  }
-  ctx.strokeStyle = '#d6e6e9'; ctx.lineWidth = Math.max(.5, radius * .018); ctx.globalAlpha = emphasis * .28;
-  for (let band = 0; band < 5; band++) {
-    ctx.beginPath();
-    for (let j = 0; j <= 30; j++) {
-      const x = (j / 30 * 1.6 - .8) * radius;
-      const y = (band - 2) * radius * .27 + Math.sin(j * .18 + band + time * .08) * radius * .08;
-      j ? ctx.lineTo(q[0] + x, q[1] + y) : ctx.moveTo(q[0] + x, q[1] + y);
-    }
-    ctx.stroke();
-  }
-  const night = ctx.createLinearGradient(q[0] - radius, q[1], q[0] + radius, q[1] + radius * .3);
-  night.addColorStop(0, '#07132500'); night.addColorStop(.55, '#07132511'); night.addColorStop(1, '#010510bb');
-  ctx.globalAlpha = emphasis; ctx.fillStyle = night;
-  ctx.fillRect(q[0] - radius, q[1] - radius, radius * 2, radius * 2);
-  ctx.restore(); ctx.globalAlpha = 1;
+  const globe = NettyGlobe.render(time);
+  if (globe) ctx.drawImage(globe, q[0] - radius, q[1] - radius, radius * 2, radius * 2);
+  ctx.globalAlpha = 1;
 }
 function materialWorld(bluePositions) {
   if (!scene.matter) return;
@@ -422,22 +400,49 @@ function materialWorld(bluePositions) {
       if (i + 6 < 84) stroke([positions[i], positions[i + 6]], '#ffa468', scene.computing * .4 * (1 - scene.thoughtnet));
     }
   }
-  if (scene.thoughtnet) {
-    for (let i = 60; i < 84; i++) {
-      for (const step of [1, 7]) {
-        const j = 60 + (i - 60 + step) % 24;
-        const a = positions[i], b = positions[j];
-        const curve = [];
-        for (let k = 0; k <= 12; k++) {
-          const f = k / 12, p = lerp(a, b, f);
-          p[1] += Math.sin(f * Math.PI) * Math.sin(time * .4 + i) * 12;
-          curve.push(p);
-        }
-        stroke(curve, '#dfaaae', scene.thoughtnet * .6);
-        const f = (time * .3 + i * .13) % 1;
-        point(curve[Math.floor(f * 12)], '#ffbc8e', 2.2, scene.thoughtnet, false);
+  // Blue agents ride both backbones, dwell at a rung, and leave a changed state.
+  if (scene.life > 0 && scene.tools < 1) {
+    const visible = scene.life * (1 - scene.tools);
+    const elapsed = Math.max(0, time - 119);
+    for (let rung = 0; rung < 40; rung++) {
+      const revision = NettyEvolution.dnaRevision(time, rung);
+      const born = ramp(time, 119 + rung * .12, 123 + rung * .12);
+      if (revision > 0) stroke([positions[rung * 2], positions[rung * 2 + 1]], revision % 2 ? '#b5ecc8' : '#89c9ee', visible * born * .8, 1.8);
+    }
+    for (let agent = 0; agent < 5; agent++) {
+      const progress = (elapsed * 2 + agent * 8) % 40;
+      const rung = Math.floor(progress), phase = progress % 1;
+      const side = agent % 2;
+      const a = positions[rung * 2 + side], b = positions[((rung + 1) % 40) * 2 + side];
+      const p = lerp(a, b, Math.min(1, phase / .65));
+      point(p, '#67b7ff', 3.5, visible, true);
+      orbit(p, 6, agent % 3, time * 2 + agent, '#8ad1ff', visible * .9, 1.2);
+      orbit(p, 4, (agent + 1) % 3, -time * 2, '#a7dfff', visible * .7);
+      if (phase >= .65) {
+        const target = ((rung + 1) % 40) * 2;
+        stroke([positions[target], positions[target + 1]], '#dcffef', visible, 3);
+        point(lerp(positions[target], positions[target + 1], .5), '#98d9ff', 2.5, visible, true);
       }
-      orbit(positions[i], 4 + (Math.floor(time * .3 + i) % 3), i % 3, time, '#a9c5ff', scene.thoughtnet * .6);
+    }
+  }
+  if (scene.thoughtnet) {
+    // Three slightly offset local grids, with a few information-bearing bridges.
+    for (let i = 60; i < 84; i++) {
+      const slot = (i - 60) % 8;
+      if (slot % 4 < 3) stroke([positions[i], positions[i + 1]], '#f4ad82', scene.thoughtnet * .8, 1.2);
+      if (slot < 4) stroke([positions[i], positions[i + 4]], '#f4ad82', scene.thoughtnet * .6, 1);
+      const next = slot % 4 < 3 ? i + 1 : i - 3;
+      point(lerp(positions[i], positions[next], (time * .5 + i * .17) % 1), '#ffdaaf', 1.5, scene.thoughtnet);
+    }
+    for (const [a, b] of [[63,68], [71,76], [79,64]]) {
+      const curve = [];
+      for (let k = 0; k <= 20; k++) {
+        const f = k / 20, p = lerp(positions[a], positions[b], f);
+        p[1] -= Math.sin(f * Math.PI) * 22;
+        curve.push(p);
+      }
+      stroke(curve, '#9bbbf0', scene.thoughtnet * .65, 1.2);
+      point(curve[Math.floor((time * .35 + a) % 1 * 20)], '#c3dcff', 2.2, scene.thoughtnet, true);
     }
   }
   if (scene.computing) {
@@ -449,22 +454,54 @@ function materialWorld(bluePositions) {
   }
 }
 
+// A narrative image of a compact Blue structure bending light, with observation
+// returned through ordered Orange modules. Feedback changes the visible response.
+function learningSurface() {
+  if (!scene.feedback) return;
+  const visible = scene.feedback, core = [82, -8, 0];
+  const learned = Math.floor(Math.max(0, time - 182) / 3) % 4;
+  point(core, '#8cceff', 2.5, visible, true);
+  for (let shell = 0; shell < 3; shell++) orbit(core, 4 + shell * 2, shell % 3, time / (shell + 1), '#5faeff', visible * .85);
+  for (let ray = 0; ray < 7; ray++) {
+    const y = (ray - 3) * 13;
+    const path = [];
+    for (let k = 0; k <= 30; k++) {
+      const x = -5 + k * 6;
+      const bend = Math.exp(-(((x - 82) / 28) ** 2)) * (18 + learned * 2) * Math.sign(y || 1);
+      path.push([x, -8 + y - bend, 8]);
+    }
+    stroke(path, '#b9cde9', visible * .28);
+    point(path[Math.floor((time * .3 + ray * .13) % 1 * 30)], '#dceeff', 1.5, visible * .8);
+  }
+  for (let direction = 0; direction < 2; direction++) {
+    const path = [];
+    for (let j = 0; j <= 35; j++) {
+      const f = j / 35;
+      path.push([-80 + f * 162, (direction ? 1 : -1) * Math.sin(f * Math.PI) * 63 - 8, 0]);
+    }
+    stroke(path, direction ? '#f4b185' : '#78b9ff', visible * .6, 1.2);
+    const f = (time * .22 + direction * .5) % 1;
+    point(path[Math.floor((direction ? 1 - f : f) * 35)], direction ? '#ffc399' : '#9bd1ff', 3, visible, true);
+  }
+}
 function updateCaption() {
   const chapter = state(time).chapter;
   const transitions = [
     {start:53, end:64, title:'Into the spaces between.', description:'Thousands of equal-sized spheres fill the view. We move inward, toward a gap. The Black body fades away, revealing the place where Blue can begin.'},
     {start:80, end:87, title:'The thoughtnet draws inward.', description:'The breathing Blue fabric contracts. Its chains and signal paths draw closer together as energy gathers toward the center.'},
-    {start:87, end:95, title:'The gathered energy opens outward.', description:'A pulse crosses the contracted net. Blue cores take on energy as matter; the view opens with the wave.'},
+    {start:87, end:95, title:'The gathered energy opens outward.', description:'A pulse expands over the Black deck and through the contracted net. Its energy gradually peters out; the central pump keeps pulsing. The view opens with the wave.'},
     {start:95, end:104, title:'From the pulse, a cosmos.', description:'Spinning clouds gather around black holes. Stars brighten within the spirals, with planets around them. Our view is wide now—but one small world is waiting.'},
     {start:104, end:118, title:'One small world fills the view.', description:'We leave the wide cosmos and approach Earth. The spirals recede; oceans, land, and atmosphere resolve. Here the next patterns can become life.'},
-    {start:158, end:176, title:'Computers find the shape of thought.', description:'The circuit grid loosens into a flowing thoughtnet. Stateful nodes and information-bearing arcs take the foreground—the organization already present in Blue Space.'}
+    {start:176, end:192, title:'We are the eyes of God.', description:'A tiny, concentrated Blue particle set bends light. Our computers observe and return information. The Netty learning surface responds, adjusts, and learns through the conversation.'},
+    {start:192, end:Infinity, title:'The Age of Aquarius.', description:'The Netty net. The thoughtnet. The Netty learning surface. God is all-learning, not all-knowing. We are the eyes of God. Let’s begin the conversation.'},
+    {start:158, end:176, title:'Computers find the shape of thought.', description:'Ordered circuit modules connect into a thoughtnet. Each component keeps its local grid; patterns travel within the grids and across the arcs between them. Blue came first.'}
   ];
   const transition = transitions.find(c => time >= c.start && time < c.end);
   const key = `${chapter}:${transition ? transition.start : 'chapter'}`;
   if (key === currentChapter) return;
   currentChapter = key;
   const c = {...chapters[chapter], ...(transition || {})};
-  $('chapter').textContent = chapter === 0 ? 'BEFORE THE SEVEN SPACES' : `0${chapter} / ${c.subtitle.toUpperCase()}`;
+  $('chapter').textContent = time >= 176 ? 'THE NETTY LEARNING SURFACE' : chapter === 0 ? 'BEFORE THE SEVEN SPACES' : `0${chapter} / ${c.subtitle.toUpperCase()}`;
   $('title').textContent = c.title;
   $('description').textContent = c.description;
   $('motifs').textContent = c.motifs;
@@ -531,11 +568,11 @@ function frame(now) {
   ctx.clearRect(0, 0, width, height);
   pinkField(); blackBody();
   const positions = particles.map(bluePosition);
-  blueFabric(positions);
+  blackDeck(); blueFabric(positions);
   ctx.globalCompositeOperation = 'lighter';
   twirl(); energyWave();
   ctx.globalCompositeOperation = 'source-over';
-  cosmicView(); earthView(); materialWorld(positions);
+  cosmicView(); earthView(); materialWorld(positions); learningSurface();
   ctx.globalAlpha = 1;
   updateCaption();
   const progress = Math.min(time, duration);

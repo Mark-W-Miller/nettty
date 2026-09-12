@@ -44,3 +44,13 @@ assert.equal(state(118).earth, 1);
 assert.equal(state(158).thoughtnet, 0);
 assert.equal(state(176).thoughtnet, 1);
 console.log('Transition checks passed: multiplying Black, camera push, complete Black fade, Blue contraction, Earth approach, thoughtnet emergence.');
+
+const {dnaRevision, duration} = require('./evolution-model.js');
+assert.equal(dnaRevision(118, 1), 0);
+assert.equal(dnaRevision(119.4, 1), 1);
+assert.equal(dnaRevision(119.45, 1), 1);
+assert(dnaRevision(140, 1) > dnaRevision(120, 1));
+assert.equal(duration, 204);
+assert.equal(state(176).feedback, 0);
+assert.equal(state(188).feedback, 1);
+console.log('DNA edit retention and learning-surface timing checks passed.');

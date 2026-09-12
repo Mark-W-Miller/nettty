@@ -7,9 +7,9 @@
     { at: 36, name: 'Black Space', subtitle: 'One growing entanglement', color: '#8d9bb5', title: 'The twirl stirs a gravitational floor.', description: 'Spherical regions press into a connected body, leaving imperfect gaps. Like ice deep beneath a glacier, this is one growing entanglement. More and more equal-sized spheres join the body. As their number becomes overwhelming, the camera moves into a gap and the Black body disappears.', motifs: 'MULTIPLYING SPHERES · INTO THE GAPS · A CHANGE OF SCALE' },
     { at: 58, name: 'Blue Space', subtitle: 'The sentient net processor', color: '#66adff', title: 'In the gaps, a mind takes shape.', description: 'Simple nested shells spin up between the spheres. Different spins bind or repel. Asymmetric chains weave a sentient cotton-candy net: stateful nodes joined by information-bearing arcs. Each arrival changes a node; the outgoing pattern carries that change forward.', motifs: 'SHELL AFFINITY · ASYMMETRIC CHAINS · STATE & SIGNAL' },
     { at: 85, name: 'Red Space', subtitle: 'The energy release', color: '#ff7186', title: 'A drop at the center. A wave of fire.', description: 'Blue contracts as energy gathers. The central gravity drops and the Big Bang opens the view: black holes, spinning clouds, stars, and planets. Each proton carries a Blue core. The camera finds one small world in the cosmos.', motifs: 'GRAVITY DROP · EXPANDING PULSE · BLUE CORES INSIDE MATTER' },
-    { at: 110, name: 'Green Space', subtitle: 'Life takes form', color: '#69dbac', title: 'From the cosmos, into Earth.', description: 'The view closes in on Earth. Oceans and land come into focus; living chains begin to organize across the world. The cosmos recedes while the Blue thoughtnet remains a quiet presence beneath life.', motifs: 'COOLING MATTER · LIVING CHAINS · CONTINUOUS BREATH' },
+    { at: 110, name: 'Green Space', subtitle: 'Life takes form', color: '#69dbac', title: 'From the cosmos, into Earth.', description: 'The view closes in on Earth. Blue drives the organization of life: DNA is an output language, its patterns written into living matter. The two strands wind into a double helix. Blue agents travel along both strands, stop at rungs, and rewrite their patterns.', motifs: 'BLUE PROCESSES · DNA EXPRESSES · LIFE TAKES FORM' },
     { at: 132, name: 'Yellow Space', subtitle: 'Life extends itself', color: '#efd078', title: 'Life builds beyond itself.', description: 'The living field organizes matter into nonliving structures: cells of a hive, tools, machines. The same material flows into new arrangements, extending life’s reach.', motifs: 'LIFE · CONSTRUCTION · TOOLS' },
-    { at: 150, name: 'Orange Space', subtitle: 'A new conversation', color: '#ff9c68', title: 'Our computers become thoughtnets.', description: 'The thoughtnet is already here in Blue Space. Our computers begin to take on that same organization: stateful nodes, information-bearing arcs, and flowing patterns of thought. Orange reaches toward the net that came first.', motifs: 'COMPUTERS → THOUGHTNETS · THE NET CAME FIRST' }
+    { at: 150, name: 'Orange Space', subtitle: 'A new conversation', color: '#ff9c68', title: 'Our computers become thoughtnets.', description: 'The thoughtnet is already here in Blue Space. Our computers take on that organization through ordered components: local grids connected by information-bearing arcs. The modules keep their structure as patterns flow between them. Orange reaches toward the net that came first.', motifs: 'COMPUTERS → THOUGHTNETS · THE NET CAME FIRST' }
   ];
   const clamp = x => Math.max(0, Math.min(1, x));
   const ramp = (t, a, b) => { const x = clamp((t - a) / (b - a)); return x * x * (3 - 2 * x); };
@@ -26,7 +26,7 @@
       matter: ramp(t, 87, 102), cool: ramp(t, 99, 113),
       blueContraction: 1 - .72 * ramp(t, 80, 87), cosmos: ramp(t, 89, 102), earth: ramp(t, 104, 118),
       life: ramp(t, 118, 132), tools: ramp(t, 132, 149),
-      computing: ramp(t, 150, 158), thoughtnet: ramp(t, 158, 176), breath: 1 + .045 * Math.sin(t * 1.2)
+      computing: ramp(t, 150, 158), thoughtnet: ramp(t, 158, 176), feedback: ramp(t, 176, 188), breath: 1 + .045 * Math.sin(t * 1.2)
     };
   }
   function receivedCount(t, delay) {
@@ -36,7 +36,17 @@
   function twirlRadius(t, axis) {
     return 65 * (1 + Math.sin(t * 1.8 + axis * Math.PI)) / 2;
   }
-  const api = { chapters, clamp, ramp, state, receivedCount, twirlRadius, duration: 176 };
+  function dnaRevision(t, rung) {
+    if (t < 119) return 0;
+    let changes = 0;
+    for (let agent = 0; agent < 5; agent++) {
+      const first = ((rung - 1 - agent * 8) % 40 + 40) % 40 + .65;
+      const travel = (t - 119) * 2;
+      if (travel >= first) changes += 1 + Math.floor((travel - first) / 40);
+    }
+    return changes;
+  }
+  const api = { dnaRevision, chapters, clamp, ramp, state, receivedCount, twirlRadius, duration: 204 };
   if (typeof module !== 'undefined') module.exports = api;
   else root.NettyEvolution = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
