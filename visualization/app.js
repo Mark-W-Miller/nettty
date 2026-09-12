@@ -522,7 +522,9 @@ function updateCaption() {
     {start:99, end:105, title:'The elements find their places.', description:'The energy release gives way to an ordered family of elements. A periodic-table excerpt resolves; carbon comes forward as the bridge toward the chemistry of life.'},
     {start:105, end:113, title:'Carbon: room for life to take shape.', description:'Four bonding directions open into space. In Netty’s telling, the enduring Blue fabric underlies the more flexible material structures from which life can form.'},
     {start:113, end:118, title:'One small world fills the view.', description:'We leave the wide cosmos and approach Earth. The spirals recede; oceans, land, and atmosphere resolve. Here the next patterns can become life.'},
-    {start:176, end:192, title:'We are the eyes of God.', description:'In Netty, Blue has a processing capacity beyond our brains and machines. Our computers help us communicate intention; observations return as the feedback Blue seeks. Participation in a learning universe—not taking over from God.'},
+    {start:168, end:176, title:'One bird, room to choose.', description:'Wind, gravity and obstacles constrain a path without specifying every turn. Mark calls this room to act the Goldie zone: the spirit force of the individual.'},
+    {start:176, end:188, title:'Six neighbors. One moving flock.', description:'An illustrative flock responds to six nearby neighbors through alignment, spacing and cohesion. Blue lines reveal the focal bird’s local relationships; coordinated motion emerges from those interactions.'},
+    {start:188, end:192, title:'We are the eyes of God.', description:'In Netty, Blue has a processing capacity beyond our brains and machines. Our computers help us communicate intention; observations return as the feedback Blue seeks. Participation in a learning universe—not taking over from God.'},
     {start:192, end:Infinity, title:'The Age of Aquarius.', description:'The Netty learning surface. A continual intention toward controlled asymmetry, every step of the way—including us and this conversation. God is all-learning, not all-knowing. We are the eyes of God.'},
     {start:118, end:132, title:'DNA: an output language.', description:'Watch the two strands wind together. Blue agents travel along both backbones, pause at rungs, and change their patterns. Use Replay DNA to watch this passage at normal speed.'},
     {start:132, end:150, title:'Blue inside Green, made of Red.', description:'From the inside outward: a pulsing Blue thoughtnet, the folded Green machinery of a physical brain, and Red matter carrying excess energy around it. In Netty, the tension begins when energy exceeds the capacity to spin it up.'},
@@ -617,6 +619,7 @@ $('replay-dna').onclick = () => {
   wasSearchWindow = false; time = 118; speed = 1; playing = true; searchPinned = false; searchDismissed = true;
   $('speed').value = 1; $('speed-label').value = '1×'; updatePlay(); updateCaption();
 };
+$('flock-view').onclick = () => { time = 168; speed = 1; playing = true; $('speed').value=1; $('speed-label').value='1×'; updatePlay(); updateCaption(); };
 $('inside-out').onclick = () => {
   time = 160; speed = 1; playing = true; searchPinned = false; searchDismissed = true;
   $('speed').value = 1; $('speed-label').value = '1×'; yaw = .25; pitch = -.23; zoom = 1; updatePlay(); updateCaption();
@@ -660,8 +663,13 @@ function frame(now) {
   if (renderOpacity > .001) materialWorld(positions);
   renderOpacity = 1;
   humanVeil();
+  renderOpacity = 1 - .88 * ramp(time,168,172) * (1-ramp(time,183,188));
   drawEmbodiedScene();
+  renderOpacity = 1;
+  drawFlock();
+  renderOpacity = 1 - .95 * ramp(time,168,172) * (1-ramp(time,183,188));
   drawAugmentation();
+  renderOpacity = 1;
   $('heartbeat').hidden = time < 18;
   $('mold-joke').hidden = time < 124 || time >= 132;
   const beat = Math.floor((time - 18) * 1.8 / (Math.PI / 2)) % 4;

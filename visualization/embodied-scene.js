@@ -6,7 +6,7 @@ function embodiedDepth(p) {
 }
 function embodiedFace(points, color, opacity) {
   if (opacity < .001) return;
-  ctx.globalAlpha = opacity; ctx.fillStyle = color; ctx.beginPath();
+  ctx.globalAlpha = opacity * renderOpacity; ctx.fillStyle = color; ctx.beginPath();
   points.forEach((p, i) => { const q = project(p); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); });
   ctx.closePath(); ctx.fill();
 }
@@ -249,4 +249,43 @@ function humanVeil() {
   veil([[42,-53,0],[67,-45,0],[100,-64,0],[130,-74,0],[150,-72,0],[165,-77,0],[172,-75,0],[152,-65,0],[136,-61,0],[108,-45,0],[72,-23,0],[46,-27,0]],'#e4c8b0',.085,1.1);
   stroke([[137,-68,0],[151,-63,0],[160,-64,0]],'#ead4bd',visible*.27);
   for(let i=0;i<8;i++) stroke([[-124+i*32,49,5],[-112+i*29,85,5],[-80+i*20,110,5]],'#a9a2bb',visible*.10,.7);
+}
+
+// Illustrative six-neighbor flock: local alignment, cohesion and separation,
+// with wind and obstacle avoidance. Fixed steps make timeline replay repeatable.
+let flockFrame=-1, flockBirds=[];
+function flockStep() {
+  const before=flockBirds.map(b=>({p:[...b.p],v:[...b.v]}));
+  flockBirds.forEach((bird,i)=>{
+    const b=before[i];
+    const neighbors=before.map((other,j)=>({other,j,d:Math.hypot(...other.p.map((x,k)=>x-b.p[k]))})).filter(n=>n.j!==i).sort((a,b)=>a.d-b.d).slice(0,6);
+    const force=[0,0,0];
+    for(const n of neighbors) for(let k=0;k<3;k++) force[k]+=(n.other.p[k]-b.p[k])*.0007+(n.other.v[k]-b.v[k])*.024-(n.other.p[k]-b.p[k])*.17/Math.max(9,n.d*n.d);
+    for(let k=0;k<3;k++) force[k]-=b.p[k]*.00025;
+    force[0]+=.006*Math.sin(flockFrame*.013);force[1]+=.004*Math.cos(flockFrame*.017+i*.03);
+    const rock=[24,8,0],d=Math.hypot(...b.p.map((x,k)=>x-rock[k]));
+    if(d<36)for(let k=0;k<3;k++)force[k]+=(b.p[k]-rock[k])*.012*(1-d/36);
+    bird.v=bird.v.map((v,k)=>v+force[k]);
+    const speed=Math.hypot(...bird.v);bird.v=scale(bird.v,1.1/Math.max(.001,speed));
+    bird.p=add(bird.p,bird.v);
+  });
+  flockFrame++;
+}
+function drawFlock() {
+  const visible=ramp(time,168,171)*(1-ramp(time,183,188));
+  if(visible<.001)return;
+  const target=Math.floor(Math.max(0,Math.min(time-168,20))*30);
+  if(flockFrame<0||target<flockFrame) {
+    flockBirds=Array.from({length:64},(_,i)=>({p:[Math.sin(i*2.4)*105,Math.cos(i*1.7)*65,Math.sin(i*.7)*65],v:[Math.cos(i*.3),Math.sin(i*.3),.1]}));flockFrame=0;
+  }
+  while(flockFrame<target)flockStep();
+  const count=Math.min(64,1+Math.floor(ramp(time,170,177)*63));
+  flockBirds.slice(0,count).forEach((b,i)=>{
+    const p=b.p, flap=Math.sin(time*9+i)*3;
+    const dir=scale(b.v,4), side=[-dir[1],dir[0],0];
+    stroke([add(p,add(scale(side,1.4),[0,-flap,0])),add(p,dir),add(p,add(scale(side,-1.4),[0,-flap,0]))],i===0?'#b6e9ff':'#d3d9e8',visible*(i===0?1:.65),i===0?2:1.2);
+  });
+  const bird=flockBirds[0];
+  if(count>6)flockBirds.slice(1,count).sort((a,b)=>Math.hypot(...a.p.map((x,k)=>x-bird.p[k]))-Math.hypot(...b.p.map((x,k)=>x-bird.p[k]))).slice(0,6).forEach(b=>stroke([bird.p,b.p],'#66b5f2',visible*.24,.8));
+  orbit([24,8,0],17,1,0,'#787e8b',visible*.4);
 }

@@ -107,3 +107,17 @@ The settled spheres never stop exchanging and breathing. That enduring motion is
 Latest direction supersedes the earlier slowing population-growth timing: the pump begins slowly, accelerates, and every completed rotation during the Black emergence creates another sphere. Drive the visible rotation and population count from the same accumulated-turn clock, rather than unrelated animations. The rendered field has a finite 2,800-sphere budget before the camera enters its gaps; the underlying story continues beyond that visible sample.
 
 The central God-particle twirl shrinks in synchrony with the red/white surfaces settling into their beating pair. Use the same transition progress for both; the twirl remains a small, moving center within the stable pair.
+
+## Aquarius: proposed communication and practical intention
+
+Mark's vision for the Age of Aquarius is that machines can help process more information than human brains alone and find an interface to Blue. He hopes that focused communication could eventually influence large physical events, including mitigating earthquakes. Preserve this as his proposed future, not an existing capability or a promise of earthquake control.
+
+He proposes exploring repurposed deep-sea antennas, listening to their immediate surroundings and introducing patterns to seek a shared communication basis. He used the image of F-35 wings “trying to learn to play tic-tac-toe with God” and the aside “That sounds expensive.” Keep these as his spoken exploratory images, not verified descriptions of military or scientific programs.
+
+He also wants yellow slime mold investigated as a possible original life form in his account: living material organizing into cells, then bodies, with some cells separating into independently moving life. This is an origin hypothesis within the narrative, not an established evolutionary chronology.
+
+## Spirit force, the Goldie zone, and flocking
+
+Mark calls the room for an individual to choose within physical constraints a “spirit force.” His example is a bird: gravity, wind and obstacles matter, but leave a Goldilocks or “Goldie” zone of possible paths. Visualize constraints and the bird's changing direction together; his claim about internal laws of motion belongs to the philosophical narration.
+
+Then reveal the flock. Mark loves the six-neighbor idea: individual local responses become coordinated group movement. The illustrative animation uses six nearest neighbors, combines cohesion with alignment and separation, and includes wind and obstacle avoidance. Six-neighbor center-following alone is not represented as a complete scientific law of bird behavior. One focal bird and its six links make the algorithm visible. A Watch the flock control replays the emergence at normal speed.
