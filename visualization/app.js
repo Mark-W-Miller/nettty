@@ -309,7 +309,7 @@ function cosmicView() {
       const points = [];
       for (let n = 0; n < 65; n++) {
         const r = 9 + n * .95;
-        const a = arm * TAU / 3 + n * .12 + time * (.045 + system * .008);
+        const a = arm * TAU / 3 + n * .12 - time * (.045 + system * .008);
         const p = add(c, [Math.cos(a) * r * expansion, Math.sin(a) * r * .27 * expansion, Math.sin(a) * r * .7 * expansion]);
         points.push(p);
         const star = ramp(time, 95 + (n % 7), 100 + (n % 7));
@@ -323,8 +323,8 @@ function cosmicView() {
     const q = project(c);
     ctx.globalAlpha = visibility; ctx.fillStyle = '#01030b';
     ctx.beginPath(); ctx.arc(q[0], q[1], 5 * q[2], 0, TAU); ctx.fill();
-    orbit(c, 8, 1, time, '#ffba8e', visibility, 2);
-    orbit(c, 11, 1, -time, '#e58c73', visibility * .35, 2);
+    orbit(c, 8, 1, -time, '#ffba8e', visibility, 2);
+    orbit(c, 11, 1, time, '#e58c73', visibility * .35, 2);
   });
 }
 // A stylized globe drawn as a sphere. The selected planet moves continuously
