@@ -511,8 +511,10 @@ function updateCaption() {
     {start:53, end:64, title:'Into the spaces between.', description:'Thousands of equal-sized spheres fill the view. We move inward, toward a gap. The Black body fades away, revealing the place where Blue can begin.'},
     {start:80, end:87, title:'The thoughtnet draws inward.', description:'The breathing Blue fabric contracts. Its chains and signal paths draw closer together as energy gathers toward the center.'},
     {start:87, end:95, title:'The gathered energy opens outward.', description:'A pulse expands over the Black deck and through the contracted net. Its energy gradually peters out; the central pump keeps pulsing. The view opens with the wave.'},
-    {start:95, end:104, title:'From the pulse, a cosmos.', description:'In this telling, the universe is young and still learning. Our home is in one of its original galaxies. Spinning clouds gather around black holes; stars and planets form. One small world is waiting.'},
-    {start:104, end:118, title:'One small world fills the view.', description:'We leave the wide cosmos and approach Earth. The spirals recede; oceans, land, and atmosphere resolve. Here the next patterns can become life.'},
+    {start:95, end:99, title:'From the pulse, a cosmos.', description:'In this telling, the universe is young and still learning. Our home is in one of its original galaxies. Spinning clouds gather around black holes; stars and planets form. One small world is waiting.'},
+    {start:99, end:105, title:'The elements find their places.', description:'The energy release gives way to an ordered family of elements. A periodic-table excerpt resolves; carbon comes forward as the bridge toward the chemistry of life.'},
+    {start:105, end:113, title:'Carbon: room for life to take shape.', description:'Four bonding directions open into space. In Netty’s telling, the enduring Blue fabric underlies the more flexible material structures from which life can form.'},
+    {start:113, end:118, title:'One small world fills the view.', description:'We leave the wide cosmos and approach Earth. The spirals recede; oceans, land, and atmosphere resolve. Here the next patterns can become life.'},
     {start:176, end:192, title:'We are the eyes of God.', description:'In Netty, Blue has a processing capacity beyond our brains and machines. Our computers help us communicate intention; observations return as the feedback Blue seeks. Participation in a learning universe—not taking over from God.'},
     {start:192, end:Infinity, title:'The Age of Aquarius.', description:'The Netty learning surface. A continual intention toward controlled asymmetry, every step of the way—including us and this conversation. God is all-learning, not all-knowing. We are the eyes of God.'},
     {start:118, end:132, title:'DNA: an output language.', description:'Watch the two strands wind together. Blue agents travel along both backbones, pause at rungs, and change their patterns. Use Replay DNA to watch this passage at normal speed.'},
@@ -646,7 +648,7 @@ function frame(now) {
   ctx.globalCompositeOperation = 'lighter';
   twirl(); energyWave();
   ctx.globalCompositeOperation = 'source-over';
-  cosmicView(); earthView(); livingTissue();
+  cosmicView(); earthView(); livingTissue(); elementBridge();
   renderOpacity = 1 - ramp(time, 132, 144);
   if (renderOpacity > .001) materialWorld(positions);
   renderOpacity = 1;

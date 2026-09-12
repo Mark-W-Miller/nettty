@@ -77,3 +77,9 @@ As Earth comes forward, the galaxies shrink into the distance. Continue into Ear
 ## Communication, not replacement
 
 Mark describes Blue’s processing capacity as far beyond human brains or contemporary computers. His proposed role for our machines is to help people communicate with Blue: express intentions, observe results and return the feedback Blue seeks. “It isn't about taking over from God.” The ending should express participation, conversation and learning. This is the film’s proposed relationship, not a claim that an existing computer-to-Blue communication channel has been demonstrated.
+
+## Elements and the carbon bridge
+
+Mark wants the Big Bang's energy pictured as spinning up or inflating the proton. From those energy fields and bonds comes the periodic table; carbon becomes the visual center of attention, then carbon chemistry leads toward durable DNA. He contrasts the strength of the underlying Blue fabric with the weaker, more flexible Red material bonds.
+
+Show the table as a recognizable organized family, bring carbon forward, and open four bonding directions into space. Carbon is the dramatic focus, not the literal center of the periodic table. Mark's spoken description included four-, three-, two- and one-bonded possibilities with itself. For the image, distinguish four bonding sites from single, double and triple carbon–carbon bonds; do not draw an ordinary carbon–carbon quadruple bond or equate the Netty mechanism with an established Standard Model result.

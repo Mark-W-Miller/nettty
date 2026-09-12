@@ -176,3 +176,36 @@ function livingTissue() {
     point(center,'#72efa3',4*growth,visible*.3,true);
   }
 }
+
+// A periodic-table excerpt opens into carbon's four spatial bonding directions.
+function elementBridge() {
+  const visible=ramp(time,98,101)*(1-ramp(time,112,116));
+  if(visible<.001)return;
+  const focus=ramp(time,105,111);
+  const rows=[['H',1,1],['He',18,1],['Li',1,2],['Be',2,2],['B',13,2],['C',14,2],['N',15,2],['O',16,2],['F',17,2],['Ne',18,2],['Na',1,3],['Mg',2,3],['Al',13,3],['Si',14,3],['P',15,3],['S',16,3],['Cl',17,3],['Ar',18,3],...['K','Ca','Sc','Ti','V','Cr','Mn','Fe','Co','Ni','Cu','Zn','Ga','Ge','As','Se','Br','Kr'].map((symbol,i)=>[symbol,i+1,4])];
+  rows.forEach(([symbol,col,row],i)=>{
+    const carbon=symbol==='C';
+    const initial=[(col-9.5)*15,(row-2.5)*21-23,0];
+    const center=carbon?lerp(initial,[0,0,0],focus):scale(initial,1+focus*.8);
+    const alpha=visible*(carbon?1:1-focus);
+    const unit=Math.min(width/340,(height-190)/300)*zoom;
+    const q=[width*.5+center[0]*unit,height*.40+center[1]*unit,unit];
+    const size=(carbon?6.7+focus*7:6.7)*unit;
+    ctx.globalAlpha=alpha;ctx.fillStyle=carbon?'#163c2c':'#231a24';
+    ctx.fillRect(q[0]-size,q[1]-size,size*2,size*2);
+    ctx.strokeStyle=carbon?'#83efab':'#c08f9e';ctx.lineWidth=carbon?1.5:.6;
+    ctx.strokeRect(q[0]-size,q[1]-size,size*2,size*2);
+    ctx.fillStyle=carbon?'#acffbe':'#ecd5d8';ctx.font=`${Math.max(7,size*.95)}px Arial`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(symbol,q[0],q[1]);
+  });
+  const c=[0,0,0], strength=visible*focus;
+  const sites=[[37,37,37],[-37,-37,37],[-37,37,-37],[37,-37,-37]];
+  sites.forEach((p,i)=>{
+    stroke([c,p],'#9be7ac',strength,2);
+    point(p,'#76ed9c',5,strength,true);
+    orbit(p,8, i%3,time*.5+i,'#7cbaff',strength*.6);
+    point(lerp(p,c,(time*.3+i*.21)%1),'#85caff',2,strength,true);
+  });
+  ctx.globalAlpha=visible*(1-focus);ctx.fillStyle='#c4a9b1';ctx.font='10px Arial';ctx.textAlign='center';
+  ctx.fillText('ELEMENTS · PERIODIC TABLE · 1–36',width*.5,height*.40+78);
+  ctx.globalAlpha=1;
+}
