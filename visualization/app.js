@@ -392,7 +392,7 @@ function materialWorld(bluePositions) {
     if (i >= 42 && i < 84 && scene.tools > .5) color = '#f1ce75';
     if (i >= 60 && i < 84 && scene.computing > .5) color = '#ff9864';
     point(pos, color, 2.2, born, i % 7 === 0);
-    if (i % 3 === 0) {
+    if (i % 3 === 0 && !(i < 84 && scene.life > .5 && scene.tools < .5)) {
       orbit(pos, 4 + p.shells, i % 3, time * p.spin, color, born * .45);
       // Complex Blue cores stay inside matter, after the outer envelope appears.
       for (let shell = 0; shell < 4; shell++) orbit(pos, 1.1 + shell * .55, shell % 3, time / (shell + 1), '#80c0ff', born * .45);
@@ -401,7 +401,7 @@ function materialWorld(bluePositions) {
   for (let i = 0; i < 82; i++) {
     if (i < 42 || scene.tools < 1) {
       if (i % 2 === 0) stroke([positions[i], positions[i + 1]], '#64ed8a', scene.life * .8 * (1 - scene.tools * .95), 1.8);
-      if (i + 2 < 84) stroke([positions[i], positions[i + 2]], '#73c7ad', scene.life * .6 * (1 - scene.tools * .95));
+
     }
     if (i >= 42) {
       const next = 42 + Math.floor((i - 42) / 6) * 6 + (i - 42 + 1) % 6;
@@ -416,7 +416,8 @@ function materialWorld(bluePositions) {
   const dnaVisible = scene.life * (1 - scene.tools);
   for (let rung = 0; rung < 40; rung++) {
     const a = positions[rung * 2], b = positions[rung * 2 + 1];
-    for (const f of [.3,.7]) point(lerp(a,b,f), f < .5 ? '#9af58b' : '#35d97c', 2.6, dnaVisible);
+    // Base markers sit on the rung center; two offset rows read as extra helices.
+    point(lerp(a,b,.5), rung % 2 ? '#9af58b' : '#35d97c', 1.5, dnaVisible * .7);
     if (rung < 39) for (let side = 0; side < 2; side++) stroke([positions[rung*2+side],positions[(rung+1)*2+side]], side ? '#31dd72' : '#7aff96', dnaVisible, 2.6);
   }
   // Blue agents ride both backbones, dwell at a rung, and leave a changed state.
