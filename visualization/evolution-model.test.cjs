@@ -31,3 +31,16 @@ const saved = receivedCount(103, .2);
 receivedCount(160, .2);
 assert.equal(receivedCount(103, .2), saved);
 console.log('Evolution checks passed: emergence, slowing growth, persistent spaces, counter-phase twirl, retained signal state.');
+
+assert(state(51).blackPopulation > 2500);
+assert(state(40).blackPopulation < state(50).blackPopulation);
+assert.equal(state(53).cameraPush, 1);
+assert(state(63).cameraPush > 4);
+assert.equal(state(64).blackOpacity, 0);
+assert.equal(state(100).blackOpacity, 0);
+assert(state(86).blueContraction < state(81).blueContraction);
+assert.equal(state(104).earth, 0);
+assert.equal(state(118).earth, 1);
+assert.equal(state(158).thoughtnet, 0);
+assert.equal(state(176).thoughtnet, 1);
+console.log('Transition checks passed: multiplying Black, camera push, complete Black fade, Blue contraction, Earth approach, thoughtnet emergence.');

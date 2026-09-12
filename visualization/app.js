@@ -2,7 +2,10 @@
 const {chapters, ramp, state, receivedCount, twirlRadius, duration} = NettyEvolution;
 const $ = id => document.getElementById(id);
 const canvas = $('universe');
-const ctx = canvas.getContext('2d');
+const mainContext = canvas.getContext('2d');
+let ctx = mainContext;
+const blackCanvas = document.createElement('canvas');
+const blackContext = blackCanvas.getContext('2d');
 const TAU = Math.PI * 2;
 let time = 0;
 let playing = !matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -24,6 +27,16 @@ for (let y = -2; y <= 2; y++) {
     }
   }
 }
+// Population expands outward at a fixed sphere radius. Camera magnification is
+// independent of sphere birth: no cell scales up as the population increases.
+const blackCells = [];
+for (let y = -11; y <= 11; y++) for (let x = -11; x <= 11; x++) for (let z = -11; z <= 11; z++) {
+  const p = [(x + (y % 2) * .5) * 14, y * 12, (z + (y % 2) * .5) * 14];
+  if (Math.hypot(...p) < 139) blackCells.push(p);
+}
+blackCells.sort((a, b) => Math.hypot(...a) - Math.hypot(...b));
+blackCells.length = Math.min(2800, blackCells.length);
+let drawingBlack = false;
 // Birth locations are explicitly in gaps between Black spherical regions.
 const particles = [];
 let attempts = 0;
@@ -63,7 +76,10 @@ function project(p) {
   const z = p[0] * Math.sin(angle) + p[2] * Math.cos(angle);
   const y = p[1] * Math.cos(pitch) - z * Math.sin(pitch);
   const depth = p[1] * Math.sin(pitch) + z * Math.cos(pitch);
-  const unit = Math.min(width / 460, (height - 190) / 380) * zoom * 780 / (780 + depth);
+  // The Black-only dolly carries us into its microscopic gaps. Blue is authored
+  // at the resulting close-up scale, so it grows into that same screen volume.
+  const camera = drawingBlack ? scene.cameraPush : 1;
+  const unit = Math.min(width / 460, (height - 190) / 380) * zoom * camera * 780 / (780 + depth);
   return [width * .5 + x * unit, height * .40 + y * unit, unit];
 }
 function stroke(points, color, opacity = 1, weight = 1, close = false) {
@@ -133,7 +149,7 @@ function pinkField() {
   }
 }
 function twirl() {
-  const visible = scene.twirl * (1 - scene.black * .55);
+  const visible = scene.twirl * (1 - ramp(time, 36, 49)) ;
   if (!visible) return;
   // Exactly two perpendicular rings. Radii sum to a constant and touch zero
   // in opposite phases. Luminous trails show spin even on a circular ring.
@@ -153,31 +169,42 @@ function twirl() {
   point([0, 0, 0], '#fff1f8', 2, visible, true);
 }
 function blackBody() {
-  if (!scene.black) return;
-  const opacity = scene.black * (1 - scene.blue * .76);
-  cells.forEach((p, i) => {
-    const c = scale(p, scene.black * scene.breath);
-    const r = 29 * scene.black * scene.breath;
-    const projected = project(c), screenRadius = Math.max(.01, r * projected[2]);
-    const shade = ctx.createRadialGradient(projected[0] - screenRadius * .3, projected[1] - screenRadius * .3, 0, projected[0], projected[1], screenRadius);
-    shade.addColorStop(0, '#65728c'); shade.addColorStop(.7, '#202b40'); shade.addColorStop(1, '#070c17');
-    ctx.globalAlpha = opacity * .65; ctx.fillStyle = shade;
-    ctx.beginPath(); ctx.arc(projected[0], projected[1], screenRadius, 0, TAU); ctx.fill();
-    for (let axis = 0; axis < 3; axis++) orbit(c, r, axis, time * .15 * (i % 2 ? 1 : -1), '#8a9bb9', opacity * .3);
-    if (i > 0) {
-      const near = cells.findIndex((q, j) => j < i && Math.hypot(...p.map((v, k) => v - q[k])) < 64);
-      if (near >= 0) stroke([c, scale(cells[near], scene.black * scene.breath)], '#6b7a99', opacity * .25);
-    }
+  if (!scene.blackPopulation || scene.blackOpacity <= 0) return;
+  drawingBlack = true;
+  ctx = blackContext;
+  ctx.clearRect(0, 0, width, height);
+  const population = blackCells.slice(0, scene.blackPopulation).map((p, i) => ({p, i}));
+  const angle = yaw + time * .014;
+  population.sort((a, b) => {
+    const depth = p => p[1] * Math.sin(pitch) + (p[0] * Math.sin(angle) + p[2] * Math.cos(angle)) * Math.cos(pitch);
+    return depth(b.p) - depth(a.p);
   });
+  population.forEach(({p, i}) => {
+    const c = scale(p, scene.breath);
+    const r = 7; // Fixed world-space radius for every sphere throughout its life.
+    const q = project(c), screenRadius = r * q[2];
+    if (q[0] + screenRadius < 0 || q[0] - screenRadius > width || q[1] + screenRadius < 0 || q[1] - screenRadius > height) return;
+    const shade = ctx.createRadialGradient(q[0] - screenRadius * .3, q[1] - screenRadius * .3, 0, q[0], q[1], screenRadius);
+    shade.addColorStop(0, '#7a8ba5'); shade.addColorStop(.55, '#344156'); shade.addColorStop(1, '#070c17');
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = shade;
+    ctx.beginPath(); ctx.arc(q[0], q[1], screenRadius, 0, TAU); ctx.fill();
+    if (screenRadius > 14 && i % 3 === 0) orbit(c, r, 1, time * .15, '#8a9bb9', .2);
+  });
+  drawingBlack = false;
+  ctx = mainContext;
+  ctx.globalAlpha = scene.blackOpacity;
+  ctx.drawImage(blackCanvas, 0, 0, width, height);
+  ctx.globalAlpha = 1;
 }
 function bluePosition(p, i) {
   const free = 1 - scene.weave;
   // Affine shells settle together; opposing spins visibly move apart before weaving.
-  return p.p.map((v, k) => v * scene.breath + Math.sin(time * .8 * p.spin + p.phase + k) * (free * 10 + 1.6));
+  return p.p.map((v, k) => (v * scene.breath + Math.sin(time * .8 * p.spin + p.phase + k) * (free * 10 + 1.6)) * scene.blueContraction);
 }
 function blueFabric(positions) {
   if (!scene.blue) return;
-  const visible = scene.blue * (1 - scene.matter * .47);
+  const visible = scene.blue * (1 - scene.matter * .94);
   edges.forEach(([a, b], i) => {
     const bind = ramp(time, 65 + i % 11, 75 + i % 9);
     const A = particles[a], B = particles[b];
@@ -223,7 +250,7 @@ function blueFabric(positions) {
     }
   });
   particles.forEach((p, i) => {
-    const born = ramp(time, 58 + i % 10, 64 + i % 10);
+    const born = ramp(time, 62 + i % 7, 67 + i % 7);
     point(positions[i], ['#669fe6','#93c7ff','#b7d9ff','#e3f1ff'][memory[i]], 1.3 + memory[i] * .4, visible * born, i % 9 === 0);
     if (i % 3 === 0) for (let shell = 0; shell < p.shells; shell++) {
       orbit(positions[i], (3 + shell * 2.7) * born, (i + shell) % 3, time * p.spin / (shell + 1) + p.phase, '#78b9ff', visible * born * .5);
@@ -263,10 +290,100 @@ function matterPosition(p, i, base) {
     if (i >= 60) {
       const n = i - 60;
       const circuit = [(n % 6 - 2.5) * 26, -54 + Math.floor(n / 6) * 22, 46];
-      pos = lerp(pos, circuit, scene.computing);
+      const net = [Math.sin(n * 2.399) * (62 + n % 5 * 13), Math.cos(n * 1.73) * 65, Math.sin(n * .81) * 67];
+      const thought = lerp(circuit, net, scene.thoughtnet);
+      pos = lerp(pos, thought, scene.computing);
     }
   }
   return scale(pos, 1 + Math.sin(time * 1.2) * .025);
+}
+// A deliberately wider astronomical shot after the energy pulse. Three sparse
+// spiral systems share the previous matter centers, then one planet fills the view.
+function cosmicView() {
+  const visibility = scene.cosmos * (1 - scene.earth);
+  if (visibility < .001) return;
+  const expansion = .3 + .7 * scene.cosmos;
+  holes.forEach((h, system) => {
+    const c = scale(h, expansion);
+    for (let arm = 0; arm < 3; arm++) {
+      const points = [];
+      for (let n = 0; n < 65; n++) {
+        const r = 9 + n * .95;
+        const a = arm * TAU / 3 + n * .12 + time * (.045 + system * .008);
+        const p = add(c, [Math.cos(a) * r * expansion, Math.sin(a) * r * .27 * expansion, Math.sin(a) * r * .7 * expansion]);
+        points.push(p);
+        const star = ramp(time, 95 + (n % 7), 100 + (n % 7));
+        point(p, n % 4 === 0 ? '#b5cfff' : '#ffd9b0', (.7 + star * (n % 6 === 0 ? 1.5 : .4)), visibility * (.4 + star * .6), n % 13 === 0);
+        if (star > .1 && n % 21 === 0) {
+          orbit(p, 4, 1, time * .4 + n, '#9aafcc', visibility * star * .4);
+        }
+      }
+      stroke(points, '#b98b9e', visibility * .17, 2);
+    }
+    const q = project(c);
+    ctx.globalAlpha = visibility; ctx.fillStyle = '#01030b';
+    ctx.beginPath(); ctx.arc(q[0], q[1], 5 * q[2], 0, TAU); ctx.fill();
+    orbit(c, 8, 1, time, '#ffba8e', visibility, 2);
+    orbit(c, 11, 1, -time, '#e58c73', visibility * .35, 2);
+  });
+}
+// A stylized globe drawn as a sphere. The selected planet moves continuously
+// from the first spiral system to the center as the camera approaches Earth.
+const continents = [
+  [[-165,65],[-135,72],[-110,65],[-85,50],[-60,48],[-80,25],[-100,15],[-125,38]],
+  [[-80,12],[-55,8],[-35,-8],[-48,-28],[-70,-55],[-77,-25]],
+  [[-18,35],[10,38],[34,30],[50,12],[40,-15],[18,-35],[5,-25],[-8,5]],
+  [[-10,38],[-5,58],[30,70],[60,65],[105,75],[150,60],[170,45],[140,35],[120,8],[90,22],[60,30],[35,38]],
+  [[112,-12],[140,-10],[155,-25],[145,-40],[115,-32]],
+  [[-52,58],[-25,70],[-40,82],[-65,75]]
+];
+function earthView() {
+  if (time < 101) return;
+  const visible = ramp(time, 101, 105) * (1 - scene.tools * .97);
+  if (visible < .001) return;
+  const start = add(holes[0], [55, 12, 24]);
+  const center = lerp(start, [0, 0, 0], scene.earth);
+  const q = project(center), radius = (2 + 104 * scene.earth) * q[2];
+  const emphasis = visible * (1 - scene.life * .65);
+  const halo = ctx.createRadialGradient(q[0], q[1], radius * .9, q[0], q[1], radius * 1.2);
+  halo.addColorStop(0, '#559ed744'); halo.addColorStop(1, '#559ed700');
+  ctx.globalAlpha = emphasis; ctx.fillStyle = halo;
+  ctx.fillRect(q[0] - radius * 1.2, q[1] - radius * 1.2, radius * 2.4, radius * 2.4);
+  const ocean = ctx.createRadialGradient(q[0] - radius * .35, q[1] - radius * .3, 0, q[0], q[1], radius);
+  ocean.addColorStop(0, '#397dbe'); ocean.addColorStop(.65, '#154775'); ocean.addColorStop(1, '#061122');
+  ctx.fillStyle = ocean; ctx.beginPath(); ctx.arc(q[0], q[1], radius, 0, TAU); ctx.fill();
+  // Clip all land and cloud strokes to the globe silhouette.
+  ctx.save(); ctx.beginPath(); ctx.arc(q[0], q[1], radius, 0, TAU); ctx.clip();
+  const rotation = -.15 + (time - 110) * .024;
+  const surface = ([lon, lat]) => {
+    const a = lon * Math.PI / 180 + rotation, b = lat * Math.PI / 180;
+    return [Math.sin(a) * Math.cos(b), -Math.sin(b), Math.cos(a) * Math.cos(b)];
+  };
+  for (const land of continents) {
+    const points = land.map(surface);
+    if (points.every(p => p[2] < 0)) continue;
+    ctx.beginPath();
+    points.forEach((p, i) => {
+      const x = q[0] + p[0] * radius, y = q[1] + p[1] * radius;
+      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+    });
+    ctx.closePath(); ctx.fillStyle = '#659779'; ctx.fill();
+  }
+  ctx.strokeStyle = '#d6e6e9'; ctx.lineWidth = Math.max(.5, radius * .018); ctx.globalAlpha = emphasis * .28;
+  for (let band = 0; band < 5; band++) {
+    ctx.beginPath();
+    for (let j = 0; j <= 30; j++) {
+      const x = (j / 30 * 1.6 - .8) * radius;
+      const y = (band - 2) * radius * .27 + Math.sin(j * .18 + band + time * .08) * radius * .08;
+      j ? ctx.lineTo(q[0] + x, q[1] + y) : ctx.moveTo(q[0] + x, q[1] + y);
+    }
+    ctx.stroke();
+  }
+  const night = ctx.createLinearGradient(q[0] - radius, q[1], q[0] + radius, q[1] + radius * .3);
+  night.addColorStop(0, '#07132500'); night.addColorStop(.55, '#07132511'); night.addColorStop(1, '#010510bb');
+  ctx.globalAlpha = emphasis; ctx.fillStyle = night;
+  ctx.fillRect(q[0] - radius, q[1] - radius, radius * 2, radius * 2);
+  ctx.restore(); ctx.globalAlpha = 1;
 }
 function materialWorld(bluePositions) {
   if (!scene.matter) return;
@@ -274,7 +391,11 @@ function materialWorld(bluePositions) {
   particles.forEach((p, i) => {
     // A local wavefront arrival creates each proton around its existing Blue core.
     const arrival = 87 + Math.hypot(...p.p) / 36;
-    const born = ramp(time, arrival, arrival + 2);
+    let emphasis = 1 - ramp(time, 95, 101) * .97 * (1 - scene.life);
+    if (i >= 84) emphasis *= 1 - scene.life * .96;
+    else if (i < 42) emphasis *= 1 - scene.tools * .94;
+    else if (i < 60) emphasis *= 1 - scene.computing * .94;
+    const born = ramp(time, arrival, arrival + 2) * emphasis;
     const pos = positions[i];
     let color = scene.cool > .6 ? ['#ff9393', '#edbd8f', '#e6a5c2'][i % 3] : '#ff637e';
     if (i < 84 && scene.life > .5) color = '#70d9a9';
@@ -287,41 +408,62 @@ function materialWorld(bluePositions) {
       for (let shell = 0; shell < 4; shell++) orbit(pos, 1.1 + shell * .55, shell % 3, time / (shell + 1), '#80c0ff', born * .45);
     }
   });
-  // Fewer black holes than protons, with visible proton swarms around them.
-  holes.forEach((h, i) => {
-    const born = ramp(time, 90 + i, 94 + i);
-    const q = project(h), r = 7 * q[2];
-    ctx.globalAlpha = born; ctx.fillStyle = '#02030a'; ctx.beginPath(); ctx.arc(q[0], q[1], r, 0, TAU); ctx.fill();
-    orbit(h, 10 + Math.sin(time * 1.2) * .5, 1, time * .6, '#ffb7a4', born * .8, 1.6);
-  });
   for (let i = 0; i < 82; i++) {
     if (i < 42 || scene.tools < 1) {
-      if (i % 2 === 0) stroke([positions[i], positions[i + 1]], '#6bc7a7', scene.life * .4 * (i >= 42 ? 1 - scene.tools : 1));
-      if (i + 2 < 84) stroke([positions[i], positions[i + 2]], '#73c7ad', scene.life * .6 * (i >= 40 ? 1 - scene.tools : 1));
+      if (i % 2 === 0) stroke([positions[i], positions[i + 1]], '#6bc7a7', scene.life * .4 * (1 - scene.tools * .95));
+      if (i + 2 < 84) stroke([positions[i], positions[i + 2]], '#73c7ad', scene.life * .6 * (1 - scene.tools * .95));
     }
     if (i >= 42) {
       const next = 42 + Math.floor((i - 42) / 6) * 6 + (i - 42 + 1) % 6;
-      stroke([positions[i], positions[next]], '#e6c775', scene.tools * .65 * (i >= 60 ? 1 - scene.computing : 1));
+      stroke([positions[i], positions[next]], '#e6c775', scene.tools * .65 * (1 - scene.computing * .95));
     }
     if (i >= 60 && i < 83) {
-      if ((i - 60) % 6 !== 5) stroke([positions[i], positions[i + 1]], '#ffa468', scene.computing * .7);
-      if (i + 6 < 84) stroke([positions[i], positions[i + 6]], '#ffa468', scene.computing * .4);
+      if ((i - 60) % 6 !== 5) stroke([positions[i], positions[i + 1]], '#ffa468', scene.computing * .7 * (1 - scene.thoughtnet));
+      if (i + 6 < 84) stroke([positions[i], positions[i + 6]], '#ffa468', scene.computing * .4 * (1 - scene.thoughtnet));
+    }
+  }
+  if (scene.thoughtnet) {
+    for (let i = 60; i < 84; i++) {
+      for (const step of [1, 7]) {
+        const j = 60 + (i - 60 + step) % 24;
+        const a = positions[i], b = positions[j];
+        const curve = [];
+        for (let k = 0; k <= 12; k++) {
+          const f = k / 12, p = lerp(a, b, f);
+          p[1] += Math.sin(f * Math.PI) * Math.sin(time * .4 + i) * 12;
+          curve.push(p);
+        }
+        stroke(curve, '#dfaaae', scene.thoughtnet * .6);
+        const f = (time * .3 + i * .13) % 1;
+        point(curve[Math.floor(f * 12)], '#ffbc8e', 2.2, scene.thoughtnet, false);
+      }
+      orbit(positions[i], 4 + (Math.floor(time * .3 + i) % 3), i % 3, time, '#a9c5ff', scene.thoughtnet * .6);
     }
   }
   if (scene.computing) {
     for (let i = 60; i < 84; i += 5) {
-      stroke([positions[i], bluePositions[i]], '#ad9acb', scene.computing * .3);
+      stroke([positions[i], bluePositions[i]], '#ad9acb', scene.computing * .12);
       const f = (time * .25 + i * .17) % 1;
-      point(lerp(positions[i], bluePositions[i], f), '#ffb986', 2, scene.computing);
+      point(lerp(positions[i], bluePositions[i], f), '#ffb986', 2, scene.computing * .45);
     }
   }
 }
 
 function updateCaption() {
   const chapter = state(time).chapter;
-  if (chapter === currentChapter) return;
-  currentChapter = chapter;
-  const c = chapters[chapter];
+  const transitions = [
+    {start:53, end:64, title:'Into the spaces between.', description:'Thousands of equal-sized spheres fill the view. We move inward, toward a gap. The Black body fades away, revealing the place where Blue can begin.'},
+    {start:80, end:87, title:'The thoughtnet draws inward.', description:'The breathing Blue fabric contracts. Its chains and signal paths draw closer together as energy gathers toward the center.'},
+    {start:87, end:95, title:'The gathered energy opens outward.', description:'A pulse crosses the contracted net. Blue cores take on energy as matter; the view opens with the wave.'},
+    {start:95, end:104, title:'From the pulse, a cosmos.', description:'Spinning clouds gather around black holes. Stars brighten within the spirals, with planets around them. Our view is wide now—but one small world is waiting.'},
+    {start:104, end:118, title:'One small world fills the view.', description:'We leave the wide cosmos and approach Earth. The spirals recede; oceans, land, and atmosphere resolve. Here the next patterns can become life.'},
+    {start:158, end:176, title:'Computers find the shape of thought.', description:'The circuit grid loosens into a flowing thoughtnet. Stateful nodes and information-bearing arcs take the foreground—the organization already present in Blue Space.'}
+  ];
+  const transition = transitions.find(c => time >= c.start && time < c.end);
+  const key = `${chapter}:${transition ? transition.start : 'chapter'}`;
+  if (key === currentChapter) return;
+  currentChapter = key;
+  const c = {...chapters[chapter], ...(transition || {})};
   $('chapter').textContent = chapter === 0 ? 'BEFORE THE SEVEN SPACES' : `0${chapter} / ${c.subtitle.toUpperCase()}`;
   $('title').textContent = c.title;
   $('description').textContent = c.description;
@@ -375,6 +517,8 @@ new ResizeObserver(() => {
   const dpr = Math.min(devicePixelRatio || 1, 2);
   canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  blackCanvas.width = canvas.width; blackCanvas.height = canvas.height;
+  blackContext.setTransform(dpr, 0, 0, dpr, 0, 0);
 }).observe(canvas);
 // Avoid advancing the film while the tab is hidden, or dropping story time at low FPS.
 document.addEventListener('visibilitychange', () => { previous = null; });
@@ -391,13 +535,13 @@ function frame(now) {
   ctx.globalCompositeOperation = 'lighter';
   twirl(); energyWave();
   ctx.globalCompositeOperation = 'source-over';
-  materialWorld(positions);
+  cosmicView(); earthView(); materialWorld(positions);
   ctx.globalAlpha = 1;
   updateCaption();
   const progress = Math.min(time, duration);
   $('seek').value = progress;
   $('elapsed').textContent = `${Math.floor(progress / 60)}:${String(Math.floor(progress % 60)).padStart(2, '0')}`;
-  $('scene-mode').textContent = time >= duration ? 'THE BREATH CONTINUES' : 'CONTINUOUS EVOLUTION';
+  $('scene-mode').textContent = time >= 36 && time < 64 ? `${scene.blackPopulation.toLocaleString()} SPHERES · ${time >= 53 ? 'MOVING INSIDE' : 'MULTIPLYING'}` : time >= duration ? 'THE BREATH CONTINUES' : 'CONTINUOUS EVOLUTION';
   requestAnimationFrame(frame);
 }
 updatePlay(); updateCaption(); requestAnimationFrame(frame);
