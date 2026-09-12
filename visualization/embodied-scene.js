@@ -160,21 +160,37 @@ function drawRelayMessages(positions, visible, clock, count = 3) {
 
 // A brief journey through living tissue bridges the globe and molecular scale.
 function livingTissue() {
-  const visible = ramp(time,118,121)*(1-ramp(time,124,128));
+  const visible = ramp(time,118,121)*(1-ramp(time,129,132));
   if(visible<.001)return;
-  const growth=1+3*ramp(time,119,127);
-  for(let i=0;i<12;i++) {
-    const a=i*2.399, r=24+Math.sqrt(i)*25;
-    const center=[Math.cos(a)*r*growth,Math.sin(a)*r*growth,Math.sin(i)*25];
-    const membrane=[];
-    for(let j=0;j<=48;j++) {
-      const theta=j/48*TAU, radius=(18+i*.6)*growth*(1+.09*Math.sin(theta*3+i));
-      membrane.push(add(center,[Math.cos(theta)*radius,Math.sin(theta)*radius,Math.sin(theta)*radius*.3]));
+  const dive=ramp(time,121,128), growth=1+dive*5;
+  const unit=Math.min(width/460,(height-190)/380)*zoom;
+  const cx=width*.5, cy=height*.40;
+  ctx.save();
+  for(let i=10;i>=0;i--) {
+    const a=i*2.399, r=i===0?0:90+Math.sqrt(i)*32;
+    const x=cx+Math.cos(a)*r*growth*unit,y=cy+Math.sin(a)*r*growth*unit;
+    const radius=(i===0?79:39+i)*growth*unit;
+    ctx.globalAlpha=visible*(i===0?.65:.35);
+    const fill=ctx.createRadialGradient(x-radius*.2,y-radius*.2,0,x,y,radius);
+    fill.addColorStop(0,'#163d2a');fill.addColorStop(.85,'#0d2a22');fill.addColorStop(1,'#43986a');
+    ctx.fillStyle=fill;ctx.beginPath();ctx.ellipse(x,y,radius,radius*.82,0,0,TAU);ctx.fill();
+    ctx.strokeStyle='#7ddd9b';ctx.lineWidth=1.6;ctx.stroke();
+    ctx.beginPath();ctx.ellipse(x,y,radius*.96,radius*.78,0,0,TAU);ctx.strokeStyle='#386e54';ctx.stroke();
+    // Organelles stay in the cytoplasm and move past the viewer during the dive.
+    for(let j=0;j<8;j++) {
+      const angle=j*2.4+i, ox=x+Math.cos(angle)*radius*.65,oy=y+Math.sin(angle)*radius*.52;
+      ctx.beginPath();ctx.ellipse(ox,oy,radius*.10,radius*.04,angle,0,TAU);ctx.strokeStyle=j%2?'#8aa96d':'#699f89';ctx.stroke();
     }
-    embodiedFace(membrane,'#174d2b',visible*.22);
-    stroke(membrane,'#44d977',visible*.48,1.5);
-    point(center,'#72efa3',4*growth,visible*.3,true);
+    const nucleus=radius*.29;
+    ctx.globalAlpha=visible*.48;ctx.beginPath();ctx.ellipse(x,y,nucleus,nucleus*.88,0,0,TAU);
+    ctx.fillStyle='#12313b';ctx.fill();ctx.strokeStyle='#71bcb0';ctx.stroke();
+    ctx.globalAlpha=visible*.25;
+    for(let pore=0;pore<12;pore++) {
+      const angle=pore*TAU/12;
+      ctx.beginPath();ctx.arc(x+Math.cos(angle)*nucleus,y+Math.sin(angle)*nucleus*.88,2*unit,0,TAU);ctx.fillStyle='#97dec5';ctx.fill();
+    }
   }
+  ctx.restore();
 }
 
 // A periodic-table excerpt opens into carbon's four spatial bonding directions.
@@ -208,4 +224,29 @@ function elementBridge() {
   ctx.globalAlpha=visible*(1-focus);ctx.fillStyle='#c4a9b1';ctx.font='10px Arial';ctx.textAlign='center';
   ctx.fillText('ELEMENTS · PERIODIC TABLE · 1–36',width*.5,height*.40+78);
   ctx.globalAlpha=1;
+}
+
+// A human likeness is only a translucent outer veil: the working net remains
+// the brightest subject. The reaching pose recalls Renaissance ceiling painting.
+function humanVeil() {
+  const visible=ramp(time,180,193);
+  if(visible<.001)return;
+  const veil=(points,color,alpha,width=1)=>{
+    embodiedFace(points,color,visible*alpha);
+    stroke(points,color,visible*alpha*3,width,true);
+  };
+  // Broad drapery encloses the brain, the energy and the surrounding instruments.
+  veil([[-55,-81,-18],[-100,-61,-10],[-145,-10,0],[-159,52,7],[-123,101,5],[-62,126,0],[25,119,0],[102,86,8],[136,31,5],[104,-28,-8],[61,-75,-18]],'#b9a6b3',.045,1.2);
+  veil([[-42,-66,-4],[-71,-45,0],[-80,18,4],[-60,77,0],[-21,100,0],[35,90,0],[69,38,0],[56,-39,0],[31,-68,0]],'#d6b7a3',.045);
+  // Head, brow, nose and beard: an older human, not an opaque character model.
+  veil([[-24,-76,0],[-36,-94,0],[-35,-116,0],[-23,-132,0],[-5,-137,0],[14,-132,0],[25,-120,0],[26,-106,0],[34,-99,0],[25,-95,0],[25,-82,0],[12,-65,0],[-3,-59,0],[-20,-67,0]],'#ddcaba',.10,1.2);
+  stroke([[-31,-110,0],[-18,-117,0],[-3,-114,0],[11,-115,0],[21,-110,0]],'#eee0d0',visible*.30,1.2);
+  stroke([[8,-105,-1],[18,-106,-1]],'#f5e9d8',visible*.38,1.4);
+  for(let i=0;i<7;i++) stroke([[-24+i*7,-85,0],[-19+i*5,-70+i%2*5,0],[-6+i*2,-60,0]],'#d8d0ca',visible*.18,.8);
+  for(let i=0;i<5;i++) stroke([[-30-i,-101-i*4,0],[-37-i,-118,0],[-24,-133-i,0],[-5,-137-i,0],[17,-132,0]],'#e1d9d1',visible*.16,.9);
+  // One relaxed arm, one reaching hand with a small gap beyond the fingertip.
+  veil([[-61,-46,0],[-89,-22,0],[-108,18,0],[-93,33,0],[-72,4,0],[-40,-21,0]],'#d6b7a3',.055);
+  veil([[42,-53,0],[67,-45,0],[100,-64,0],[130,-74,0],[150,-72,0],[165,-77,0],[172,-75,0],[152,-65,0],[136,-61,0],[108,-45,0],[72,-23,0],[46,-27,0]],'#e4c8b0',.085,1.1);
+  stroke([[137,-68,0],[151,-63,0],[160,-64,0]],'#ead4bd',visible*.27);
+  for(let i=0;i<8;i++) stroke([[-124+i*32,49,5],[-112+i*29,85,5],[-80+i*20,110,5]],'#a9a2bb',visible*.10,.7);
 }

@@ -652,9 +652,11 @@ function frame(now) {
   renderOpacity = 1 - ramp(time, 132, 144);
   if (renderOpacity > .001) materialWorld(positions);
   renderOpacity = 1;
+  humanVeil();
   drawEmbodiedScene();
   drawAugmentation();
   $('heartbeat').hidden = time < 18;
+  $('mold-joke').hidden = time < 124 || time >= 132;
   const beat = Math.floor((time - 18) * 1.8 / (Math.PI / 2)) % 4;
   $('heartbeat').textContent = [0,1,2,3].map(i => (i === 2 ? '  ' : '') + (i === beat ? '●' : '○')).join(' ') + '   4 beats · 2 pairs · 42';
   renderOpacity = .35;

@@ -9,3 +9,5 @@
 #human-cell-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}#human-cell-inputs label{font-size:9px;color:#92a7bd}#human-cell-inputs input{width:100%;margin-top:4px;background:#0e1927;border:1px solid #304158;color:#dbe7ef;border-radius:3px;padding:6px;font-size:11px}
 
 .view-controls{flex-wrap:wrap;max-width:calc(100% - 40px);justify-content:flex-end}#heartbeat{position:absolute;left:30px;top:105px;color:#aac4e5;font:10px monospace;letter-spacing:1px;pointer-events:none}.cinema #heartbeat{top:75px}@media(max-width:600px){#heartbeat{top:140px;left:20px;font-size:9px}}
+
+#mold-joke{position:absolute;right:24px;top:175px;max-width:190px;padding:12px;background:#141c16dc;border:1px solid #665f31;border-radius:8px;color:#d5d8ac;font-size:10px;line-height:1.6}#mold-joke strong,#mold-joke span{display:block}.mold-blob{width:95px;padding:8px;background:#bd9f36;color:#f2e59f;border-radius:47% 62% 35% 55%;letter-spacing:8px;margin-bottom:8px}@media(max-width:600px){#mold-joke{top:170px;max-width:155px;font-size:9px}}

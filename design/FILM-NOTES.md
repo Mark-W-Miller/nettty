@@ -83,3 +83,15 @@ Mark describes Blue’s processing capacity as far beyond human brains or contem
 Mark wants the Big Bang's energy pictured as spinning up or inflating the proton. From those energy fields and bonds comes the periodic table; carbon becomes the visual center of attention, then carbon chemistry leads toward durable DNA. He contrasts the strength of the underlying Blue fabric with the weaker, more flexible Red material bonds.
 
 Show the table as a recognizable organized family, bring carbon forward, and open four bonding directions into space. Carbon is the dramatic focus, not the literal center of the periodic table. Mark's spoken description included four-, three-, two- and one-bonded possibilities with itself. For the image, distinguish four bonding sites from single, double and triple carbon–carbon bonds; do not draw an ordinary carbon–carbon quadruple bond or equate the Netty mechanism with an established Standard Model result.
+
+## Final image: the human veil
+
+Mark asks for a Sistine Chapel–inspired shadow of God: an ordinary older human likeness, only a thin outer film. Put the whole working image inside it. The reality of the picture is the Blue core, Red material and Green living structure; keep their depth and activity visible through the human outline. Use an expressive reaching pose and faint drapery, not a solid figure that hides the net. The order was spoken as both Blue–Green–Red and Blue–Red–Green; the established composition keeps Blue inside Green tissue made of Red, with energy around it.
+
+## Enter one cell
+
+Make Green tissue recognizable as cells: outer membranes, cytoplasm, organelles and a nucleus. Select a central cell and tunnel inward; surrounding cells and the membrane pass beyond the view. Reveal DNA at the center of the nucleus, then its Blue workers. Preserve the feeling of entering one continuous structure rather than cutting to an unrelated molecular diagram.
+
+## Yellow slime-mold aside
+
+Mark requested a small joke during the inward DNA shot: “Unless of course you are a yellow mold,” with DNA distributed through its body. The onscreen adaptation is: “Unless you’re a yellow slime mold… Why settle for one nucleus? Bring thousands.” A little yellow body contains scattered nuclear dots. This preserves the joke while correcting the no-nucleus wording: plasmodial slime molds contain many nuclei within one shared cell. Reference: https://www.nps.gov/yose/blogs/wildlife-and-other-sightings-dog-vomit-slime-mold.htm
