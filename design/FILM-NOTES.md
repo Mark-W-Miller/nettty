@@ -121,3 +121,7 @@ He also wants yellow slime mold investigated as a possible original life form in
 Mark calls the room for an individual to choose within physical constraints a “spirit force.” His example is a bird: gravity, wind and obstacles matter, but leave a Goldilocks or “Goldie” zone of possible paths. Visualize constraints and the bird's changing direction together; his claim about internal laws of motion belongs to the philosophical narration.
 
 Then reveal the flock. Mark loves the six-neighbor idea: individual local responses become coordinated group movement. The illustrative animation uses six nearest neighbors, combines cohesion with alignment and separation, and includes wind and obstacle avoidance. Six-neighbor center-following alone is not represented as a complete scientific law of bird behavior. One focal bird and its six links make the algorithm visible. A Watch the flock control replays the emergence at normal speed.
+
+## Pump correction: radial exchange, not orbiting
+
+The red and white do not circle each other. They share a center and breathe in opposite radial phases: Red becomes the enclosing surface as White contracts, then White encloses Red. This supersedes the earlier interpretation of “exchanging places” as small positional orbits. The inner/outer exchange never stops. The central perpendicular twirl is a separate spinning motion.

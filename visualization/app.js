@@ -126,7 +126,9 @@ function pinkField() {
   const visibility = Math.max(.18 * ramp(time, 18, 25), (1 - scene.black * .9) * (1 - scene.blue * .8));
   const center = project([0, 0, 0]);
   const settled = scene.pairSettled;
-  for (let band = 0; band < 10; band++) {
+  const bands = Array.from({length:10},(_,i)=>i);
+  if (settled > .99) bands.sort((a,b)=>NettyEvolution.pairRadius(time,b%2===1)-NettyEvolution.pairRadius(time,a%2===1));
+  for (const band of bands) {
     const layerFade = band < 2 ? 1 : 1 - settled;
     if (layerFade < .001) continue;
     const white = band % 2 === 1;
@@ -134,16 +136,14 @@ function pinkField() {
     const pulse = Math.sin(time * 1.2 + syncPhase);
     const contraction = white ? 1 : 1 - .8 * scene.redRetraction;
     const looseBase = (139 - band * 6) * (white ? .94 : 1) * (1 + .09 * pulse) * contraction;
-    const base = looseBase * (1 - settled) + (white ? 43 : 39) * (1 + .025 * pulse) * settled;
-    const exchange = (white ? 1 : -1) * settled;
-    const driftX = Math.sin(time * .9) * 9 * exchange;
-    const driftY = Math.cos(time * .9) * 4 * exchange;
+    const base = looseBase * (1 - settled) + NettyEvolution.pairRadius(time, white) * settled;
+    // One shared center: radial breathing exchanges the enclosing surface.
     ctx.beginPath();
     for (let j = 0; j <= 100; j++) {
       const a = j / 100 * TAU;
       const r = base * (1 + (1 - settled) * (.16 * Math.sin(a * 3 + time * .28 + syncPhase) + .09 * Math.cos(a * 5 - time * .18)));
-      const x = center[0] + (Math.cos(a) * r + Math.sin(time * .32 + syncPhase) * 15 * (1 - settled) + driftX) * center[2];
-      const y = center[1] + (Math.sin(a) * r * (.9 + .1 * settled) + Math.cos(time * .25 + syncPhase) * 12 * (1 - settled) + driftY) * center[2];
+      const x = center[0] + (Math.cos(a) * r + Math.sin(time * .32 + syncPhase) * 15 * (1 - settled)) * center[2];
+      const y = center[1] + (Math.sin(a) * r * (.9 + .1 * settled) + Math.cos(time * .25 + syncPhase) * 12 * (1 - settled)) * center[2];
       j ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
     }
     ctx.closePath();

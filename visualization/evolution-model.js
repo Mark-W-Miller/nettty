@@ -30,6 +30,9 @@
       computing: ramp(t, 150, 158), thoughtnet: ramp(t, 158, 176), feedback: ramp(t, 176, 188), breath: 1 + .045 * Math.sin(t * 1.2)
     };
   }
+  function pairRadius(t, white) {
+    return (white ? 42 : 40) + (white ? -1 : 1) * 10 * Math.sin(t * 1.8);
+  }
   function pumpTurns(t) {
     const age = Math.max(0, Math.min(t, 64) - 36);
     return Math.max(0, Math.min(t, 36) - 18) * .2 + .2 / .33 * Math.expm1(.33 * age) + Math.max(0,t-64)*6;
@@ -51,7 +54,7 @@
     }
     return changes;
   }
-  const api = { pumpTurns, dnaRevision, chapters, clamp, ramp, state, receivedCount, twirlRadius, duration: 204 };
+  const api = { pairRadius, pumpTurns, dnaRevision, chapters, clamp, ramp, state, receivedCount, twirlRadius, duration: 204 };
   if (typeof module !== 'undefined') module.exports = api;
   else root.NettyEvolution = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

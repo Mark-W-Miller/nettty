@@ -59,3 +59,8 @@ console.log('DNA edit retention and learning-surface timing checks passed.');
 for (const t of [13,16,18,21,23,30]) {
   assert(Math.abs(state(t).twirlScale - (1 - .68 * state(t).pairSettled)) < 1e-12);
 }
+
+const {pairRadius} = require('./evolution-model.js');
+for (const t of [0,1,2,3,100]) assert(Math.abs(pairRadius(t,true)+pairRadius(t,false)-82)<1e-10);
+assert(pairRadius(Math.PI/3.6,false)>pairRadius(Math.PI/3.6,true));
+assert(pairRadius(3*Math.PI/3.6,true)>pairRadius(3*Math.PI/3.6,false));
