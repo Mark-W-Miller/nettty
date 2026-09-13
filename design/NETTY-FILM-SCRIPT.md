@@ -118,7 +118,27 @@ BRING in other birds. Highlight six neighbors around one bird, then let the link
 
 LET the flock ripple and zip around its neighborhood. Keep it lively and irregular, not marching in formation and not drifting out of the picture.
 
-## 2:26 — Life extends itself
+## 2:26 — One golden living body
+
+SHOW yellow slime mold spreading through Green Space. Its color does not make it Yellow Space: this is living material.
+
+GROW a branching body with flowing veins. Put many small genetic pockets throughout it, with no single central nucleus.
+
+FOLLOW material streaming through the veins. Let the nuclear pockets and fine genetic strands remain visible inside.
+
+A SMALL ASIDE: “Why settle for one nucleus? Bring thousands.”
+
+## 2:38 — Four neighbors on the ground
+
+LOWER the view onto an uneven surface, then tilt enough to see its depth.
+
+SHOW spider-like crawlers with eight moving legs. Let each respond to four neighboring creatures in this illustrative swarm.
+
+HIGHLIGHT four blue relationships around one crawler. Keep the group locally active, separating and regrouping.
+
+LET the living ground recede as the film returns to constructed extensions.
+
+## 2:50 — Life extends itself
 
 RETURN toward a physical brain: Blue pulsing inside folded Green tissue made of Red material.
 
@@ -126,7 +146,7 @@ DRAPE energy around it. Show the tension between what is taken up and what remai
 
 LET living intention become tools and extensions.
 
-## 2:30 — Orange: our machines
+## 2:54 — Orange: our machines
 
 BUILD ordered local grids around the living structure, in three dimensions.
 
@@ -140,7 +160,7 @@ PASS messages outward and feedback inward.
 
 SAY: “Our computers are becoming thoughtnets. The net came first.”
 
-## About 3:00 — A thin human veil
+## About 3:24 — A thin human veil
 
 FADE IN a faint older human likeness with a reaching gesture, recalling the Sistine Chapel.
 
@@ -148,7 +168,7 @@ MAKE it only a thin film around the working picture. Keep the internal Blue, Red
 
 KEEP us there too, facing our machines. The central white twirl remains unmistakable.
 
-## 3:08 — A learning surface
+## 3:32 — A learning surface
 
 SHOW observation and response flowing both ways between people, computers and the inner net.
 
@@ -167,7 +187,7 @@ These are captured intentions, not completed scenes in the current player:
 - Patterns sent and received through a listening antenna: an attempt to establish communication.
 - “Playing tic-tac-toe with God. That sounds expensive.”
 - The hope of learning to focus large physical forces, including reducing earthquake damage, framed as a proposed future capability.
-- Yellow living material organizing into more complex forms, as part of Mark’s origin story.
+- Further development of Mark’s origin story beyond the now-drawn branching yellow mold.
 
 Keep these passages exploratory. Find pictures and pacing with Mark before assigning them fixed places in the film.
 

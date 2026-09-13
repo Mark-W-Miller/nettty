@@ -8,8 +8,8 @@
     { at: 58, name: 'Blue Space', subtitle: 'The sentient net processor', color: '#66adff', title: 'In the gaps, a mind takes shape.', description: 'Simple nested shells spin up between the spheres. Different spins bind or repel. Asymmetric chains weave a sentient cotton-candy net: stateful nodes joined by information-bearing arcs. Each arrival changes a node; the outgoing pattern carries that change forward.', motifs: 'SHELL AFFINITY · ASYMMETRIC CHAINS · STATE & SIGNAL' },
     { at: 85, name: 'Red Space', subtitle: 'The energy release', color: '#ff7186', title: 'A drop at the center. A wave of fire.', description: 'Blue contracts as energy gathers. The central gravity drops and the Big Bang opens the view: black holes, spinning clouds, stars, and planets. Each proton carries a Blue core. The camera finds one small world in the cosmos.', motifs: 'GRAVITY DROP · EXPANDING PULSE · BLUE CORES INSIDE MATTER' },
     { at: 110, name: 'Green Space', subtitle: 'Life takes form', color: '#69dbac', title: 'From the cosmos, into Earth.', description: 'The view closes in on Earth. Blue drives the organization of life: DNA is an output language, its patterns written into living matter. Life is intricate physical machinery expressing Blue’s intention. The two strands wind into a double helix; Blue agents travel along them and rewrite their patterns.', motifs: 'BLUE PROCESSES · DNA EXPRESSES · LIFE TAKES FORM' },
-    { at: 146, name: 'Yellow Space', subtitle: 'Life extends itself', color: '#efd078', title: 'Life builds beyond itself.', description: 'The living field organizes matter into nonliving structures: cells of a hive, tools, machines. The same material flows into new arrangements, extending life’s reach.', motifs: 'LIFE · CONSTRUCTION · TOOLS' },
-    { at: 150, name: 'Orange Space', subtitle: 'A new conversation', color: '#ff9c68', title: 'Our computers become thoughtnets.', description: 'The thoughtnet is already here in Blue Space. As Blue’s intention becomes the intricate machinery of life, human intention becomes the ordered machinery of computers. Their local grids remain connected by information-bearing arcs: machinery becoming a thought machine. Orange reaches toward the net that came first.', motifs: 'COMPUTERS → THOUGHTNETS · THE NET CAME FIRST' }
+    { at: 170, name: 'Yellow Space', subtitle: 'Life extends itself', color: '#efd078', title: 'Life builds beyond itself.', description: 'The living field organizes matter into nonliving structures: cells of a hive, tools, machines. The same material flows into new arrangements, extending life’s reach.', motifs: 'LIFE · CONSTRUCTION · TOOLS' },
+    { at: 174, name: 'Orange Space', subtitle: 'A new conversation', color: '#ff9c68', title: 'Our computers become thoughtnets.', description: 'The thoughtnet is already here in Blue Space. As Blue’s intention becomes the intricate machinery of life, human intention becomes the ordered machinery of computers. Their local grids remain connected by information-bearing arcs: machinery becoming a thought machine. Orange reaches toward the net that came first.', motifs: 'COMPUTERS → THOUGHTNETS · THE NET CAME FIRST' }
   ];
   const clamp = x => Math.max(0, Math.min(1, x));
   const ramp = (t, a, b) => { const x = clamp((t - a) / (b - a)); return x * x * (3 - 2 * x); };
@@ -26,8 +26,8 @@
       weave: ramp(t, 67, 84), wave: Math.max(0, (t - 87) * 36),
       matter: ramp(t, 87, 102), cool: ramp(t, 99, 113),
       blueContraction: 1 - .72 * ramp(t, 80, 87), cosmos: ramp(t, 89, 102), earth: ramp(t, 104, 118),
-      life: ramp(t, 118, 132), tools: ramp(t, 146, 150),
-      computing: ramp(t, 150, 158), thoughtnet: ramp(t, 158, 176), feedback: ramp(t, 176, 188), breath: 1 + .045 * Math.sin(t * 1.2)
+      life: ramp(t, 118, 132), tools: ramp(t, 170, 174),
+      computing: ramp(t, 174, 182), thoughtnet: ramp(t, 182, 200), feedback: ramp(t, 200, 212), breath: 1 + .045 * Math.sin(t * 1.2)
     };
   }
   function pairRadius(t, white) {
@@ -54,7 +54,7 @@
     }
     return changes;
   }
-  const api = { pairRadius, pumpTurns, dnaRevision, chapters, clamp, ramp, state, receivedCount, twirlRadius, duration: 204 };
+  const api = { pairRadius, pumpTurns, dnaRevision, chapters, clamp, ramp, state, receivedCount, twirlRadius, duration: 228 };
   if (typeof module !== 'undefined') module.exports = api;
   else root.NettyEvolution = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

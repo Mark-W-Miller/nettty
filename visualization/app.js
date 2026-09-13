@@ -74,10 +74,12 @@ let renderOpacity = 1;
 function project(p) {
   const helixView = ramp(time, 116, 125) * (1 - ramp(time, 133, 142));
   const angle = (yaw + time * .014) * (1 - helixView) + (yaw + .1) * helixView;
+  const groundView = ramp(time,157,160) * (1-ramp(time,168,171));
+  const viewPitch = pitch * (1-groundView) - .75 * groundView;
   const x = p[0] * Math.cos(angle) - p[2] * Math.sin(angle);
   const z = p[0] * Math.sin(angle) + p[2] * Math.cos(angle);
-  const y = p[1] * Math.cos(pitch) - z * Math.sin(pitch);
-  const depth = p[1] * Math.sin(pitch) + z * Math.cos(pitch);
+  const y = p[1] * Math.cos(viewPitch) - z * Math.sin(viewPitch);
+  const depth = p[1] * Math.sin(viewPitch) + z * Math.cos(viewPitch);
   // The Black-only dolly carries us into its microscopic gaps. Blue is authored
   // at the resulting close-up scale, so it grows into that same screen volume.
   const camera = drawingBlack ? scene.cameraPush : 1;
@@ -487,7 +489,7 @@ function materialWorld(bluePositions) {
 function learningSurface() {
   if (!scene.feedback) return;
   const visible = scene.feedback, core = [82, -8, 0];
-  const learned = Math.floor(Math.max(0, time - 182) / 3) % 4;
+  const learned = Math.floor(Math.max(0, time - 206) / 3) % 4;
   point(core, '#8cceff', 2.5, visible, true);
   for (let shell = 0; shell < 3; shell++) orbit(core, 4 + shell * 2, shell % 3, time / (shell + 1), '#5faeff', visible * .85);
   for (let ray = 0; ray < 7; ray++) {
@@ -525,18 +527,20 @@ function updateCaption() {
     {start:113, end:118, title:'One small world fills the view.', description:'We leave the wide cosmos and approach Earth. The spirals recede; oceans, land, and atmosphere resolve. Here the next patterns can become life.'},
     {start:132, end:137, title:'One bird, room to choose.', description:'Wind, gravity and obstacles constrain a path without specifying every turn. Mark calls this room to act the Goldie zone: the spirit force of the individual.'},
     {start:137, end:146, title:'Six neighbors. One moving flock.', description:'An illustrative flock responds to six nearby neighbors through alignment, spacing and cohesion. Blue lines reveal the focal bird’s local relationships; coordinated motion emerges from those interactions.'},
-    {start:176, end:192, title:'We are the eyes of God.', description:'In Netty, Blue has a processing capacity beyond our brains and machines. Our computers help us communicate intention; observations return as the feedback Blue seeks. Participation in a learning universe—not taking over from God.'},
-    {start:192, end:Infinity, title:'The Age of Aquarius.', description:'The Netty learning surface. A continual intention toward controlled asymmetry, every step of the way—including us and this conversation. God is all-learning, not all-knowing. We are the eyes of God.'},
+    {start:146, end:158, title:'One golden body. Many genetic centers.', description:'A yellow slime mold spreads as a branching living body. Material streams along its veins. Many nuclei and their genetic material are distributed throughout it; there is no single central nucleus.'},
+    {start:158, end:170, title:'On the ground: four neighbors.', description:'Spider-like crawlers move across a shared surface. Four nearby neighbors guide each creature in this illustrative ground-swarm rule. Blue links reveal the local relationships; eight legs carry each individual.'},
+    {start:200, end:216, title:'We are the eyes of God.', description:'In Netty, Blue has a processing capacity beyond our brains and machines. Our computers help us communicate intention; observations return as the feedback Blue seeks. Participation in a learning universe—not taking over from God.'},
+    {start:216, end:Infinity, title:'The Age of Aquarius.', description:'The Netty learning surface. A continual intention toward controlled asymmetry, every step of the way—including us and this conversation. God is all-learning, not all-knowing. We are the eyes of God.'},
     {start:118, end:132, title:'DNA: an output language.', description:'Watch the two strands wind together. Blue agents travel along both backbones, pause at rungs, and change their patterns. Use Replay DNA to watch this passage at normal speed.'},
-    {start:146, end:150, title:'Blue inside Green, made of Red.', description:'From the inside outward: a pulsing Blue thoughtnet, the folded Green machinery of a physical brain, and Red matter carrying excess energy around it. In Netty, the tension begins when energy exceeds the capacity to spin it up.'},
-    {start:150, end:176, title:'Thought, wrapped in machinery.', description:'The Blue core keeps pulsing inside living Green structure made of Red matter. Around it, ordered computer grids form in three dimensions. Support becomes powered legs, then a protective powered suit: machinery extending human ability. The grids acquire familiar screens. Drag to orbit and look inside.'}
+    {start:170, end:174, title:'Blue inside Green, made of Red.', description:'From the inside outward: a pulsing Blue thoughtnet, the folded Green machinery of a physical brain, and Red matter carrying excess energy around it. In Netty, the tension begins when energy exceeds the capacity to spin it up.'},
+    {start:174, end:200, title:'Thought, wrapped in machinery.', description:'The Blue core keeps pulsing inside living Green structure made of Red matter. Around it, ordered computer grids form in three dimensions. Support becomes powered legs, then a protective powered suit: machinery extending human ability. The grids acquire familiar screens. Drag to orbit and look inside.'}
   ];
   const transition = transitions.find(c => time >= c.start && time < c.end);
   const key = `${chapter}:${transition ? transition.start : 'chapter'}`;
   if (key === currentChapter) return;
   currentChapter = key;
   const c = {...chapters[chapter], ...(transition || {})};
-  $('chapter').textContent = time >= 176 ? 'THE NETTY LEARNING SURFACE' : chapter === 0 ? 'BEFORE THE SEVEN SPACES' : `0${chapter} / ${c.subtitle.toUpperCase()}`;
+  $('chapter').textContent = time >= 200 ? 'THE NETTY LEARNING SURFACE' : chapter === 0 ? 'BEFORE THE SEVEN SPACES' : `0${chapter} / ${c.subtitle.toUpperCase()}`;
   $('title').textContent = c.title;
   $('description').textContent = c.description;
   $('motifs').textContent = c.motifs;
@@ -620,9 +624,10 @@ $('replay-dna').onclick = () => {
   wasSearchWindow = false; time = 118; speed = 1; playing = true; searchPinned = false; searchDismissed = true;
   $('speed').value = 1; $('speed-label').value = '1×'; updatePlay(); updateCaption();
 };
+$('green-tour').onclick = () => { time=118; speed=1; playing=true; searchPinned=false; searchDismissed=true; wasSearchWindow=false; $('speed').value=1; $('speed-label').value='1×'; updatePlay(); updateCaption(); };
 $('flock-view').onclick = () => { time = 132; speed = 1; playing = true; $('speed').value=1; $('speed-label').value='1×'; updatePlay(); updateCaption(); };
 $('inside-out').onclick = () => {
-  time = 160; speed = 1; playing = true; searchPinned = false; searchDismissed = true;
+  time = 184; speed = 1; playing = true; searchPinned = false; searchDismissed = true;
   $('speed').value = 1; $('speed-label').value = '1×'; yaw = .25; pitch = -.23; zoom = 1; updatePlay(); updateCaption();
 };
 renderSearchBudget();
@@ -668,11 +673,13 @@ function frame(now) {
   drawEmbodiedScene();
   renderOpacity = 1;
   drawFlock();
+  drawSlimeMold();
+  drawGroundSwarm();
   renderOpacity = 1 - .95 * ramp(time,132,134) * (1-ramp(time,143,146));
   drawAugmentation();
   renderOpacity = 1;
   $('heartbeat').hidden = time < 10;
-  $('mold-joke').hidden = time < 124 || time >= 132;
+  $('mold-joke').hidden = time < 146 || time >= 158;
   const beat = Math.floor((time - 10) * 1.8 / (Math.PI / 2)) % 4;
   $('heartbeat').textContent = [0,1,2,3].map(i => (i === 2 ? '  ' : '') + (i === beat ? '●' : '○')).join(' ') + '   4 beats · 2 pairs · 42';
   renderOpacity = .35;

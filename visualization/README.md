@@ -81,3 +81,5 @@ The inputs use Earth mass 5.9722e24 kg, four billion Julian years, one unique tr
 The late film now reveals a translucent folded Green brain with an interior Blue net, Red tissue points and an energy drape. Ordered boards surround it in depth and become screens. A miniature augmentation figure develops from a support to powered legs and a suit. Replay DNA starts that passage at normal speed without the automatic sidebar; Inside-out view jumps to the new composition. Four beat indicators, grouped into pairs, begin with White and the opening 42 caption.
 
 See [the production notes and voice-over draft](../design/FILM-NOTES.md) for the authored thesis, visual cues, retained phrases and future narration work.
+
+The expanded Green montage runs through 2:50 and the complete timeline is now 3:48. `green-life.js` draws the flowing yellow plasmodial body and simulates a four-neighbor ground swarm. Yellow coloration is still living Green content. The “Explore living Green” control plays cells, DNA, birds, slime mold and ground crawlers in sequence. Later scenes are shifted by 24 seconds.

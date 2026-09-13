@@ -141,3 +141,9 @@ The settled breath brings the real God particle to life. Make causality visible:
 September 13 flock refinement: less orderly, more darting and rapid changes of direction, while remaining in the same neighborhood. Reduce velocity alignment, strengthen close-range separation, vary individual speeds and responses to gusts, and curve birds back toward the local space. Preserve six-neighbor interaction without letting it become a parade.
 
 Placement correction: the individual bird and flock belong in Green Space, after DNA and before Yellow's extensions and Orange's computers. The bird/flock passage now occupies seconds 132–146; Green remains selected through it. Watch the flock jumps there. Restore the computer passage's full visibility in Orange.
+
+## Expanded Green montage — September 13
+
+The film now lasts 3:48. Cells and DNA remain at 1:58–2:12; the individual bird and six-neighbor flock occupy 2:12–2:26; a fully drawn branching yellow slime mold occupies 2:26–2:38; spider-like eight-legged creatures using an illustrative four-neighbor ground-swarm rule follow at 2:38–2:50. Yellow Space returns at 2:50 and Orange at 2:54. Later imagery moves 24 seconds later to preserve its time.
+
+The yellow mold is living Green content, regardless of its pigment. It is drawn as one shared branching body with many distributed nuclear/genetic pockets, without one central nucleus. Keep the strong distinction between a scene's color and its place in the seven-space story. The ground-swarm camera tilts toward the terrain so the eight-legged crawlers and their four local links can be seen.

@@ -27,7 +27,7 @@ function embodiedDevice(index, visible) {
   const back = corners.map(p => add(p, [Math.sin(a) * 3, 0, Math.cos(a) * 3]));
   const front = embodiedDepth(c) < 0;
   const alpha = visible * (front ? .92 : .42);
-  const becomeDevice = ramp(time, 168, 180);
+  const becomeDevice = ramp(time, 192, 204);
   for (let i = 0; i < 4; i++) embodiedFace([corners[i],corners[(i+1)%4],back[(i+1)%4],back[i]], '#4a5968', alpha * becomeDevice);
   embodiedFace(corners, '#101c2d', alpha * becomeDevice);
   stroke([...corners,corners[0]], becomeDevice > .5 ? '#99b7ca' : '#e7bd74', alpha, 1.5);
@@ -51,10 +51,10 @@ function embodiedDevice(index, visible) {
   point(path[Math.floor(packet * 22)], '#8bcfff', 2, alpha, true);
 }
 function drawEmbodiedScene() {
-  const visible = ramp(time, 132, 144);
+  const visible = ramp(time, 170, 182);
   if (visible < .001) return;
   const pulse = 1 + .045 * Math.sin(time * 1.8);
-  const tech = ramp(time, 149, 166);
+  const tech = ramp(time, 173, 190);
   const devices = Array.from({length:7},(_,i)=>i);
   const depth = i => {const a=i*TAU/7+.2;return embodiedDepth([Math.sin(a)*133,Math.cos(a*2)*39,Math.cos(a)*115]);};
   devices.sort((a,b)=>depth(b)-depth(a));
@@ -66,7 +66,7 @@ function drawEmbodiedScene() {
     stroke([core[a],core[b]],'#328cf5',visible*.55,1);
     point(lerp(core[a],core[b],(time*.4+i*.17)%1),'#98dfff',1.7,visible);
   });
-  drawRelayMessages(core,visible,time-140,4);
+  drawRelayMessages(core,visible,time-178,4);
   core.forEach((p,i)=>point(p,i%5?'#549fff':'#c0e6ff',i%5?1.4:2.7,visible*(.65+.35*Math.sin(time*1.8+i*.05)**2),i%6===0));
   orbit([0,0,0],17*pulse,0,time,'#78caff',visible*.8,1.3);
   orbit([0,0,0],23*pulse,1,-time,'#9bd6ff',visible*.5);
@@ -110,9 +110,9 @@ function drawEmbodiedScene() {
 
 // An orbitable miniature silhouette carries the support → legs → suit metaphor.
 function drawAugmentation() {
-  const visible = ramp(time, 154, 158) * (1 - ramp(time, 184, 190));
+  const visible = ramp(time, 178, 182) * (1 - ramp(time, 208, 214));
   if (visible < .001) return;
-  const powered = ramp(time, 160, 166), suit = ramp(time, 168, 176);
+  const powered = ramp(time, 184, 190), suit = ramp(time, 192, 200);
   const at = (x,y,z=0) => [x-100,y+15,z-25];
   const limb = (points,color,alpha,width=2) => stroke(points.map(p=>at(...p)),color,visible*alpha,width);
   orbit(at(0,-31),8,0,0,'#8acfb5',visible*.8,1.5);
@@ -230,7 +230,7 @@ function elementBridge() {
 // A human likeness is only a translucent outer veil: the working net remains
 // the brightest subject. The reaching pose recalls Renaissance ceiling painting.
 function humanVeil() {
-  const visible=ramp(time,180,193);
+  const visible=ramp(time, 204, 217);
   if(visible<.001)return;
   const veil=(points,color,alpha,width=1)=>{
     embodiedFace(points,color,visible*alpha);

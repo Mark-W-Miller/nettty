@@ -16,7 +16,7 @@ for (const t of chapters.map(c => c.at)) {
     assert(Math.abs(a[key] - b[key]) < .001, `${key} discontinuity at ${t}`);
   }
 }
-for (const key of ['twirl', 'black', 'blue', 'weave', 'matter', 'life', 'tools', 'computing']) assert(state(168)[key] > .99);
+for (const key of ['twirl', 'black', 'blue', 'weave', 'matter', 'life', 'tools', 'computing']) assert(state(192)[key] > .99);
 assert.notEqual(state(170).breath, state(171).breath);
 // Two radii in exact counter-phase, including a collapse to zero.
 for (let t = 0; t < 20; t += .1) assert(Math.abs(twirlRadius(t, 0) + twirlRadius(t, 1) - 65) < 1e-10);
@@ -42,8 +42,8 @@ assert.equal(state(100).blackOpacity, 0);
 assert(state(86).blueContraction < state(81).blueContraction);
 assert.equal(state(104).earth, 0);
 assert.equal(state(118).earth, 1);
-assert.equal(state(158).thoughtnet, 0);
-assert.equal(state(176).thoughtnet, 1);
+assert.equal(state(182).thoughtnet, 0);
+assert.equal(state(200).thoughtnet, 1);
 console.log('Transition checks passed: multiplying Black, camera push, complete Black fade, Blue contraction, Earth approach, thoughtnet emergence.');
 
 const {dnaRevision, duration} = require('./evolution-model.js');
@@ -51,9 +51,9 @@ assert.equal(dnaRevision(118, 1), 0);
 assert.equal(dnaRevision(119.4, 1), 1);
 assert.equal(dnaRevision(119.45, 1), 1);
 assert(dnaRevision(140, 1) > dnaRevision(120, 1));
-assert.equal(duration, 204);
-assert.equal(state(176).feedback, 0);
-assert.equal(state(188).feedback, 1);
+assert.equal(duration, 228);
+assert.equal(state(200).feedback, 0);
+assert.equal(state(212).feedback, 1);
 console.log('DNA edit retention and learning-surface timing checks passed.');
 
 for (const t of [13,16,18,21,23,30]) {
