@@ -139,3 +139,5 @@ September 13 refinement: center the red and white as soon as their early wobble 
 The settled breath brings the real God particle to life. Make causality visible: center and stabilize the pair first, then let the luminous twirl emerge from their inward/outward exchange. Current cue: settling completes at 10 seconds; White's birth follows over seconds 10–18.
 
 September 13 flock refinement: less orderly, more darting and rapid changes of direction, while remaining in the same neighborhood. Reduce velocity alignment, strengthen close-range separation, vary individual speeds and responses to gusts, and curve birds back toward the local space. Preserve six-neighbor interaction without letting it become a parade.
+
+Placement correction: the individual bird and flock belong in Green Space, after DNA and before Yellow's extensions and Orange's computers. The bird/flock passage now occupies seconds 132–146; Green remains selected through it. Watch the flock jumps there. Restore the computer passage's full visibility in Orange.

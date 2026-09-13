@@ -282,14 +282,14 @@ function flockStep() {
   flockFrame++;
 }
 function drawFlock() {
-  const visible=ramp(time,168,171)*(1-ramp(time,183,188));
+  const visible=ramp(time,132,134)*(1-ramp(time,143,146));
   if(visible<.001)return;
-  const target=Math.floor(Math.max(0,Math.min(time-168,20))*30);
+  const target=Math.floor(Math.max(0,Math.min(time-132,14))*30);
   if(flockFrame<0||target<flockFrame) {
     flockBirds=Array.from({length:64},(_,i)=>({p:[Math.sin(i*2.4)*105,Math.cos(i*1.7)*65,Math.sin(i*.7)*65],v:[Math.cos(i*.3),Math.sin(i*.3),.1]}));flockFrame=0;
   }
   while(flockFrame<target)flockStep();
-  const count=Math.min(64,1+Math.floor(ramp(time,170,177)*63));
+  const count=Math.min(64,1+Math.floor(ramp(time,134,140)*63));
   flockBirds.slice(0,count).forEach((b,i)=>{
     const p=b.p, flap=Math.sin(time*9+i)*3;
     const dir=scale(b.v,4/Math.max(.001,Math.hypot(...b.v))), side=[-dir[1],dir[0],0];
