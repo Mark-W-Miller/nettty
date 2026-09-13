@@ -261,13 +261,22 @@ function flockStep() {
     const b=before[i];
     const neighbors=before.map((other,j)=>({other,j,d:Math.hypot(...other.p.map((x,k)=>x-b.p[k]))})).filter(n=>n.j!==i).sort((a,b)=>a.d-b.d).slice(0,6);
     const force=[0,0,0];
-    for(const n of neighbors) for(let k=0;k<3;k++) force[k]+=(n.other.p[k]-b.p[k])*.0007+(n.other.v[k]-b.v[k])*.024-(n.other.p[k]-b.p[k])*.17/Math.max(9,n.d*n.d);
-    for(let k=0;k<3;k++) force[k]-=b.p[k]*.00025;
-    force[0]+=.006*Math.sin(flockFrame*.013);force[1]+=.004*Math.cos(flockFrame*.017+i*.03);
+    for(const n of neighbors) for(let k=0;k<3;k++) force[k]+=(n.other.p[k]-b.p[k])*.0007+(n.other.v[k]-b.v[k])*.008-(n.other.p[k]-b.p[k])*1.3/Math.max(9,n.d*n.d);
+    const tick=flockFrame/30;
+    const radius=Math.hypot(...b.p);
+    // Curved return toward the neighborhood, with local gusts and individual turns.
+    for(let k=0;k<3;k++) {
+      force[k]-=b.p[k]*(.0012+Math.max(0,radius-85)*.00016);
+      force[k]+=.10*Math.sin(tick*(2.1+i%5*.13)+i*2.4+k*2.1)
+        + .055*Math.sin(tick*5.3+i*.73+k*1.7);
+    }
+    force[0]+=.08*Math.sin(tick*1.7+b.p[1]*.035);
+    force[2]+=.09*Math.cos(tick*1.3+b.p[0]*.04);
     const rock=[24,8,0],d=Math.hypot(...b.p.map((x,k)=>x-rock[k]));
     if(d<36)for(let k=0;k<3;k++)force[k]+=(b.p[k]-rock[k])*.012*(1-d/36);
     bird.v=bird.v.map((v,k)=>v+force[k]);
-    const speed=Math.hypot(...bird.v);bird.v=scale(bird.v,1.1/Math.max(.001,speed));
+    const speed=Math.hypot(...bird.v);const pace=1.8+.8*(.5+.5*Math.sin(flockFrame*.08+i*1.7));
+    bird.v=scale(bird.v,pace/Math.max(.001,speed));
     bird.p=add(bird.p,bird.v);
   });
   flockFrame++;
@@ -283,7 +292,7 @@ function drawFlock() {
   const count=Math.min(64,1+Math.floor(ramp(time,170,177)*63));
   flockBirds.slice(0,count).forEach((b,i)=>{
     const p=b.p, flap=Math.sin(time*9+i)*3;
-    const dir=scale(b.v,4), side=[-dir[1],dir[0],0];
+    const dir=scale(b.v,4/Math.max(.001,Math.hypot(...b.v))), side=[-dir[1],dir[0],0];
     stroke([add(p,add(scale(side,1.4),[0,-flap,0])),add(p,dir),add(p,add(scale(side,-1.4),[0,-flap,0]))],i===0?'#b6e9ff':'#d3d9e8',visible*(i===0?1:.65),i===0?2:1.2);
   });
   const bird=flockBirds[0];
