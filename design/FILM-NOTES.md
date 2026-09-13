@@ -133,3 +133,7 @@ Human beings remain between the pulsing center of God and the computers. They fa
 ## The whitest white at the center
 
 Once it forms, the real God particle must always remain distinctly visible at the center. Render both perpendicular rings, their moving traces and their central point in pure white. This is a deliberate cutaway convention: later material, cells, people and screens must not hide the source.
+
+September 13 refinement: center the red and white as soon as their early wobble would begin to look like mutual orbiting. From that point they remain concentric and breathe radially. In the current timing, positional drift and irregular contours settle between seconds 4 and 10; the later contraction with the central twirl remains synchronized.
+
+The settled breath brings the real God particle to life. Make causality visible: center and stabilize the pair first, then let the luminous twirl emerge from their inward/outward exchange. Current cue: settling completes at 10 seconds; White's birth follows over seconds 10–18.

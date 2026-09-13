@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const {state, chapters, receivedCount, twirlRadius} = require('./evolution-model.js');
 // Seven spaces plus a pre-particle prelude; no premature matter or Blue particles.
 assert.equal(chapters.length, 8);
-assert.equal(state(17).twirl, 0);
+assert.equal(state(9).twirl, 0);
 assert.equal(state(35).black, 0);
 assert.equal(state(57).blue, 0);
 assert.equal(state(86).matter, 0);
@@ -57,10 +57,15 @@ assert.equal(state(188).feedback, 1);
 console.log('DNA edit retention and learning-surface timing checks passed.');
 
 for (const t of [13,16,18,21,23,30]) {
-  assert(Math.abs(state(t).twirlScale - (1 - .68 * state(t).pairSettled)) < 1e-12);
+  assert(state(t).pairSettled === 1);
+  assert(state(t).twirlScale >= .32 - 1e-12);
 }
 
 const {pairRadius} = require('./evolution-model.js');
 for (const t of [0,1,2,3,100]) assert(Math.abs(pairRadius(t,true)+pairRadius(t,false)-82)<1e-10);
 assert(pairRadius(Math.PI/3.6,false)>pairRadius(Math.PI/3.6,true));
 assert(pairRadius(3*Math.PI/3.6,true)>pairRadius(3*Math.PI/3.6,false));
+
+assert.equal(state(10).twirl,0);
+assert.equal(state(10).pairSettled,1);
+assert(state(11).twirl>0);

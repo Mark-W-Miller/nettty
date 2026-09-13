@@ -126,14 +126,15 @@ function pinkField() {
   const visibility = Math.max(.18 * ramp(time, 18, 25), (1 - scene.black * .9) * (1 - scene.blue * .8));
   const center = project([0, 0, 0]);
   const settled = scene.pairSettled;
+  const centered = ramp(time, 4, 10);
   const bands = Array.from({length:10},(_,i)=>i);
   if (settled > .99) bands.sort((a,b)=>NettyEvolution.pairRadius(time,b%2===1)-NettyEvolution.pairRadius(time,a%2===1));
   for (const band of bands) {
-    const layerFade = band < 2 ? 1 : 1 - settled;
+    const layerFade = band < 2 ? 1 : 1 - centered;
     if (layerFade < .001) continue;
     const white = band % 2 === 1;
     const syncPhase = (1 - scene.sync) * band * 1.7;
-    const pulse = Math.sin(time * 1.2 + syncPhase);
+    const pulse = Math.sin(time * 1.8 + syncPhase + (white ? Math.PI * centered : 0));
     const contraction = white ? 1 : 1 - .8 * scene.redRetraction;
     const looseBase = (139 - band * 6) * (white ? .94 : 1) * (1 + .09 * pulse) * contraction;
     const base = looseBase * (1 - settled) + NettyEvolution.pairRadius(time, white) * settled;
@@ -141,9 +142,9 @@ function pinkField() {
     ctx.beginPath();
     for (let j = 0; j <= 100; j++) {
       const a = j / 100 * TAU;
-      const r = base * (1 + (1 - settled) * (.16 * Math.sin(a * 3 + time * .28 + syncPhase) + .09 * Math.cos(a * 5 - time * .18)));
-      const x = center[0] + (Math.cos(a) * r + Math.sin(time * .32 + syncPhase) * 15 * (1 - settled)) * center[2];
-      const y = center[1] + (Math.sin(a) * r * (.9 + .1 * settled) + Math.cos(time * .25 + syncPhase) * 12 * (1 - settled)) * center[2];
+      const r = base * (1 + (1 - centered) * (.16 * Math.sin(a * 3 + time * .28 + syncPhase) + .09 * Math.cos(a * 5 - time * .18)));
+      const x = center[0] + (Math.cos(a) * r + Math.sin(time * .32 + syncPhase) * 15 * (1 - centered)) * center[2];
+      const y = center[1] + (Math.sin(a) * r * (.9 + .1 * centered) + Math.cos(time * .25 + syncPhase) * 12 * (1 - centered)) * center[2];
       j ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
     }
     ctx.closePath();
@@ -514,7 +515,7 @@ function learningSurface() {
 function updateCaption() {
   const chapter = state(time).chapter;
   const transitions = [
-    {start:18, end:29, title:'42. This is where we begin.', description:'Four beats, in two pairs. Knit one, purl two. In this telling, the answer is a heartbeat: the underlying tick-tock that sets the three-dimensional universe moving.'},
+    {start:10, end:29, title:'42. This is where we begin.', description:'Four beats, in two pairs. Knit one, purl two. In this telling, the answer is a heartbeat: the underlying tick-tock that sets the three-dimensional universe moving.'},
     {start:53, end:64, title:'Into the spaces between.', description:'Thousands of equal-sized spheres fill the view. We move inward, toward a gap. The Black body fades away, revealing the place where Blue can begin.'},
     {start:80, end:87, title:'The thoughtnet draws inward.', description:'The breathing Blue fabric contracts. Its chains and signal paths draw closer together as energy gathers toward the center.'},
     {start:87, end:95, title:'The gathered energy opens outward.', description:'A pulse expands over the Black deck and through the contracted net. Its energy gradually peters out; the central pump keeps pulsing. The view opens with the wave.'},
@@ -670,9 +671,9 @@ function frame(now) {
   renderOpacity = 1 - .95 * ramp(time,168,172) * (1-ramp(time,183,188));
   drawAugmentation();
   renderOpacity = 1;
-  $('heartbeat').hidden = time < 18;
+  $('heartbeat').hidden = time < 10;
   $('mold-joke').hidden = time < 124 || time >= 132;
-  const beat = Math.floor((time - 18) * 1.8 / (Math.PI / 2)) % 4;
+  const beat = Math.floor((time - 10) * 1.8 / (Math.PI / 2)) % 4;
   $('heartbeat').textContent = [0,1,2,3].map(i => (i === 2 ? '  ' : '') + (i === beat ? '●' : '○')).join(' ') + '   4 beats · 2 pairs · 42';
   renderOpacity = .35;
   learningSurface();

@@ -3,7 +3,7 @@
   'use strict';
   const chapters = [
     { at: 0, name: 'Pink Zone', subtitle: 'The breathing energy', color: '#efa4b9', title: 'Before particles, a breath.', description: 'Red and white flow inside one another. Almost alike, one held a little tighter: a persistent gradient. The blobs change shape, organize, and gradually find a shared pulse.', motifs: 'TWO CHARACTERISTICS · ONE GRADIENT · A SHARED BREATH' },
-    { at: 18, name: 'White Space', subtitle: 'The single twirl', color: '#edf2ff', title: 'One particle. Two counter-pulses.', description: 'As the red and white synchronize, the center spins up and the red wobble quickly pulls inward. One horizontal ring and one vertical ring twirl in counter-sync: one contracts toward zero while the other expands.', motifs: 'ONE GOD PARTICLE · TWO RINGS · OPPOSITE PHASE' },
+    { at: 10, name: 'White Space', subtitle: 'The single twirl', color: '#edf2ff', title: 'One particle. Two counter-pulses.', description: 'As the red and white synchronize, the center spins up and the red wobble quickly pulls inward. One horizontal ring and one vertical ring twirl in counter-sync: one contracts toward zero while the other expands.', motifs: 'ONE GOD PARTICLE · TWO RINGS · OPPOSITE PHASE' },
     { at: 36, name: 'Black Space', subtitle: 'One growing entanglement', color: '#8d9bb5', title: 'The twirl stirs a gravitational floor.', description: 'Spherical regions press into a connected body, leaving imperfect gaps. Like ice deep beneath a glacier, this is one growing entanglement. More and more equal-sized spheres join the body. As their number becomes overwhelming, the camera moves into a gap and the Black body disappears.', motifs: 'MULTIPLYING SPHERES · INTO THE GAPS · A CHANGE OF SCALE' },
     { at: 58, name: 'Blue Space', subtitle: 'The sentient net processor', color: '#66adff', title: 'In the gaps, a mind takes shape.', description: 'Simple nested shells spin up between the spheres. Different spins bind or repel. Asymmetric chains weave a sentient cotton-candy net: stateful nodes joined by information-bearing arcs. Each arrival changes a node; the outgoing pattern carries that change forward.', motifs: 'SHELL AFFINITY · ASYMMETRIC CHAINS · STATE & SIGNAL' },
     { at: 85, name: 'Red Space', subtitle: 'The energy release', color: '#ff7186', title: 'A drop at the center. A wave of fire.', description: 'Blue contracts as energy gathers. The central gravity drops and the Big Bang opens the view: black holes, spinning clouds, stars, and planets. Each proton carries a Blue core. The camera finds one small world in the cosmos.', motifs: 'GRAVITY DROP · EXPANDING PULSE · BLUE CORES INSIDE MATTER' },
@@ -17,8 +17,8 @@
     const age = Math.max(0, t - 36);
     return {
       chapter: chapters.reduce((n, chapter, i) => t >= chapter.at ? i : n, 0),
-      pairSettled: ramp(t, 13, 23), twirlScale: 1 - .68 * ramp(t, 13, 23),
-      sync: ramp(t, 4, 18), twirl: ramp(t, 18, 29),
+      pairSettled: ramp(t, 4, 10), twirlScale: 1 - .68 * ramp(t, 10, 18),
+      sync: ramp(t, 4, 18), twirl: ramp(t, 10, 18),
       redRetraction: ramp(t, 18, 21),
       black: 1 - Math.exp(-age / 5), blue: ramp(t, 62, 73),
       blackOpacity: 1 - ramp(t, 58, 64), cameraPush: 1 + 4 * ramp(t, 53, 64),
@@ -35,7 +35,7 @@
   }
   function pumpTurns(t) {
     const age = Math.max(0, Math.min(t, 64) - 36);
-    return Math.max(0, Math.min(t, 36) - 18) * .2 + .2 / .33 * Math.expm1(.33 * age) + Math.max(0,t-64)*6;
+    return Math.max(0, Math.min(t, 36) - 10) * .2 + .2 / .33 * Math.expm1(.33 * age) + Math.max(0,t-64)*6;
   }
   function receivedCount(t, delay) {
     const elapsed = t - 76 - delay;
