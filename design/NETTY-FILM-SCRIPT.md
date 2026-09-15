@@ -198,3 +198,17 @@ Mark’s intended foundation is Talisman morphs: controllable points, stances, m
 A readable action such as “Red expands around White, then they exchange” could bind to named morph controls and a repeating timing curve. “The bird banks toward its neighbors” could bind to a stance, orientation and a behavior. “Follow into the nucleus” could bind a camera to a named target and a transition.
 
 Separate the readable direction from the exact bindings needed by a player. Preserve the underlying morph definition and motion so a fast preview and a detailed offline rendering can interpret the same performance. This is a design direction, not an implemented shared format or a claim that the current Canvas player already consumes Talisman morphs.
+
+## Blue Space sub-scripts — Flora, then Fauna
+
+### Flora — 1:04–1:20
+
+GROW strands into a net. The meeting points harden into nodes. Along the arcs, smaller and smaller circular structures gather into material.
+
+BRANCH in every direction, without an up or down. Think coral, or cotton candy with structure. Branches reconnect and make loops; this is not an acyclic tree.
+
+KEEP messages moving: a node receives, changes, and reradiates.
+
+### Fauna — reserved
+
+A separate Blue Space sub-script. Await Mark’s description before defining its creatures or assigning a duration. The yellow-colored living material remains in Green Space.

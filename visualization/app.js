@@ -231,7 +231,18 @@ function blueFabric(positions) {
       p[1] += Math.sin(f * Math.PI) * Math.sin(time * .35 + i) * 5;
       curve.push(p);
     }
-    stroke(curve, '#388fff', visible * bind * .55, .8);
+    // The arcs acquire material: nested little rings, then lateral growth.
+    const harden = ramp(time, 68 + i % 4, 76 + i % 3);
+    stroke(curve, '#388fff', visible * bind * .55, .8 + harden * .6);
+    if (bind > .1) for (let j = 1; j < 10; j++) {
+      const grown = ramp(time, 66 + j * .45 + i % 5, 72 + j * .45 + i % 5);
+      orbit(curve[j], .65 + grown * .8, (i + j) % 3, i + time * .12, '#75baff', visible * bind * grown * .6, .55);
+      if (j % 3 === 0) {
+        const tip = curve[j].map((v, k) => v + Math.sin(i * 2.3 + j + k * 2.1) * (5 + i % 9) * grown);
+        stroke([curve[j], lerp(curve[j], tip, .5), tip], '#63adff', visible * bind * grown * .45, .8);
+        orbit(tip, 1.3, (i + j) % 3, i, '#b7dfff', visible * bind * grown * .6);
+      }
+    }
     for (let strand = 0; strand < 3; strand++) {
       const fiber = curve.map((p, j) => [p[0] + Math.sin(j * .4 + strand + time * .2) * 1.8, p[1] + Math.cos(j * .5 + strand) * 2, p[2] + strand - 1]);
       stroke(fiber, '#4389eb', visible * bind * .2, .5);
@@ -264,6 +275,8 @@ function blueFabric(positions) {
   });
   particles.forEach((p, i) => {
     const born = ramp(time, 62 + i % 7, 67 + i % 7);
+    const hardened = ramp(time, 69 + i % 5, 77 + i % 3);
+    orbit(positions[i], 2 + hardened * 2, i % 3, p.phase, '#b6ddff', visible * born * hardened * .7, 1.2);
     point(positions[i], ['#669fe6','#93c7ff','#b7d9ff','#e3f1ff'][memory[i]], 1.3 + memory[i] * .4, visible * born, i % 9 === 0);
     if (i % 3 === 0) for (let shell = 0; shell < p.shells; shell++) {
       orbit(positions[i], (3 + shell * 2.7) * born, (i + shell) % 3, time * p.spin / (shell + 1) + p.phase, '#78b9ff', visible * born * .5);
@@ -519,6 +532,7 @@ function updateCaption() {
   const transitions = [
     {start:10, end:29, title:'42. This is where we begin.', description:'Four beats, in two pairs. Knit one, purl two. In this telling, the answer is a heartbeat: the underlying tick-tock that sets the three-dimensional universe moving.'},
     {start:53, end:64, title:'Into the spaces between.', description:'Thousands of equal-sized spheres fill the view. We move inward, toward a gap. The Black body fades away, revealing the place where Blue can begin.'},
+    {start:64, end:80, title:'Blue flora: a reef without up or down.', description:'Strands join and nodes harden. Tiny circular structures assemble along the arcs. Branches grow in every direction and reconnect into loops: a coral-like, cotton-candy fabric carrying messages through its living structure.'},
     {start:80, end:87, title:'The thoughtnet draws inward.', description:'The breathing Blue fabric contracts. Its chains and signal paths draw closer together as energy gathers toward the center.'},
     {start:87, end:95, title:'The gathered energy opens outward.', description:'A pulse expands over the Black deck and through the contracted net. Its energy gradually peters out; the central pump keeps pulsing. The view opens with the wave.'},
     {start:95, end:99, title:'From the pulse, a cosmos.', description:'In this telling, the universe is young and still learning. Our home is in one of its original galaxies. Spinning clouds gather around black holes; stars and planets form. One small world is waiting.'},
@@ -546,6 +560,12 @@ function updateCaption() {
   $('motifs').textContent = c.motifs;
   $('chapter').style.color = c.color;
   $('scene-label').textContent = c.name.toUpperCase();
+  const flora = $('blue-flora');
+  if (flora) {
+    const active = time >= 64 && time < 80;
+    flora.classList.toggle('active', active);
+    flora.setAttribute('aria-pressed', String(active));
+  }
   document.querySelectorAll('.layer').forEach((el, i) => {
     el.classList.toggle('active', i === chapter);
     el.classList.toggle('emerged', i < chapter);
@@ -558,6 +578,15 @@ chapters.forEach((c, i) => {
   button.innerHTML = `<span class="num">${i === 0 ? '○' : '0' + i}</span><span class="swatch"></span><span><strong>${c.name}</strong><small>${c.subtitle}</small></span><span class="arrow">↗</span>`;
   button.onclick = () => { time = c.at; updateCaption(); };
   $('layers').append(button);
+  if (i === 3) {
+    const sections = document.createElement('div');
+    sections.className = 'subscripts';
+    sections.setAttribute('role', 'group');
+    sections.setAttribute('aria-label', 'Blue Space sub-scripts');
+    sections.innerHTML = '<button id="blue-flora" class="subscript" aria-pressed="false"><strong>Flora</strong><small>Growing the coral-like net ↗</small></button><div class="subscript pending"><strong>Fauna</strong><small>Awaiting your description</small></div>';
+    $('layers').append(sections);
+    $('blue-flora').onclick = () => { time = 64; speed = 1; $('speed').value = 1; $('speed-label').textContent = '1×'; playing = true; updatePlay(); updateCaption(); };
+  }
 });
 function updatePlay() {
   $('play').textContent = playing ? 'Ⅱ' : '▶';

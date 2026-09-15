@@ -147,3 +147,9 @@ Placement correction: the individual bird and flock belong in Green Space, after
 The film now lasts 3:48. Cells and DNA remain at 1:58–2:12; the individual bird and six-neighbor flock occupy 2:12–2:26; a fully drawn branching yellow slime mold occupies 2:26–2:38; spider-like eight-legged creatures using an illustrative four-neighbor ground-swarm rule follow at 2:38–2:50. Yellow Space returns at 2:50 and Orange at 2:54. Later imagery moves 24 seconds later to preserve its time.
 
 The yellow mold is living Green content, regardless of its pigment. It is drawn as one shared branching body with many distributed nuclear/genetic pockets, without one central nucleus. Keep the strong distinction between a scene's color and its place in the seven-space story. The ground-swarm camera tilts toward the terrain so the eight-legged crawlers and their four local links can be seen.
+
+## 2026-09-15 — Blue sub-scripts
+
+Each main space can contain its own sub-scripts. Begin with Blue Flora (corrected from “fauna”): no up/down, coral-like branching cotton-candy structures, hardening nodes and arcs made of tiny circular structures. Branches may reconnect into loops. Blue Fauna is a separate heading awaiting direction. Sidebar now exposes both headings; Flora replays the formation at normal speed.
+
+Repository cleanup removes the unused Java/Java3D prototype, Maven and IDE metadata, native libraries and sample resources, with their associated legacy licenses. All remain recoverable in Git history. The browser film, its assets and credits, original design, script and notes are retained.

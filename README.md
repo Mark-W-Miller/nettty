@@ -1,11 +1,20 @@
 # Nettty — The Brain of God
 
-The Netty Particle Model, by Mark William Miller.
+An animated film study of Mark William Miller’s Netty Particle Model.
 
-## Continuous animated evolution
+Open [the film](visualization/index.html) directly in a browser. It works offline with no build or dependency installation. For a local preview, run this from the repository root:
 
-Open **[visualization/index.html](visualization/index.html)** in your browser. Watch breathing Pink energy organize into the seven spaces: the White twirl, Black gravitational body, Blue net processor, the cosmic release, Earth and life, tools, and computers becoming thoughtnets. Scrub through the film, orbit the scene, or enter cinema mode.
+```sh
+python3 -m http.server 8765 --bind 127.0.0.1
+```
 
-See [visualization/README.md](visualization/README.md) for controls, timing, and visual direction. The original source design is [Project Netty Anon.pdf](design/Project%20Netty%20Anon.pdf), refined by Mark's subsequent direction.
+Then visit http://127.0.0.1:8765/visualization/.
 
-The existing Java / Java3D project is in `src/`, with its Maven configuration in `pom.xml`.
+## Project contents
+
+- [Readable film script](design/NETTY-FILM-SCRIPT.md): the sequence in human language.
+- [Production notes and voice-over draft](design/FILM-NOTES.md): Mark’s direction and narration ideas.
+- [Original design](design/Project%20Netty%20Anon.pdf): the source brief.
+- [Visualization](visualization/README.md): browser animation, controls, assets and checks.
+
+The film uses JavaScript and the browser’s Canvas drawing engine. Maven, Java and IntelliJ project files are not required. The retired Java / Java3D prototype and its sample assets remain available in earlier Git history.
