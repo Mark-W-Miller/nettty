@@ -212,3 +212,7 @@ KEEP messages moving: a node receives, changes, and reradiates.
 ### Fauna — reserved
 
 A separate Blue Space sub-script. Await Mark’s description before defining its creatures or assigning a duration. The yellow-colored living material remains in Green Space.
+
+### Chapter structure
+
+Blue Space is the parent chapter. Its introduction (0:58–1:04) carries the transition from Black into Blue. The sequences inside it supply the specific imagery: Flora first, then Fauna when authored. The sidebar twist arrow opens or closes those child sections without changing playback. Selecting Blue Space starts its introduction; selecting Flora starts its sequence. Fauna remains un-timed until described.

@@ -14,3 +14,5 @@
 
 /* Script headings remain together, with room to add each chapter's sub-scripts. */
 aside{overflow-y:auto}.subscripts{margin:0 8px 5px 37px;border-left:1px solid #314b69;padding-left:10px;display:grid;gap:3px}.subscript{text-align:left;padding:7px 9px;border-radius:4px}.subscript strong{display:block;font-size:11px;font-weight:500;color:#a7ceff}.subscript small{display:block;font-size:9px;color:#8298b3;margin-top:4px}.subscript.active{background:#182c46}.subscript:hover:not(.pending){background:#15253b}.subscript.pending{opacity:.55}@media(max-width:600px){.subscripts{grid-column:1/-1;margin-left:8px;grid-template-columns:1fr 1fr}}
+
+.chapter-row{display:flex;align-items:center}.chapter-row .layer{flex:1;min-width:0;padding-left:3px}.chapter-toggle{flex:0 0 19px;padding:10px 0;color:#91bcea;font-size:15px}.chapter-toggle:hover{color:#fff}.chapter-group .subscripts{margin-left:28px}@media(max-width:600px){.chapter-group{grid-column:1/-1}.chapter-group .subscripts{grid-template-columns:1fr 1fr}.chapter-row .layer{width:auto}.chapter-row .layer small{display:block}}

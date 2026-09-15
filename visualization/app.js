@@ -214,9 +214,55 @@ function bluePosition(p, i) {
   // Affine shells settle together; opposing spins visibly move apart before weaving.
   return p.p.map((v, k) => (v * scene.breath + Math.sin(time * .8 * p.spin + p.phase + k) * (free * 10 + 1.6)) * scene.blueContraction * (k === 2 ? ramp(time, 69, 79) : 1));
 }
+// A separate, radial coral organism: branches fork, then neighboring tips reconnect.
+const floraBranches = [];
+function growFlora(from, direction, depth, key) {
+  const length = 47 * Math.pow(.69, depth) * (1 + .16 * Math.sin(key));
+  const magnitude = Math.hypot(...direction);
+  const to = from.map((v, k) => v + direction[k] / magnitude * length);
+  floraBranches.push({from, to, depth, key});
+  if (depth < 3) for (let child = 0; child < 3; child++) {
+    const next = direction.map((v, k) => v * .65 + Math.sin(key * 2.71 + child * 2.1 + k * 2.7) * .9);
+    growFlora(to, next, depth + 1, key * 3 + child + 1);
+  }
+}
+for (let arm = 0; arm < 9; arm++) {
+  const y = 1 - 2 * (arm + .5) / 9, radius = Math.sqrt(1 - y * y), angle = arm * 2.39996;
+  growFlora([0, 0, 0], [radius * Math.cos(angle), y, radius * Math.sin(angle)], 0, arm + 1);
+}
+function blueFlora() {
+  const visible = ramp(time, 64, 68) * (1 - ramp(time, 82, 89));
+  if (visible < .001) return;
+  const breathing = scene.blueContraction * (1.35 + .025 * Math.sin(time * 1.8));
+  const tips = [];
+  floraBranches.forEach(({from, to, depth, key}) => {
+    const growth = ramp(time, 64 + depth * 2.5 + .4 * Math.sin(key), 68 + depth * 2.5);
+    if (growth < .001) return;
+    const start = scale(from, breathing), end = scale(lerp(from, to, growth), breathing);
+    const path = [];
+    for (let j = 0; j <= 8; j++) {
+      const f = j / 8, p = lerp(start, end, f);
+      p[0] += Math.sin(f * Math.PI) * Math.sin(key) * 4;
+      p[2] += Math.sin(f * Math.PI) * Math.cos(key) * 4;
+      path.push(p);
+    }
+    stroke(path, '#2377ca', visible * .2, 9 - depth * 1.8);
+    stroke(path, '#65b9f4', visible * .85, 3.5 - depth * .7);
+    for (let j = 1; j < 8; j += 2) orbit(path[j], 2.4 - depth * .35, key % 3, 0, '#b3e5ff', visible * growth * .65, .8);
+    point(end, '#b5e8ff', 3.5 - depth * .6, visible * growth, depth < 2);
+    const message = (time * .6 + key * .17) % 1;
+    point(lerp(start, end, message), '#effaff', 1.8, visible * growth);
+    if (depth === 3 && growth > .8) tips.push(end);
+  });
+  tips.forEach((tip, i) => {
+    if (i % 3) return;
+    const nearby = tips.slice(i + 4).find(other => Math.hypot(...tip.map((v, k) => v - other[k])) < 27);
+    if (nearby) stroke([tip, nearby], '#77c9f8', visible * ramp(time, 74, 79) * .6, 1.2);
+  });
+}
 function blueFabric(positions) {
   if (!scene.blue) return;
-  const visible = scene.blue * (1 - scene.matter * .94);
+  const visible = scene.blue * (1 - scene.matter * .94) * (1 - .9 * ramp(time, 65, 71));
   edges.forEach(([a, b], i) => {
     const bind = ramp(time, 65 + i % 11, 75 + i % 9);
     const A = particles[a], B = particles[b];
@@ -580,12 +626,35 @@ chapters.forEach((c, i) => {
   $('layers').append(button);
   if (i === 3) {
     const sections = document.createElement('div');
+    const group = document.createElement('div');
+    group.className = 'chapter-group';
+    const row = document.createElement('div');
+    row.className = 'chapter-row';
+    const toggle = document.createElement('button');
+    toggle.className = 'chapter-toggle';
+    toggle.id = 'blue-toggle';
+    toggle.textContent = '▸';
+    toggle.setAttribute('aria-label', 'Expand Blue Space sections');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', 'blue-sections');
+    button.querySelector('small').textContent = 'Introduction · into Blue';
+    row.append(toggle, button);
+    group.append(row);
+    $('layers').append(group);
     sections.className = 'subscripts';
+    sections.id = 'blue-sections';
+    sections.hidden = true;
+    toggle.onclick = () => {
+      sections.hidden = !sections.hidden;
+      toggle.textContent = sections.hidden ? '▸' : '▾';
+      toggle.setAttribute('aria-expanded', String(!sections.hidden));
+      toggle.setAttribute('aria-label', `${sections.hidden ? 'Expand' : 'Collapse'} Blue Space sections`);
+    };
     sections.setAttribute('role', 'group');
     sections.setAttribute('aria-label', 'Blue Space sub-scripts');
     sections.innerHTML = '<button id="blue-flora" class="subscript" aria-pressed="false"><strong>Flora</strong><small>Growing the coral-like net ↗</small></button><div class="subscript pending"><strong>Fauna</strong><small>Awaiting your description</small></div>';
-    $('layers').append(sections);
-    $('blue-flora').onclick = () => { time = 64; speed = 1; $('speed').value = 1; $('speed-label').textContent = '1×'; playing = true; updatePlay(); updateCaption(); };
+    group.append(sections);
+    $('blue-flora').onclick = () => { time = 66; yaw = .25; pitch = -.23; zoom = 1; speed = 1; $('speed').value = 1; $('speed-label').textContent = '1×'; playing = true; updatePlay(); updateCaption(); };
   }
 });
 function updatePlay() {
@@ -689,7 +758,7 @@ function frame(now) {
   ctx.clearRect(0, 0, width, height);
   pinkField(); blackBody();
   const positions = particles.map(bluePosition);
-  blackDeck(); blueFabric(positions);
+  blackDeck(); blueFabric(positions); blueFlora();
   ctx.globalCompositeOperation = 'lighter';
   energyWave();
   ctx.globalCompositeOperation = 'source-over';

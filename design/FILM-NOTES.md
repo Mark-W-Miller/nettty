@@ -153,3 +153,11 @@ The yellow mold is living Green content, regardless of its pigment. It is drawn 
 Each main space can contain its own sub-scripts. Begin with Blue Flora (corrected from “fauna”): no up/down, coral-like branching cotton-candy structures, hardening nodes and arcs made of tiny circular structures. Branches may reconnect into loops. Blue Fauna is a separate heading awaiting direction. Sidebar now exposes both headings; Flora replays the formation at normal speed.
 
 Repository cleanup removes the unused Java/Java3D prototype, Maven and IDE metadata, native libraries and sample resources, with their associated legacy licenses. All remain recoverable in Git history. The browser film, its assets and credits, original design, script and notes are retained.
+
+### Clarification — expandable chapters
+
+Blue Space should twist open to reveal Flora and Fauna. The parent chapter keeps the introduction and transition; its child sequences contain the specific scenes. Expanding/collapsing is separate from playback and begins collapsed. This supersedes the always-visible child list.
+
+### Flora visibility revision
+
+The first fine-ring treatment still read as the existing net. Flora now grows as a distinct radial coral body: thick branching stems, bright hardened junctions, tiny rings, moving messages and late tip-to-tip connections. The introductory net recedes as Flora takes the foreground. Flora replay begins at 1:06 with initial growth already visible.
