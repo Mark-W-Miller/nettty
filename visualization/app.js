@@ -230,11 +230,24 @@ for (let arm = 0; arm < 9; arm++) {
   const y = 1 - 2 * (arm + .5) / 9, radius = Math.sqrt(1 - y * y), angle = arm * 2.39996;
   growFlora([0, 0, 0], [radius * Math.cos(angle), y, radius * Math.sin(angle)], 0, arm + 1);
 }
+// Cross-links form throughout the body, not just at a few outer tips.
+const floraLinks = [];
+const floraLinkKeys = new Set();
+floraBranches.forEach((branch, a) => {
+  const neighbors = floraBranches.map((other, b) => ({b, other, distance: Math.hypot(...branch.to.map((v, k) => v - other.to[k]))}))
+    .filter(({b, other, distance}) => b !== a && other.from !== branch.to && branch.from !== other.to && other.from !== branch.from && distance > 6 && distance < 62)
+    .sort((a, b) => a.distance - b.distance).slice(0, 3);
+  neighbors.forEach(({b, other}) => {
+    const id = [Math.min(a, b), Math.max(a, b)].join(':');
+    if (floraLinkKeys.has(id)) return;
+    floraLinkKeys.add(id);
+    floraLinks.push({a, b, at: 68 + Math.max(branch.depth, other.depth) * 2.5 + (a % 7) * .12});
+  });
+});
 function blueFlora() {
   const visible = ramp(time, 64, 68) * (1 - ramp(time, 82, 89));
   if (visible < .001) return;
   const breathing = scene.blueContraction * (1.35 + .025 * Math.sin(time * 1.8));
-  const tips = [];
   floraBranches.forEach(({from, to, depth, key}) => {
     const growth = ramp(time, 64 + depth * 2.5 + .4 * Math.sin(key), 68 + depth * 2.5);
     if (growth < .001) return;
@@ -252,12 +265,33 @@ function blueFlora() {
     point(end, '#b5e8ff', 3.5 - depth * .6, visible * growth, depth < 2);
     const message = (time * .6 + key * .17) % 1;
     point(lerp(start, end, message), '#effaff', 1.8, visible * growth);
-    if (depth === 3 && growth > .8) tips.push(end);
   });
-  tips.forEach((tip, i) => {
-    if (i % 3) return;
-    const nearby = tips.slice(i + 4).find(other => Math.hypot(...tip.map((v, k) => v - other[k])) < 27);
-    if (nearby) stroke([tip, nearby], '#77c9f8', visible * ramp(time, 74, 79) * .6, 1.2);
+  floraLinks.forEach(({a, b, at}, i) => {
+    const closure = ramp(time, at, at + 2.4);
+    if (closure < .001) return;
+    const start = scale(floraBranches[a].to, breathing), end = scale(floraBranches[b].to, breathing);
+    const arc = [];
+    for (let j = 0; j <= 16; j++) {
+      const f = j / 16, p = lerp(start, end, f);
+      p[1] += Math.sin(f * Math.PI) * Math.sin(i * 1.7) * 7;
+      p[2] += Math.sin(f * Math.PI) * Math.cos(i * 2.1) * 7;
+      arc.push(p);
+    }
+    // Two growing ends reach toward one another, then become a signal route.
+    const n = Math.max(1, Math.ceil(closure * 8));
+    const halves = closure >= .999 ? [arc] : [arc.slice(0, n + 1), arc.slice(16 - n)];
+    halves.forEach(path => {
+      stroke(path, '#348bd7', visible * .15, 5);
+      stroke(path, '#91d5ff', visible * .8, 1.4);
+    });
+    if (closure < .999) {
+      point(arc[n], '#d0f0ff', 2, visible);
+      point(arc[16 - n], '#d0f0ff', 2, visible);
+    } else {
+      if (i % 3 === 0) orbit(arc[8], 1.5, i % 3, 0, '#b6e7ff', visible * .65);
+      const packet = (time * .48 + i * .31) % 1;
+      point(arc[Math.floor(packet * 16)], '#effaff', 1.6, visible * .8);
+    }
   });
 }
 function blueFabric(positions) {

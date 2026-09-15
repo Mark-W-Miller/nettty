@@ -161,3 +161,7 @@ Blue Space should twist open to reveal Flora and Fauna. The parent chapter keeps
 ### Flora visibility revision
 
 The first fine-ring treatment still read as the existing net. Flora now grows as a distinct radial coral body: thick branching stems, bright hardened junctions, tiny rings, moving messages and late tip-to-tip connections. The introductory net recedes as Flora takes the foreground. Flora replay begins at 1:06 with initial growth already visible.
+
+### Blue Flora — growth keeps reconnecting
+
+Outward branches are only the growing fringe. Throughout the body, branches hook back into neighboring branches and existing junctions, repeatedly closing loops. Show both ends growing toward a connection, then messages crossing the new arc. The accumulating structure reads as a net, not a tree with occasional links.

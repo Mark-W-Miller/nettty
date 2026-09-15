@@ -216,3 +216,7 @@ A separate Blue Space sub-script. Await Mark’s description before defining its
 ### Chapter structure
 
 Blue Space is the parent chapter. Its introduction (0:58–1:04) carries the transition from Black into Blue. The sequences inside it supply the specific imagery: Flora first, then Fauna when authored. The sidebar twist arrow opens or closes those child sections without changing playback. Selecting Blue Space starts its introduction; selecting Flora starts its sequence. Fauna remains un-timed until described.
+
+### Blue Flora — growth keeps reconnecting
+
+Outward branches are only the growing fringe. Throughout the body, branches hook back into neighboring branches and existing junctions, repeatedly closing loops. Show both ends growing toward a connection, then messages crossing the new arc. The accumulating structure reads as a net, not a tree with occasional links.
