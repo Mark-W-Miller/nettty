@@ -1,0 +1,20 @@
+{
+  "accessibility": {
+    "avoidGrayOnGray": true,
+    "focusIndicatorRequired": true,
+    "nonColorCueRequired": true
+  },
+  "name": "Talisman Forest",
+  "schema": "moondance.theme/v1",
+  "tokens": {
+    "active": "#00A86B",
+    "complete": "#148F77",
+    "error": "#C0392B",
+    "owner": "#8E44AD",
+    "selection": "#2F80ED",
+    "surface": "#F4FBF6",
+    "text": "#10261A",
+    "waiting": "#D99A00",
+    "warning": "#D35400"
+  }
+}

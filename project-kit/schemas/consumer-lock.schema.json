@@ -1,0 +1,23 @@
+{
+  "properties": {
+    "compatibility_state": {
+      "enum": [
+        "CURRENT",
+        "SUPPORTED_OLD",
+        "UPGRADE_AVAILABLE",
+        "DIVERGED",
+        "MIGRATION_REQUIRED"
+      ]
+    }
+  },
+  "required": [
+    "kit_version",
+    "source_revision",
+    "source_date",
+    "content_digest",
+    "adopted_at",
+    "compatibility_state",
+    "local_extensions"
+  ],
+  "type": "object"
+}

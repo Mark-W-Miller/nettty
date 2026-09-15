@@ -18,3 +18,7 @@ Then visit http://127.0.0.1:8765/visualization/.
 - [Visualization](visualization/README.md): browser animation, controls, assets and checks.
 
 The film uses JavaScript and the browser’s Canvas drawing engine. Maven, Java and IntelliJ project files are not required. The retired Java / Java3D prototype and its sample assets remain available in earlier Git history.
+
+## Moondance Project Kit
+
+This repository carries [Moondance Project Kit 0.1.0](project-kit/MOONDANCE-PROJECT-KIT.md) as a physical, version-locked architectural reference. Adoption identity is recorded in [`moondance.lock.json`](moondance.lock.json). The Kit does not replace this project’s own authority or prove implemented capability.

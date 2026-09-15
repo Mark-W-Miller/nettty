@@ -1,0 +1,52 @@
+{
+  "altitudeMeters": 0,
+  "connections": [],
+  "coordinates": [
+    0,
+    0,
+    0
+  ],
+  "dimensions": {
+    "depthMeters": 1,
+    "heightMeters": 1,
+    "widthMeters": 1
+  },
+  "elevationMeters": 0,
+  "id": "<required>",
+  "inhabitants": [],
+  "name": "<required>",
+  "objects": [],
+  "orientationDegrees": {
+    "pitch": 0,
+    "roll": 0,
+    "yaw": 0
+  },
+  "parentRef": null,
+  "provenance": {
+    "source": "moondance-project-kit",
+    "template": "place/v1"
+  },
+  "regions": [
+    {
+      "id": "bounds",
+      "kind": "bounds",
+      "max": [
+        1,
+        1,
+        1
+      ],
+      "min": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "revision": {
+    "number": 1
+  },
+  "surface": "unspecified",
+  "terrain": "unspecified",
+  "type": "Place",
+  "worldRef": null
+}

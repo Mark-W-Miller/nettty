@@ -1,0 +1,21 @@
+{
+  "required": [
+    "id",
+    "type",
+    "name",
+    "dimensions",
+    "altitudeMeters",
+    "elevationMeters",
+    "coordinates",
+    "orientationDegrees",
+    "regions",
+    "terrain",
+    "surface",
+    "inhabitants",
+    "objects",
+    "connections",
+    "provenance",
+    "revision"
+  ],
+  "type": "object"
+}

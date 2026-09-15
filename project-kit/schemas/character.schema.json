@@ -1,0 +1,20 @@
+{
+  "required": [
+    "id",
+    "type",
+    "name",
+    "sheet",
+    "appearance",
+    "stance",
+    "motion",
+    "inventory",
+    "equipment",
+    "relationships",
+    "affiliations",
+    "location",
+    "visible",
+    "provenance",
+    "revision"
+  ],
+  "type": "object"
+}
