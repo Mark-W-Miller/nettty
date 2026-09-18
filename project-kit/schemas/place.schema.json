@@ -1,21 +1,17 @@
 {
+  "description": "Proposed authoring-form shape only; nulls are unresolved, not valid native terrain.",
+  "type": "object",
   "required": [
     "id",
     "type",
     "name",
-    "dimensions",
-    "altitudeMeters",
-    "elevationMeters",
-    "coordinates",
-    "orientationDegrees",
-    "regions",
-    "terrain",
-    "surface",
-    "inhabitants",
-    "objects",
-    "connections",
-    "provenance",
-    "revision"
-  ],
-  "type": "object"
+    "revision",
+    "coordinateSystem",
+    "heightMap",
+    "textureMap",
+    "displayOrderTopFirst",
+    "layers",
+    "instances",
+    "provenance"
+  ]
 }

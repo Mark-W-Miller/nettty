@@ -1,42 +1,122 @@
-# Moondance Project Kit 0.1.0
+# Moondance Project Kit 0.1.10
 
-## Purpose
+## Purpose and authority
 
-Define rigorous frameworks and let coders work out the implementation within them. The Kit is our
-organized, versioned thinking: architecture, structures, contracts, requirements and examples. It is not
-an application, installer, database updater or runtime dependency.
+The Kit records architecture, contracts, requirements and examples. Each project owns implementation,
+source/data authority and acceptance. It is not an installer or runtime dependency. Grand Pubah includes
+the Kit in projects; Atlas curates architecture and owner feedback; Merlin packages shared documentation.
+Local root guidance wins over historical Talisman references. Preserve local identities and working paths.
 
-## What is here
+## Read first
 
-- [Seven-language project profile](reference/talisman/design/MOONDANCE-PROJECT-PROFILE.md): Shelf, Theme,
-  Morph, Context, services, identity/provenance and Journey/verification; Materialization spans them.
-- [Architecture overview](reference/talisman/development-atlas/Development-Architecture-Atlas.md), with
-  action, service, event/threading, persistence, focused-proof and operations-contract companions.
-- `contracts/`: concise portable requirement summaries; detailed reference documents give depth.
-- `templates/` and `schemas/`: Place/Character examples and proposed document-shape descriptions.
-  These are reference data, not validated runtime objects or universal game defaults.
-- `lifecycle/`: current-design, Patcher handoff and verification-plan document templates.
-- `themes/`: semantic theme examples; preserve accessible non-color cues and local project bindings.
-- `reference/talisman/`: physically included architecture and linked documentation from Talisman.
-- `inspect/`: local, expandable contents page; `manifest.json`: exact file inventory and content digest.
+- [What's new](CHANGELOG.md), [adoption](docs/ADOPTION.md), [migration](docs/MIGRATION-0.1.10.md).
+- [Place](contracts/place.md): actual numeric height and aligned texture; optional refining layers.
+- [Objects](contracts/objects.md): actual Slice native forms required; exact example/codec binding pending.
+- [Native authoring/admission](contracts/native-content.md): derive locally, validate, admit, read back, activate.
+- [Morph snapshot requirements](contracts/morph-catalog.md) and [incomplete catalog](catalog/README.md).
+- [Sanitized Tassy contract](docs/TASSY-ADMISSION-REFERENCE.md): owner-supplied single-item save reference.
+- [Field-trial lessons](docs/FIELD-TRIAL-LESSONS.md) and [evidence/gaps](docs/DELIVERY-GATES.md).
+- [Voice Lab package](contracts/voice-lab.md): self-hosted STT/TTS/recording package shape; no runtime claim.
 
-## Authority and adaptation
+## Contents
 
-Grand Pubah creates new projects and includes the Kit. Atlas maintains architecture and incorporates
-owner feedback. Each project owns its application, source/data authority, implementation and acceptance.
-Project-specific AGENTS instructions win over historical Talisman reference instructions. Do not replace
-local identities, units, ownership or working paths simply because a reference describes Talisman.
-Keep local additions outside the copied base, record deliberate deviations, and retain source provenance.
+The [seven-language profile](reference/talisman/design/MOONDANCE-PROJECT-PROFILE.md) covers Shelf,
+Theme, Morph, Context, services, identity/provenance and Journey/verification; Materialization spans them.
+The [architecture overview](reference/talisman/development-atlas/Development-Architecture-Atlas.md)
+and companions give source-specific depth. Portable summaries live in contracts/. templates/ and
+schemas/ contain proposed document shapes, not validated live objects or universal defaults.
+lifecycle/ provides current-design, Patcher handoff and verification-plan forms. themes/ contains semantic
+examples requiring local bindings and non-color accessibility cues. reference/ retains labelled historical
+source documentation. inspect/ is a local contents page; manifest.json inventories exact packaged bytes.
 
-## Development and release
+Voice Lab adds a package contract, schema, template and example for speech capture, Whisper/`whisper.cpp` STT, Kokoro-first TTS, optional recorded Piper alternate, and explicit recording artifacts. Engines, models, voices and deployments remain consumer-owned receipts.
 
-Active Designs contains genuinely current work with an ACTIVE-DESIGN.md front door. Preserve inactive,
-completed and historical material elsewhere. The root README of a Patcher ZIP identifies its assignment
-and links directly to scope, required documents and expected return. A ZIP includes its complete context.
-Record receipt, review, acceptance and publication separately. Feedback names the observed friction,
-responsible owner, agreed change and result; it is not automatic permission to change unrelated systems.
+## Work and acceptance
 
-Kit releases collect established materials. Specific scripts may be included later after development for
-their own purpose; making a Kit release does not invent tooling or rerun component test suites. This first
-release excludes the experimental Python tools returned during the earlier scope misunderstanding.
-Packaging checks cover completeness, readable links and exact bytes. Product acceptance happens in use.
+Keep genuinely current work behind an ACTIVE-DESIGN.md front door and preserve history separately.
+A Patcher ZIP includes complete context and a root README pointing to assignment, scope and expected
+return. Preserve dispatched archives; send later guidance as an explicit supplement or next attempt.
+Record receipt, review, acceptance and publication separately. Log observed friction, local decisions,
+responsible owners and evidence for Atlas; local decisions do not alter another owner's contract.
+
+0.1.8 adds the Voice Lab package shape and preserves 0.1.7's freely authored versioned behavior
+executors, the 0.1.6 AI runtime correction, console, universal Morph and future physics contracts.
+Packaging checks cover inventory, links and exact bytes. No new executable toolkit, voice server, model,
+recording, browser controller or application test suite is required for documentation assembly. Product,
+browser and physical-device acceptance remain separate.
+
+## Portable return and update cycle
+
+Read the [required cycle](contracts/morph-return-cycle.md) and [NEW/UPDATE evidence](docs/NEW-UPDATE-PROFILE.md).
+Dwarf War, Insect Wars and Rougish adopt this Kit before further software work; Slice is the fourth
+consumer and collector/visual proving surface. All four require supported hot deployment and database
+connection. Full offline native compendia, plural Morph-only returns and automatic same-ID guarded
+updates are requirements, not claimed implemented features.
+
+## Standard local guidance and upstream handoff
+
+Maintain `project-kit-local/` and its index alongside the immutable Kit. Each project/Patcher pass
+returns updated local guidance and its change list to the project owner for handoff to Merlin.
+Merlin curates general lessons into a versioned shared release; project-only decisions stay local.
+Read [the procedure](contracts/local-supplements.md), [curation decisions](docs/LOCAL-FINDINGS-0.1.3.md)
+and [incorporated owner evidence](docs/OWNER-CAPABILITY-REPORTS.md).
+
+## Shared Talisman Console
+
+Read [the bidirectional console contract](contracts/talisman-console.md).
+All four projects use the same explicit upload, fetch, domain organization and guarded identity rules.
+The console is independently accessible; local hosting is not the Talisman connection.
+This is a documentation requirement, not proof of live integration.
+
+## One Morph language, stage composition and storage
+
+[Morph](contracts/morph.md) is the universal unit for articulated and spatial content;
+[Metamorph](contracts/metamorph.md) is the assembled stage/world graph. Read the
+[six semantic examples](examples/morph-language.md), [storage guidance](contracts/persistence.md) and
+[requirements versus evidence](docs/MORPH-CAPABILITY-STATUS.md). Slice and Thinian/Rougish are editors
+over the same language. Current narrower codecs do not redefine it. SQLite remains the local/Tassy
+default; database layout is non-normative and PostgreSQL is a measured scale-up option behind the same
+services. No consumer upgrade or new implementation proof is implied by this release.
+
+[Behavior layers](contracts/behavior.md) distinguish local Motion, Place-bound Path, admitted Intention
+and game-system authority; [examples](examples/behavior-plans.md) show their controller composition.
+The [browser-first Tassy host](docs/BROWSER-HOST-ARCHITECTURE.md) is a candidate product simplification.
+
+## Lazy campaign worlds
+
+[Campaign Intentions](contracts/campaign-simulation.md) preserve dormant NPC goals and resolve a bounded
+set only on GM-authorized logical time advancement. Read [Derek’s example](examples/derek-campaign-heartbeat.md).
+[AI runtime decisions](contracts/ai-runtime-decisions.md) are built into bounded, budgeted heartbeat slots:
+minimal typed snapshots, one direct decision call, validation and durable accepted state. Deterministic
+Morph/Place/game machinery executes between calls; rendering and physics never call AI. Measured cache
+usage and hard tick/daily spending limits are requirements, not completed runtime proof.
+
+[Future physics](contracts/physics.md) is an engine-neutral Morph/Place resolver seam. Place world
+coordinates, collision/navigation surfaces, active region and fixed-step clock must be hardened first.
+No engine choice or implemented physics is claimed.
+
+## Freely authored executable behavior
+
+Morphs and Metamorphs may bind [versioned behavior executors](contracts/behavior-executors.md), primarily
+JavaScript for browser/Tassy hosts. Canonical data pins executor identity and typed parameters/events;
+modules run only under host-approved capabilities, typed outputs and enforceable resource limits.
+Read the [material-pulse example](examples/behavior-executor.md). Imported modules remain inert until
+admitted; this release specifies the registry/sandbox/replay boundaries without claiming implementation.
+
+## AI provider dialogue — 0.1.8
+
+[AI provider dialogue](contracts/ai-provider-dialogue.md) collects the Rougish interaction pattern:
+separate conversations, selected context, outbound inspection and reviewed acceptance. All provider
+options are hard-coded by us for now; users choose only among the built-in choices. This addition is
+documentation guidance; runtime implementation remains unverified.
+
+## Collect project updates — release tooling
+
+Use the [owner handoff and collector](docs/COLLECTING-PROJECT-UPDATES.md) to gather local MPK findings
+from pinned owner projects into a review bundle. It checks policy gaps and preserves working-file hashes
+without editing consumers or publishing. A stable command is available for later administrator UI wiring.
+
+[Direct project installation](docs/INSTALLING-PROJECT-KIT.md) verifies the published tag and replaces
+only the vendored Kit, preserving local supplements and recording delivery separately from runtime proof.
+
+[VERSION-0.1.10.md](VERSION-0.1.10.md) makes this Kit version visible in a directory listing.

@@ -1,0 +1,10 @@
+{
+  "schema": "mpk-local-handoff/v1",
+  "owner": "REPLACE_WITH_OWNER",
+  "updated_at": "REPLACE_WITH_DATE",
+  "kit_version": "COPY_OFFICIAL_RELEASE_PIN",
+  "kit_content_digest": "COPY_OFFICIAL_RELEASE_DIGEST",
+  "status": "changes",
+  "summary": "Describe proposed shared improvements and evidence limits; no release implied.",
+  "files": ["project-kit-local/README.md"]
+}

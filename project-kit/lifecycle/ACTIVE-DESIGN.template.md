@@ -10,3 +10,6 @@ Status: <current state>; owner/authority: <name>; source/evidence: <reference>.
 <Next bodies, exact blockers and owner>
 ## Acceptance
 <Observable result and focused checks appropriate to implementation>
+
+## Kit/local guidance
+<Adopted version/digest, project-kit-local index, relevant local decisions and upstream review status.>

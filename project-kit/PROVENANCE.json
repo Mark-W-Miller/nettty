@@ -1,9 +1,18 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.10",
   "kind": "documentation-release",
-  "source_atlas_revision": "30af276289738039cbf6375779090b7739d3c120",
-  "destination_base_revision": "4246e0a6c43879afc06516d223297c066d738b60",
-  "returned_proposal_sha256": "015dd4c09d0fbb4d5d1ebcfcd01b14a3008df20fbd8bf72a4edcfed8120fe2c7",
-  "returned_candidate_sha256": "d2c8b295b39265a9ae3023e9403352094ff179f487974b2c38cd95538eb33c91",
-  "curation": "Documentation and examples only; experimental tools excluded; owner-authored entry/adoption/navigation"
+  "base_release": {
+    "version": "0.1.0",
+    "kind": "documentation-release",
+    "source_atlas_revision": "30af276289738039cbf6375779090b7739d3c120",
+    "destination_base_revision": "4246e0a6c43879afc06516d223297c066d738b60",
+    "returned_proposal_sha256": "015dd4c09d0fbb4d5d1ebcfcd01b14a3008df20fbd8bf72a4edcfed8120fe2c7",
+    "returned_candidate_sha256": "d2c8b295b39265a9ae3023e9403352094ff179f487974b2c38cd95538eb33c91",
+    "curation": "Documentation and examples only; experimental tools excluded; owner-authored entry/adoption/navigation"
+  },
+  "base_kit_revision": "3acf10643f123291587154f95e43f0ed8bcbd6f6",
+  "curation_date": "2026-09-18",
+  "curation": "Lee voice-authoring curation and scoped installed-Kit publisher; user requested release and installation to all registered projects",
+  "update_sources": "docs/UPDATE-SOURCES.md",
+  "previous_release_revision": "3acf10643f123291587154f95e43f0ed8bcbd6f6"
 }

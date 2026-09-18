@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://moondance.local/schemas/voice-lab-package.schema.json",
+  "title": "Moondance Voice Lab Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "package_version",
+    "package_id",
+    "title",
+    "owner",
+    "revision",
+    "targets",
+    "engines",
+    "voices",
+    "recording_policy",
+    "acceptance"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "package_version": {
+      "const": "1"
+    },
+    "package_id": {
+      "type": "string",
+      "minLength": 3
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/target"
+      }
+    },
+    "engines": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "speech_to_text",
+        "text_to_speech"
+      ],
+      "properties": {
+        "speech_to_text": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/engine"
+          }
+        },
+        "text_to_speech": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/engine"
+          }
+        }
+      }
+    },
+    "voices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/voice"
+      }
+    },
+    "recording_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default_retention",
+        "saved_artifact_store",
+        "training_use",
+        "voice_cloning_use",
+        "log_transcripts_by_default",
+        "log_raw_audio_by_default"
+      ],
+      "properties": {
+        "default_retention": {
+          "type": "string",
+          "minLength": 1
+        },
+        "saved_artifact_store": {
+          "type": "string",
+          "minLength": 1
+        },
+        "training_use": {
+          "type": "string",
+          "minLength": 1
+        },
+        "voice_cloning_use": {
+          "type": "string",
+          "minLength": 1
+        },
+        "log_transcripts_by_default": {
+          "type": "boolean"
+        },
+        "log_raw_audio_by_default": {
+          "type": "boolean"
+        }
+      }
+    },
+    "acceptance": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "status",
+        "requires_https"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "local",
+            "lan",
+            "linux-server",
+            "public-web",
+            "other"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requires_https": {
+          "type": "boolean"
+        }
+      }
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "family",
+        "licence",
+        "upstream",
+        "version",
+        "model_id",
+        "model_licence",
+        "model_sha256",
+        "platforms",
+        "languages",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "licence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "upstream": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_licence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_sha256": {
+          "type": "string",
+          "minLength": 1
+        },
+        "platforms": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "languages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "voice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "engine_id",
+        "display_name",
+        "language",
+        "licence",
+        "provenance",
+        "allowed_uses",
+        "controls"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "engine_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
+        "licence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provenance": {
+          "type": "string",
+          "minLength": 1
+        },
+        "allowed_uses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "controls": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

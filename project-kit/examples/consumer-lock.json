@@ -1,8 +1,10 @@
 {
-  "kit_version": "0.1.0",
+  "kit_version": "0.1.10",
   "content_digest": "COPY_FROM_MANIFEST",
   "adopted_at": null,
   "owner": null,
   "local_extensions": [],
-  "status": "example-not-adopted"
+  "status": "example-not-adopted",
+  "catalog_status": "incomplete",
+  "implementation_acceptance": "unverified"
 }

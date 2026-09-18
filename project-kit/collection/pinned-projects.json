@@ -1,0 +1,105 @@
+{
+  "schema": "mpk-pinned-projects/v1",
+  "verified_at": "2026-09-18",
+  "scope": "Pinned project owners; excludes Merlin and companion chats. Refresh from pinned task/project inventory when owners move.",
+  "projects": [
+    {
+      "id": "lee",
+      "owners": [
+        "Lee \u2013 Say No More"
+      ],
+      "path": "~/Git/LHO"
+    },
+    {
+      "id": "finian",
+      "owners": [
+        "Thinian \u2013 Rougish"
+      ],
+      "path": "~/Git/Rougish"
+    },
+    {
+      "id": "slice",
+      "owners": [
+        "Slice \u2014 Adventure Golf__"
+      ],
+      "path": "~/Git/Slice"
+    },
+    {
+      "id": "dara",
+      "owners": [
+        "Dara \u2014 Dwarven Warfare Simulator__"
+      ],
+      "path": "~/Git/dwarf-war-combat-simulator"
+    },
+    {
+      "id": "beetle",
+      "owners": [
+        "Beetle -- Insect Wars"
+      ],
+      "path": "~/Git/insects-war"
+    },
+    {
+      "id": "atlas",
+      "owners": [
+        "Atlas \u2014 Talisman Architecture__"
+      ],
+      "path": "~/Git/talisman-git/talisman-development-architecture-atlas"
+    },
+    {
+      "id": "judy",
+      "owners": [
+        "Judy \u2013 Voice"
+      ],
+      "path": "~/Git/talisman-git/talisman-voice-recognition"
+    },
+    {
+      "id": "tassy",
+      "owners": [
+        "Tassy \u2014 Talisman Application Server__"
+      ],
+      "path": "~/Git/talisman-git/talisman-application-server"
+    },
+    {
+      "id": "mandy",
+      "owners": [
+        "Mandy \u2014 Moondance Web__"
+      ],
+      "path": "~/Git/talisman-git/talisman-moondance-web"
+    },
+    {
+      "id": "sally",
+      "owners": [
+        "Sally \u2014 Switchboard"
+      ],
+      "path": "~/Git/talisman-git/talisman-main"
+    },
+    {
+      "id": "sam",
+      "owners": [
+        "Sam \u2014 System Administrator__"
+      ],
+      "path": "~/Documents/Codex/2026-09-01/talisman-workboard-owner"
+    },
+    {
+      "id": "netty",
+      "owners": [
+        "Netty \u2013 Particle Map"
+      ],
+      "path": "~/Git/nettty"
+    },
+    {
+      "id": "president",
+      "owners": [
+        "Simon / The President of the Planet"
+      ],
+      "path": "~/Git/president-of-the-planet"
+    },
+    {
+      "id": "grand-pubah",
+      "owners": [
+        "The Grand Pubah of Moondance"
+      ],
+      "path": "~/Documents/Codex/2026-08-27/gr"
+    }
+  ]
+}
