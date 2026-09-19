@@ -1,6 +1,6 @@
 # Release notes
 
-[What’s new](CHANGELOG.md) records 0.1.10 and prior releases. Read [migration](docs/MIGRATION-0.1.10.md),
+[What’s new](CHANGELOG.md) records 0.1.11 and prior releases. Read [migration](docs/MIGRATION-0.1.11.md),
 [Voice Lab package](docs/VOICE-LAB-PACKAGE.md), [Voice Lab contract](contracts/voice-lab.md),
 [bounded AI runtime decisions](contracts/ai-runtime-decisions.md), [campaign semantics](contracts/campaign-simulation.md),
 [Derek’s example](examples/derek-campaign-heartbeat.md) and [unproven capabilities](docs/MORPH-CAPABILITY-STATUS.md).
@@ -16,3 +16,9 @@ only the vendored Kit, preserving local supplements and recording delivery separ
 0.1.9 adds a version-named Markdown marker at the Kit root for directory browsing.
 
 0.1.10 incorporates Lee’s voice-authoring lessons and the scoped consumer publication script.
+
+
+0.1.11 summarizes the release-11 design direction into contracts: DTDT shelf/card/box/view language,
+mandatory Control-Tick inspection, portable Morph/Place database packets, one shared canonical importer
+screen and Forest Green / Forest Blue theme variants. These are friction-test and assignment contracts;
+no consumer runtime implementation is claimed.

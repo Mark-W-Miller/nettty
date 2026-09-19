@@ -1,4 +1,4 @@
-# Moondance Project Kit 0.1.10
+# Moondance Project Kit 0.1.11
 
 ## Purpose and authority
 
@@ -9,7 +9,7 @@ Local root guidance wins over historical Talisman references. Preserve local ide
 
 ## Read first
 
-- [What's new](CHANGELOG.md), [adoption](docs/ADOPTION.md), [migration](docs/MIGRATION-0.1.10.md).
+- [What's new](CHANGELOG.md), [adoption](docs/ADOPTION.md), [migration](docs/MIGRATION-0.1.11.md).
 - [Place](contracts/place.md): actual numeric height and aligned texture; optional refining layers.
 - [Objects](contracts/objects.md): actual Slice native forms required; exact example/codec binding pending.
 - [Native authoring/admission](contracts/native-content.md): derive locally, validate, admit, read back, activate.
@@ -17,6 +17,7 @@ Local root guidance wins over historical Talisman references. Preserve local ide
 - [Sanitized Tassy contract](docs/TASSY-ADMISSION-REFERENCE.md): owner-supplied single-item save reference.
 - [Field-trial lessons](docs/FIELD-TRIAL-LESSONS.md) and [evidence/gaps](docs/DELIVERY-GATES.md).
 - [Voice Lab package](contracts/voice-lab.md): self-hosted STT/TTS/recording package shape; no runtime claim.
+- [Shelf/Card UI](contracts/shelf.md), [DTDT inspection](contracts/dtd-ui.md), [database importer](contracts/database-importer.md) and [theme](contracts/theme.md): release-11 design contracts and friction tests.
 
 ## Contents
 
@@ -29,6 +30,11 @@ lifecycle/ provides current-design, Patcher handoff and verification-plan forms.
 examples requiring local bindings and non-color accessibility cues. reference/ retains labelled historical
 source documentation. inspect/ is a local contents page; manifest.json inventories exact packaged bytes.
 
+Release 0.1.11 adds explicit DTDT UI structure language, including Cards, Shelves, Boxes, Arenas,
+Six-View Bars, tear-off tool bars, twist-open tree shelves and the required Control-Tick debug overlay.
+It also adds a portable database-packet/importer contract for projects that create Morphs, Places and
+other database-facing content before or after they can reach the canonical database.
+
 Voice Lab adds a package contract, schema, template and example for speech capture, Whisper/`whisper.cpp` STT, Kokoro-first TTS, optional recorded Piper alternate, and explicit recording artifacts. Engines, models, voices and deployments remain consumer-owned receipts.
 
 ## Work and acceptance
@@ -39,7 +45,7 @@ return. Preserve dispatched archives; send later guidance as an explicit supplem
 Record receipt, review, acceptance and publication separately. Log observed friction, local decisions,
 responsible owners and evidence for Atlas; local decisions do not alter another owner's contract.
 
-0.1.8 adds the Voice Lab package shape and preserves 0.1.7's freely authored versioned behavior
+0.1.11 adds DTDT shelf/view, importer and theme contracts. 0.1.8 adds the Voice Lab package shape and preserves 0.1.7's freely authored versioned behavior
 executors, the 0.1.6 AI runtime correction, console, universal Morph and future physics contracts.
 Packaging checks cover inventory, links and exact bytes. No new executable toolkit, voice server, model,
 recording, browser controller or application test suite is required for documentation assembly. Product,
@@ -119,4 +125,4 @@ without editing consumers or publishing. A stable command is available for later
 [Direct project installation](docs/INSTALLING-PROJECT-KIT.md) verifies the published tag and replaces
 only the vendored Kit, preserving local supplements and recording delivery separately from runtime proof.
 
-[VERSION-0.1.10.md](VERSION-0.1.10.md) makes this Kit version visible in a directory listing.
+[VERSION-0.1.11.md](VERSION-0.1.11.md) makes this Kit version visible in a directory listing.

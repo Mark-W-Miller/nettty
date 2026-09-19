@@ -1,11 +1,11 @@
 {
-  "kit_version": "0.1.10",
+  "kit_version": "0.1.11",
   "kind": "documentation-release",
-  "source_revision": "3acf10643f123291587154f95e43f0ed8bcbd6f6",
-  "source_date": "2026-09-18",
-  "source_revision_role": "base revision; final tagged release commit is recorded in the release receipt",
+  "source_revision": "4dc9f433df50d4a64208d18eb09ede55122ac42a",
+  "source_date": "2026-09-19",
+  "source_revision_role": "base revision; candidate working bytes identified by content_digest; no final release commit yet",
   "catalog_status": "incomplete",
-  "content_digest": "38cef29184ffabd1eb961dc14c6560a019f95ef9fac5658ef2233579b41ae636",
+  "content_digest": "11676f2317c920d4ca2d024ac26fa7cfdb51b836ee03bf8deaf7c5c945f290a9",
   "digest_algorithm": "SHA256 of UTF-8 JSON files array, sorted keys, compact separators; manifest excluded",
   "files": [
     {
@@ -20,8 +20,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 9345,
-      "sha256": "9da60a318196ebf2e24029d188afa43a77e7821c2ddfa866260452d5780c610e"
+      "bytes": 10694,
+      "sha256": "b96a6edad2bf02d7ce947500ea113c9bccbc43daae8b3df9c37deb253c0679b3"
     },
     {
       "path": "DEPENDENCIES-LICENSES.md",
@@ -30,33 +30,33 @@
     },
     {
       "path": "MOONDANCE-PROJECT-KIT.md",
-      "bytes": 8376,
-      "sha256": "0eed8aca62fe5f89060fcc5f9050eeff7085a89484f2c02f0d34978f920ef8f9"
+      "bytes": 9037,
+      "sha256": "87ff5fe3f63b268b128c51d5a0efd845b84724845c5fb6f1bc57544367df6654"
     },
     {
       "path": "PROVENANCE.json",
-      "bytes": 989,
-      "sha256": "631f5035c450c989000c2535f1f2ff42fcf817ac44e3bb9e62abf1c216e8a8cf"
+      "bytes": 1026,
+      "sha256": "aad740796a4a1f211361df2023d30f42c1b82348aff0a625e5b429c26b226e68"
     },
     {
       "path": "README.md",
-      "bytes": 6916,
-      "sha256": "f39fb288c6ce35700d04290cfc2a7128b9e1e7bcafb1a35f173d0d97d283753d"
+      "bytes": 7702,
+      "sha256": "e5423448ae11831237f376fb1dc3d72f638ebc55aec2d99c3b4945788eef54f6"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "bytes": 1209,
-      "sha256": "965cd8555407d86cd366c080e78a85d0fd96d0b99c7472e399ea2ee414f4ab7d"
+      "bytes": 1567,
+      "sha256": "1ee50f854771b84402306620195ed9d355b81dcbbfb246414769dafb2b613ff4"
     },
     {
-      "path": "VERSION-0.1.10.md",
-      "bytes": 270,
-      "sha256": "6c18bc6cd9fb1e266d3f5933cdc94603c0a05872a955c3ba7743fb0e315a0810"
+      "path": "VERSION-0.1.11.md",
+      "bytes": 268,
+      "sha256": "57c320a35c4028f8c7a43f731e1e830ff5231f767ab66054e24fdb783bcdc881"
     },
     {
       "path": "catalog/README.md",
       "bytes": 927,
-      "sha256": "3895ab14221c9bad8de1820b0cd5d8c2d71737dd006052c640a5e54474723c2c"
+      "sha256": "58184bbbf098737c8d7f76218265604dcaaab7c3e29ef08be6558b95bd09ed8c"
     },
     {
       "path": "catalog/status.json",
@@ -109,9 +109,14 @@
       "sha256": "76122ed447d70b31cac491babd439e0a3864712b35094fe943f8353eac8807cb"
     },
     {
+      "path": "contracts/database-importer.md",
+      "bytes": 5688,
+      "sha256": "2792eba0cafaf6c1d5799d6102ab66b1de0b5a7466869c1d8441ad30c2e69885"
+    },
+    {
       "path": "contracts/dtd-ui.md",
-      "bytes": 121,
-      "sha256": "56803eade9119e4e1ab894aa7cf0a895ce0ed7841ace0b5b922b301f1963a7dc"
+      "bytes": 2272,
+      "sha256": "b4f766566721a8a3aede8c7c33ca75be078d4f7c548301e7b7fc8012f99e681a"
     },
     {
       "path": "contracts/feedback.md",
@@ -180,13 +185,18 @@
     },
     {
       "path": "contracts/shelf.md",
-      "bytes": 128,
-      "sha256": "5e2b844eda7265bfcf0b0a7510b8b92f82a793a645b3fd71dea72a4112ffce24"
+      "bytes": 4578,
+      "sha256": "ac39d1ac1a8fea0273c726383d92572e7da829243314bdd6227f75b8ceacb6d7"
     },
     {
       "path": "contracts/talisman-console.md",
       "bytes": 9797,
       "sha256": "683b0678164dde65d44e337547a8f01feb04d738e86f8e49183fa3394fcbddc5"
+    },
+    {
+      "path": "contracts/theme.md",
+      "bytes": 1535,
+      "sha256": "e54bb146228c23290c47198192a9f38e52bf3b416d04a214b56eac251fa4bb83"
     },
     {
       "path": "contracts/voice-authoring.md",
@@ -201,7 +211,7 @@
     {
       "path": "docs/ADOPTION.md",
       "bytes": 2746,
-      "sha256": "562880087ddc6e50fad5d8d25cc65171fa7ecaa583b1731961c8cf2c9b861f15"
+      "sha256": "94484c56aff29f31e7915d78800db877fe833c0157ea9f7f74a320ef95b47d3a"
     },
     {
       "path": "docs/BROWSER-HOST-ARCHITECTURE.md",
@@ -215,8 +225,8 @@
     },
     {
       "path": "docs/DELIVERY-GATES.md",
-      "bytes": 9633,
-      "sha256": "3c220b812f90e962372418141198c5ebe3526d09a4c91a55d97f322b1277b8d1"
+      "bytes": 10640,
+      "sha256": "cb494e08468e0d16f1511b8fb508fa44dbf3d4ead8cdae2b361881e91c2ded6f"
     },
     {
       "path": "docs/FIELD-TRIAL-LESSONS.md",
@@ -247,6 +257,11 @@
       "path": "docs/MIGRATION-0.1.10.md",
       "bytes": 725,
       "sha256": "022a32ed1d916b9270a4a0f31be7d2c67748af11284db2929ca6a283c5dcdcbf"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.11.md",
+      "bytes": 1197,
+      "sha256": "e6fcb966e96364fa46ff6b781827da38e35f3b237ed0583771daba658867b652"
     },
     {
       "path": "docs/MIGRATION-0.1.2.md",
@@ -320,8 +335,8 @@
     },
     {
       "path": "docs/UPDATE-SOURCES.md",
-      "bytes": 9581,
-      "sha256": "64542384152227551fae79d633c3954dd4d1a1dfc37c0d8c99f7a650865967cc"
+      "bytes": 10033,
+      "sha256": "6a33192cad40d63ca185cc282a58277facee030644b606f2b49df1aba0708cdd"
     },
     {
       "path": "docs/VOICE-LAB-PACKAGE.md",
@@ -341,7 +356,7 @@
     {
       "path": "examples/consumer-lock.json",
       "bytes": 251,
-      "sha256": "ddf281d3a154e564888c054900e8f3d6708cf3791d46ae8661d94f1836d8c3cf"
+      "sha256": "ddbc38d3ca37c09e53de8cfd25970c6808833f457ffaaa9631067a08a9c1928e"
     },
     {
       "path": "examples/derek-campaign-heartbeat.md",
@@ -360,8 +375,8 @@
     },
     {
       "path": "inspect/index.html",
-      "bytes": 16041,
-      "sha256": "c6b2d94dee3223eb60e61ca4a7ef18c1fe81fbe8b92c4abdf73c07fae55f0123"
+      "bytes": 14849,
+      "sha256": "356371cffdf1b3fdb8509d6a80a7d8588797c5db93f29b448bac6b56fb88922e"
     },
     {
       "path": "lifecycle/ACTIVE-DESIGN.template.md",
@@ -710,8 +725,8 @@
     },
     {
       "path": "themes/talisman-forest.tokens.json",
-      "bytes": 436,
-      "sha256": "d5ffdff1dd0ed82c0fe9decc09e359faa88b911abb30b7a44b490e236c721428"
+      "bytes": 2434,
+      "sha256": "a62876bae072e6d152a5eb350d7cd1f3f26fbef799d9cc6de7f78ec31f9f60a7"
     }
   ]
 }

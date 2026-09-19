@@ -9,7 +9,7 @@ repository identity and Kit adoption responsibility. Separate worktree copies or
 revisions do not create new consumer projects; record their exact revisions when verifying delivery.
 Recipients are registered pinned project owners, including Dwarf War, Insect Wars, Rougish and Slice.
 
-For 0.1.10 read [migration](MIGRATION-0.1.10.md) and [known gaps](DELIVERY-GATES.md). Catalog coverage
+For 0.1.11 read [migration](MIGRATION-0.1.11.md) and [known gaps](DELIVERY-GATES.md). Catalog coverage
 is incomplete. Record the adoption receipt; commit/publish only under the consumer’s own authority (Mark handles
 Dwarf War Git/publication). Report:
 

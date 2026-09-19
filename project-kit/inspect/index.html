@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Moondance Project Kit 0.1.10</title><style>body{font:18px/1.6 system-ui;max-width:1000px;margin:auto;padding:24px;background:#f4f7f3;color:#173c30}details{border:1px solid #809c88;border-radius:8px;padding:12px;margin:10px}summary{cursor:pointer;font-weight:bold}a{color:#164f8a}a:focus,summary:focus{outline:3px solid #986900}</style><main><h1>Moondance Project Kit 0.1.10</h1><p>Visible VERSION-0.1.10.md marker, project collection and verified installation. Runtime capabilities remain unproven; delivery and acceptance are separate.</p><p><a href="../CHANGELOG.md">What’s new</a> · <a href="../contracts/ai-runtime-decisions.md">AI runtime decisions</a> · <a href="../docs/INSTALLING-PROJECT-KIT.md">Install into projects</a> · <a href="../docs/MIGRATION-0.1.10.md">Migration</a></p>
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Moondance Project Kit 0.1.11</title><style>body{font:18px/1.6 system-ui;max-width:1000px;margin:auto;padding:24px;background:#f4f7f3;color:#173c30}details{border:1px solid #809c88;border-radius:8px;padding:12px;margin:10px}summary{cursor:pointer;font-weight:bold}a{color:#164f8a}a:focus,summary:focus{outline:3px solid #986900}</style><main><h1>Moondance Project Kit 0.1.11</h1><p>Visible VERSION-0.1.11.md marker, release-11 DTDT/importer/theme contracts, project collection and verified installation. Runtime capabilities remain unproven; delivery and acceptance are separate.</p><p><a href="../CHANGELOG.md">What’s new</a> · <a href="../contracts/shelf.md">Shelf contract</a> · <a href="../contracts/database-importer.md">Database importer</a> · <a href="../contracts/theme.md">Theme contract</a> · <a href="../docs/MIGRATION-0.1.11.md">Migration</a></p>
 <details><summary>Start here</summary><ul>
 <li><a href="../.gitignore">.gitignore</a></li>
 <li><a href="../AGENTS.md">AGENTS.md</a></li>
@@ -8,7 +8,8 @@
 <li><a href="../PROVENANCE.json">PROVENANCE.json</a></li>
 <li><a href="../README.md">README.md</a></li>
 <li><a href="../RELEASE-NOTES.md">RELEASE-NOTES.md</a></li>
-<li><a href="../VERSION-0.1.10.md">VERSION-0.1.10.md</a></li>
+<li><a href="../VERSION-0.1.11.md">VERSION-0.1.11.md</a></li>
+<li><a href="../manifest.json">manifest.json</a></li>
 </ul></details>
 <details><summary>catalog</summary><ul>
 <li><a href="../catalog/README.md">README.md</a></li>
@@ -26,6 +27,7 @@
 <li><a href="../contracts/behavior.md">behavior.md</a></li>
 <li><a href="../contracts/campaign-simulation.md">campaign-simulation.md</a></li>
 <li><a href="../contracts/context.md">context.md</a></li>
+<li><a href="../contracts/database-importer.md">database-importer.md</a></li>
 <li><a href="../contracts/dtd-ui.md">dtd-ui.md</a></li>
 <li><a href="../contracts/feedback.md">feedback.md</a></li>
 <li><a href="../contracts/local-supplements.md">local-supplements.md</a></li>
@@ -42,6 +44,7 @@
 <li><a href="../contracts/services.md">services.md</a></li>
 <li><a href="../contracts/shelf.md">shelf.md</a></li>
 <li><a href="../contracts/talisman-console.md">talisman-console.md</a></li>
+<li><a href="../contracts/theme.md">theme.md</a></li>
 <li><a href="../contracts/voice-authoring.md">voice-authoring.md</a></li>
 <li><a href="../contracts/voice-lab.md">voice-lab.md</a></li>
 </ul></details>
@@ -56,6 +59,7 @@
 <li><a href="../docs/LOCAL-FINDINGS-0.1.3.md">LOCAL-FINDINGS-0.1.3.md</a></li>
 <li><a href="../docs/MIGRATION-0.1.1.md">MIGRATION-0.1.1.md</a></li>
 <li><a href="../docs/MIGRATION-0.1.10.md">MIGRATION-0.1.10.md</a></li>
+<li><a href="../docs/MIGRATION-0.1.11.md">MIGRATION-0.1.11.md</a></li>
 <li><a href="../docs/MIGRATION-0.1.2.md">MIGRATION-0.1.2.md</a></li>
 <li><a href="../docs/MIGRATION-0.1.3.md">MIGRATION-0.1.3.md</a></li>
 <li><a href="../docs/MIGRATION-0.1.4.md">MIGRATION-0.1.4.md</a></li>
@@ -81,6 +85,9 @@
 <li><a href="../examples/morph-language.md">morph-language.md</a></li>
 <li><a href="../examples/voice-lab-package.json">voice-lab-package.json</a></li>
 </ul></details>
+<details><summary>inspect</summary><ul>
+<li><a href="../inspect/index.html">index.html</a></li>
+</ul></details>
 <details><summary>lifecycle</summary><ul>
 <li><a href="../lifecycle/ACTIVE-DESIGN.template.md">ACTIVE-DESIGN.template.md</a></li>
 <li><a href="../lifecycle/HANDOFF.template.md">HANDOFF.template.md</a></li>
@@ -91,74 +98,46 @@
 </ul></details>
 <details><summary>reference</summary><ul>
 <li><a href="../reference/README.md">README.md</a></li>
-</ul></details>
-<details><summary>reference/talisman</summary><ul>
 <li><a href="../reference/talisman/AGENTS.index.md">AGENTS.index.md</a></li>
 <li><a href="../reference/talisman/PATCH-BUNDLE-INSTRUCTIONS.md">PATCH-BUNDLE-INSTRUCTIONS.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/context-management</summary><ul>
 <li><a href="../reference/talisman/context-management/README.md">README.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/context-management/docs</summary><ul>
 <li><a href="../reference/talisman/context-management/docs/APPLICATION-CONTEXT-PAYLOAD-V1.md">APPLICATION-CONTEXT-PAYLOAD-V1.md</a></li>
 <li><a href="../reference/talisman/context-management/docs/APPLICATION-INTEGRATION.md">APPLICATION-INTEGRATION.md</a></li>
 <li><a href="../reference/talisman/context-management/docs/CONTEXT-CONTRACT.md">CONTEXT-CONTRACT.md</a></li>
 <li><a href="../reference/talisman/context-management/docs/MONITOR-AND-TALITALK.md">MONITOR-AND-TALITALK.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/design</summary><ul>
+<li><a href="../reference/talisman/design/Active Designs/Application Server/CRITTER-READ-CONTRACT.md">CRITTER-READ-CONTRACT.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Application Server/DATABASE-VIEWER.md">DATABASE-VIEWER.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Application Server/HOT-PUBLICATION-HANDOFF.md">HOT-PUBLICATION-HANDOFF.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Application Server/MANAGED-HANDLER-RUNTIME-DESIGN.md">MANAGED-HANDLER-RUNTIME-DESIGN.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Application Server/MOONBEAM-DELTA-PUBLICATION-DESIGN.md">MOONBEAM-DELTA-PUBLICATION-DESIGN.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Application Server/PAGE-PLUGIN-CONTRACT.md">PAGE-PLUGIN-CONTRACT.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/GM Control Screen/CONTROL-CONTEXT-REVIEW.md">CONTROL-CONTEXT-REVIEW.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/GM Control Screen/CONTROL-SAVED-LAYOUT-REVIEW.md">CONTROL-SAVED-LAYOUT-REVIEW.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Moondance Web/TALISMAN-ONLINE-SERVER.md">TALISMAN-ONLINE-SERVER.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Object Sing &amp; Dance Factory__/METAMORPH-GALLERY.md">METAMORPH-GALLERY.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Object Sing &amp; Dance Factory__/MORPH-DESIGN.md">MORPH-DESIGN.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Object Sing &amp; Dance Factory__/REFERENCE-AUDIT.md">REFERENCE-AUDIT.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Object Sing &amp; Dance Factory__/SIGN-LANGUAGE-MORPH-CAPABILITY.md">SIGN-LANGUAGE-MORPH-CAPABILITY.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Object Sing &amp; Dance Factory__/SLICE-NATIVE-STORAGE.md">SLICE-NATIVE-STORAGE.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Object Sing &amp; Dance Factory__/SYSTEM-DESIGN.md">SYSTEM-DESIGN.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Object Sing &amp; Dance Factory__/TEST-PLAN.md">TEST-PLAN.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Object Sing &amp; Dance Factory__/UNIFIED-MORPH-WORKBENCH-HANDOFF.md">UNIFIED-MORPH-WORKBENCH-HANDOFF.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Architecture/ACTIVE-DESIGN.md">ACTIVE-DESIGN.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Architecture/IMPLEMENTATION-FRICTION.md">IMPLEMENTATION-FRICTION.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Architecture/MOONDANCE-PROJECT-KIT.md">MOONDANCE-PROJECT-KIT.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Architecture/PATCHER-QUEUE-CONTRACT.md">PATCHER-QUEUE-CONTRACT.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Architecture/TALISMAN-ARCHITECTURE-OPERATIONS-ATLAS.md">TALISMAN-ARCHITECTURE-OPERATIONS-ATLAS.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Architecture/TEST-PLAN.md">TEST-PLAN.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Architecture/THE-RIGHT-LINE.md">THE-RIGHT-LINE.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Architecture/handoffs/LIFECYCLE-HANDOFF.md">LIFECYCLE-HANDOFF.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Architecture/handoffs/PROJECT-KIT-HANDOFF.md">PROJECT-KIT-HANDOFF.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Editor Integration/LOCAL-EDITOR-INTEGRATION.md">LOCAL-EDITOR-INTEGRATION.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Forest__/ACTIVE-DESIGN.md">ACTIVE-DESIGN.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Forest__/BROWSER-THEME-CONTRACT.md">BROWSER-THEME-CONTRACT.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Shelf__/DTDT-V3-SHELF-DESIGN.md">DTDT-V3-SHELF-DESIGN.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Shelf__/SHELF-CONTRACT-V1.md">SHELF-CONTRACT-V1.md</a></li>
+<li><a href="../reference/talisman/design/Active Designs/Talisman Shelf__/SHELF-CONTRACT-V2.md">SHELF-CONTRACT-V2.md</a></li>
 <li><a href="../reference/talisman/design/MOONDANCE-PROJECT-PROFILE.md">MOONDANCE-PROJECT-PROFILE.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/design/Active Designs/Application Server</summary><ul>
-<li><a href="../reference/talisman/design/Active%20Designs/Application%20Server/CRITTER-READ-CONTRACT.md">CRITTER-READ-CONTRACT.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Application%20Server/DATABASE-VIEWER.md">DATABASE-VIEWER.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Application%20Server/HOT-PUBLICATION-HANDOFF.md">HOT-PUBLICATION-HANDOFF.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Application%20Server/MANAGED-HANDLER-RUNTIME-DESIGN.md">MANAGED-HANDLER-RUNTIME-DESIGN.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Application%20Server/MOONBEAM-DELTA-PUBLICATION-DESIGN.md">MOONBEAM-DELTA-PUBLICATION-DESIGN.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Application%20Server/PAGE-PLUGIN-CONTRACT.md">PAGE-PLUGIN-CONTRACT.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/design/Active Designs/GM Control Screen</summary><ul>
-<li><a href="../reference/talisman/design/Active%20Designs/GM%20Control%20Screen/CONTROL-CONTEXT-REVIEW.md">CONTROL-CONTEXT-REVIEW.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/GM%20Control%20Screen/CONTROL-SAVED-LAYOUT-REVIEW.md">CONTROL-SAVED-LAYOUT-REVIEW.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/design/Active Designs/Moondance Web</summary><ul>
-<li><a href="../reference/talisman/design/Active%20Designs/Moondance%20Web/TALISMAN-ONLINE-SERVER.md">TALISMAN-ONLINE-SERVER.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/design/Active Designs/Object Sing &amp; Dance Factory__</summary><ul>
-<li><a href="../reference/talisman/design/Active%20Designs/Object%20Sing%20%26%20Dance%20Factory__/METAMORPH-GALLERY.md">METAMORPH-GALLERY.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Object%20Sing%20%26%20Dance%20Factory__/MORPH-DESIGN.md">MORPH-DESIGN.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Object%20Sing%20%26%20Dance%20Factory__/REFERENCE-AUDIT.md">REFERENCE-AUDIT.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Object%20Sing%20%26%20Dance%20Factory__/SIGN-LANGUAGE-MORPH-CAPABILITY.md">SIGN-LANGUAGE-MORPH-CAPABILITY.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Object%20Sing%20%26%20Dance%20Factory__/SLICE-NATIVE-STORAGE.md">SLICE-NATIVE-STORAGE.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Object%20Sing%20%26%20Dance%20Factory__/SYSTEM-DESIGN.md">SYSTEM-DESIGN.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Object%20Sing%20%26%20Dance%20Factory__/TEST-PLAN.md">TEST-PLAN.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Object%20Sing%20%26%20Dance%20Factory__/UNIFIED-MORPH-WORKBENCH-HANDOFF.md">UNIFIED-MORPH-WORKBENCH-HANDOFF.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/design/Active Designs/Talisman Architecture</summary><ul>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Architecture/ACTIVE-DESIGN.md">ACTIVE-DESIGN.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Architecture/IMPLEMENTATION-FRICTION.md">IMPLEMENTATION-FRICTION.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Architecture/MOONDANCE-PROJECT-KIT.md">MOONDANCE-PROJECT-KIT.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Architecture/PATCHER-QUEUE-CONTRACT.md">PATCHER-QUEUE-CONTRACT.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Architecture/TALISMAN-ARCHITECTURE-OPERATIONS-ATLAS.md">TALISMAN-ARCHITECTURE-OPERATIONS-ATLAS.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Architecture/TEST-PLAN.md">TEST-PLAN.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Architecture/THE-RIGHT-LINE.md">THE-RIGHT-LINE.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/design/Active Designs/Talisman Architecture/handoffs</summary><ul>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Architecture/handoffs/LIFECYCLE-HANDOFF.md">LIFECYCLE-HANDOFF.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Architecture/handoffs/PROJECT-KIT-HANDOFF.md">PROJECT-KIT-HANDOFF.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/design/Active Designs/Talisman Editor Integration</summary><ul>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Editor%20Integration/LOCAL-EDITOR-INTEGRATION.md">LOCAL-EDITOR-INTEGRATION.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/design/Active Designs/Talisman Forest__</summary><ul>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Forest__/ACTIVE-DESIGN.md">ACTIVE-DESIGN.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Forest__/BROWSER-THEME-CONTRACT.md">BROWSER-THEME-CONTRACT.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/design/Active Designs/Talisman Shelf__</summary><ul>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Shelf__/DTDT-V3-SHELF-DESIGN.md">DTDT-V3-SHELF-DESIGN.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Shelf__/SHELF-CONTRACT-V1.md">SHELF-CONTRACT-V1.md</a></li>
-<li><a href="../reference/talisman/design/Active%20Designs/Talisman%20Shelf__/SHELF-CONTRACT-V2.md">SHELF-CONTRACT-V2.md</a></li>
-</ul></details>
-<details><summary>reference/talisman/development-atlas</summary><ul>
 <li><a href="../reference/talisman/development-atlas/Development-Architecture-Atlas.md">Development-Architecture-Atlas.md</a></li>
 <li><a href="../reference/talisman/development-atlas/action-routing.md">action-routing.md</a></li>
 <li><a href="../reference/talisman/development-atlas/events-threading.md">events-threading.md</a></li>
@@ -193,4 +172,4 @@
 <details><summary>themes</summary><ul>
 <li><a href="../themes/talisman-forest.tokens.json">talisman-forest.tokens.json</a></li>
 </ul></details>
-<p><a href="../manifest.json">Exact release inventory</a></p></main></html>
+</main></html>

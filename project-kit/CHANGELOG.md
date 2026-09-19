@@ -1,5 +1,24 @@
 # What's new
 
+## 0.1.11 — 2026-09-19
+
+- Defines the release-11 DTDT UI vocabulary for Cards, Shelf Items, Shelves, Boxes, Arenas, Six-View Bars,
+  tear-off tool bars and twist-open tree shelves.
+- Makes the Control-Tick debug overlay a compliance requirement: every meaningful structural UI element
+  must expose a tiny inspection control that opens its DTDT specification.
+- Adds the portable database-packet and canonical importer contract for Rogish (Rougish in older kit notes), Insect Wars,
+  Slice, Dwarf War / Dwarven Warfare Simulator and Moondance/Talisman tools. Projects may operate in
+  patch-only/chat, local-runtime or direct-database modes, but their Morph/Place packets must remain
+  database-shaped and importable.
+- Defines the shared canonical database importer as a controlled local-area/system-administrator screen,
+  preferably hosted by the Talisman Application Server, with project registration, side-by-side compare
+  and explicit import/update/skip/merge/quarantine/reject dispositions.
+- Formalizes the Theme contract and Talisman Forest family variants Forest Green and Forest Blue, using
+  the same semantic roles rather than per-screen colors.
+
+Limitations: this is documentation/contract work. It does not implement the importer screen, project
+adapters, Control-Tick runtime overlay, database writes or consumer UI conversions.
+
 ## 0.1.10 — 2026-09-18
 
 - Adds authored-only speech, typed recipes, separate language/performance, inheritance and cache rules.

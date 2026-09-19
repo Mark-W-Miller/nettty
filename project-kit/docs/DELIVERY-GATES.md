@@ -125,3 +125,20 @@ Portable conversion guidance: preserve original bytes, record source/output dige
 transformation/loss ledger, resolve destination IDs/conflicts and motion semantics with the owning
 authority, then execute the actual native validator. Unknown fields surviving parsing do not prove
 geometry/material/renderer semantics. This work remains independent of the 0.1.1 documentation release.
+
+## Release 0.1.11 DTDT/importer/theme gates
+
+The release-11 contracts define review language and friction tests only. A consumer must not claim
+implementation merely by copying this Kit. Evidence for implementation requires, as applicable:
+
+- a running Control-Tick overlay that exposes DTDT specifications for meaningful Cards, Shelves, Boxes,
+  Bars, Arenas, Six-View Bars, tree shelves, tool bars and floating windows;
+- project packets that can be exported from patch-only/chat, local runtime or direct database modes
+  without losing stable identity, provenance or canonical Morph/Place shape;
+- a registered project adapter feeding the shared canonical importer without manual interpretation;
+- importer compare/readback receipts showing incoming versus canonical records and explicit reviewer
+  dispositions;
+- Forest Green and Forest Blue applied through semantic Theme roles, with non-color cues and focus/contrast
+  preserved.
+
+No such runtime evidence is included in this documentation release.

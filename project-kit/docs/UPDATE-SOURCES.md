@@ -131,3 +131,10 @@ isolated fixtures; live installation receipts, where produced, remain separate f
 Mark requested a version-named Markdown file visible in each Kit folder and explicitly authorized
 release/distribution to all registered projects. This supersedes the earlier request for an unversioned
 local-only addition. The 0.1.8 release remains unchanged.
+
+## 0.1.11 patch applied — 2026-09-19
+
+Applied Mark's supplied `mpk-0.1.11-dtdt-importer-theme.patch`, SHA-256
+`49f4f74a008c68baabc79422ace11642882c75a80ba612a010bd99f594a7d004`, to clean source `4dc9f433df50d4a64208d18eb09ede55122ac42a`.
+Corrected packaging to retain only VERSION-0.1.11.md and identify the exact prior release as the base.
+This is a local candidate update; no 0.1.11 publication, consumer installation or runtime proof is implied.

@@ -1,20 +1,30 @@
-# Moondance Project Kit 0.1.10
+# Moondance Project Kit 0.1.11
 
 Portable architecture documentation, contracts and reference examples for physical inclusion in a
 project. Start with [the Kit guide](MOONDANCE-PROJECT-KIT.md), [What's new](CHANGELOG.md), or the
 [expandable contents](inspect/index.html). Follow [adoption](docs/ADOPTION.md) and
-[migration from 0.1.9](docs/MIGRATION-0.1.10.md). Reading the Kit requires no installation; the optional collection script is described below.
+[migration from 0.1.10](docs/MIGRATION-0.1.11.md). Reading the Kit requires no installation; the optional collection script is described below.
 
 ## Known limitations
 
-This is a **documentation release**, not a completed database-content release. The
+This is a **documentation release**, not a completed database-content or UI-runtime release. The
 [all-Morph catalog remains incomplete](catalog/README.md): no database Morph export is included.
 The exact Slice-derived object format and native-validated worked fixture are pending. No successful
-Insect Wars import, readback or database-backed gameplay is claimed. See [evidence and gaps](docs/DELIVERY-GATES.md).
+Insect Wars import, readback, database-backed gameplay, shared importer screen or Control-Tick overlay is claimed. See [evidence and gaps](docs/DELIVERY-GATES.md).
 
 Projects retain their own root guidance, ownership, implementation and acceptance requirements.
 Talisman references describe their recorded source; they are not evidence of another project's behavior.
 Keep local extensions separate and preserve earlier releases and dispatched archives.
+
+## Release-11 DTDT, importer and theme contracts
+
+Read [Shelf, Card, Box and View Bars](contracts/shelf.md), [DTDT UI inspection](contracts/dtd-ui.md),
+[portable database packets and the canonical importer](contracts/database-importer.md), and
+[the Theme contract](contracts/theme.md). Release 0.1.11 defines the shared words for Cards, Shelves,
+Boxes, Arenas, Six-View Bars, tear-off tool bars and twist-open tree shelves; requires Control-Tick
+inspection for compliant UI structure; defines database-compatible project packets before live database
+connection; and formalizes Forest Green / Forest Blue as Talisman Forest theme variants. These are
+contracts and friction tests, not proof of implementation in any consumer.
 
 ## Portable return and update cycle
 
@@ -99,7 +109,7 @@ without editing consumers or publishing. A stable command is available for later
 [Direct project installation](docs/INSTALLING-PROJECT-KIT.md) verifies the published tag and replaces
 only the vendored Kit, preserving local supplements and recording delivery separately from runtime proof.
 
-[VERSION-0.1.10.md](VERSION-0.1.10.md) makes this Kit version visible in a directory listing.
+[VERSION-0.1.11.md](VERSION-0.1.11.md) makes this Kit version visible in a directory listing.
 
 ## Shared voice-authoring refinements
 
