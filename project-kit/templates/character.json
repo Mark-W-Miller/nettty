@@ -1,0 +1,33 @@
+{
+  "affiliations": [],
+  "appearance": {},
+  "equipment": [],
+  "id": "<required>",
+  "inventory": [],
+  "location": [
+    0,
+    0,
+    0
+  ],
+  "morphRef": null,
+  "motion": "idle",
+  "name": "<required>",
+  "ownerRef": null,
+  "placeRef": null,
+  "provenance": {
+    "source": "moondance-project-kit",
+    "template": "character/v1"
+  },
+  "relationships": [],
+  "revision": {
+    "number": 1
+  },
+  "sheet": {
+    "attributes": {},
+    "displayName": "<required>",
+    "notes": ""
+  },
+  "stance": "standing",
+  "type": "Character",
+  "visible": true
+}

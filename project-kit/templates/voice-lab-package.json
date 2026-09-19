@@ -1,0 +1,83 @@
+{
+  "$schema": "../schemas/voice-lab-package.schema.json",
+  "package_version": "1",
+  "package_id": "example.voice-lab",
+  "title": "Example Voice Lab package",
+  "owner": "local-project-owner",
+  "revision": "unreleased-local-draft",
+  "targets": [
+    {
+      "id": "tassy-local",
+      "kind": "local",
+      "status": "planned",
+      "requires_https": false
+    },
+    {
+      "id": "moondance-linux",
+      "kind": "linux-server",
+      "status": "planned",
+      "requires_https": true
+    }
+  ],
+  "engines": {
+    "speech_to_text": [
+      {
+        "id": "stt.whisper-cpp.default",
+        "family": "whisper.cpp",
+        "licence": "MIT",
+        "upstream": "https://github.com/ggml-org/whisper.cpp",
+        "version": "VERIFY",
+        "model_id": "VERIFY-ggml-base-or-small-quantized",
+        "model_licence": "MIT",
+        "model_sha256": "VERIFY",
+        "platforms": ["macos-arm64", "linux-x86_64"],
+        "languages": ["en"],
+        "status": "candidate"
+      }
+    ],
+    "text_to_speech": [
+      {
+        "id": "tts.kokoro.default",
+        "family": "Kokoro-82M",
+        "licence": "Apache-2.0",
+        "upstream": "https://huggingface.co/hexgrad/Kokoro-82M",
+        "version": "VERIFY",
+        "model_id": "hexgrad/Kokoro-82M",
+        "model_licence": "Apache-2.0",
+        "model_sha256": "VERIFY",
+        "platforms": ["linux-x86_64", "macos-arm64"],
+        "languages": ["en"],
+        "status": "candidate"
+      }
+    ]
+  },
+  "voices": [
+    {
+      "id": "voice.example.default",
+      "engine_id": "tts.kokoro.default",
+      "display_name": "Default reviewed lab voice",
+      "language": "en",
+      "licence": "Apache-2.0",
+      "provenance": "VERIFY exact upstream voice list revision",
+      "allowed_uses": ["preview", "saved-sample"],
+      "controls": {
+        "speed": { "min": 0.75, "max": 1.25, "default": 1.0 },
+        "format": ["wav"]
+      }
+    }
+  ],
+  "recording_policy": {
+    "default_retention": "discard-after-session-unless-user-saves",
+    "saved_artifact_store": "local-project-defined",
+    "training_use": "forbidden-without-new-contract",
+    "voice_cloning_use": "forbidden-without-new-contract",
+    "log_transcripts_by_default": false,
+    "log_raw_audio_by_default": false
+  },
+  "acceptance": {
+    "local_tassy": "NOT_RUN",
+    "moondance_linux": "NOT_RUN",
+    "lan_mobile": "NOT_RUN",
+    "public_web": "NOT_RUN"
+  }
+}

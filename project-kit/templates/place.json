@@ -1,0 +1,45 @@
+{
+  "template": "place/v2",
+  "status": "incomplete-authoring-form-not-native-record",
+  "id": null,
+  "name": null,
+  "type": "Place",
+  "revision": null,
+  "coordinateSystem": {
+    "units": null,
+    "axes": null,
+    "handedness": null,
+    "origin": null,
+    "extent": null
+  },
+  "heightMap": {
+    "source": null,
+    "encoding": null,
+    "sampleDimensions": null,
+    "sampleSpacing": null,
+    "verticalScale": null,
+    "verticalOffset": null,
+    "noData": null,
+    "interpolation": null,
+    "edgePolicy": null
+  },
+  "textureMap": {
+    "source": null,
+    "dimensions": null,
+    "mapping": null,
+    "orientation": null
+  },
+  "displayOrderTopFirst": [
+    "overlays/masks",
+    "texture",
+    "height",
+    "background"
+  ],
+  "layers": [],
+  "instances": [],
+  "provenance": {
+    "source": "moondance-project-kit",
+    "template": "place/v2",
+    "derivation": null
+  }
+}

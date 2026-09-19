@@ -1,0 +1,96 @@
+{
+  "accessibility": {
+    "avoidGrayOnGray": true,
+    "focusIndicatorRequired": true,
+    "nonColorCueRequired": true
+  },
+  "name": "Talisman Forest",
+  "schema": "moondance.theme-family/v1",
+  "semantic_roles": [
+    "active",
+    "arenaBackground",
+    "boxSurface",
+    "cardSurface",
+    "complete",
+    "debugOverlay",
+    "error",
+    "importerConflict",
+    "importerNew",
+    "importerQuarantined",
+    "importerUpdate",
+    "owner",
+    "selection",
+    "shelfBackground",
+    "surface",
+    "text",
+    "waiting",
+    "warning"
+  ],
+  "tokens": {
+    "active": "#00A86B",
+    "arenaBackground": "#E7F4EA",
+    "boxSurface": "#FFFFFF",
+    "cardSurface": "#F4FBF6",
+    "complete": "#148F77",
+    "debugOverlay": "#2D6CDF",
+    "error": "#C0392B",
+    "importerConflict": "#B03A2E",
+    "importerNew": "#1E8449",
+    "importerQuarantined": "#8E44AD",
+    "importerUpdate": "#D99A00",
+    "owner": "#8E44AD",
+    "selection": "#2F80ED",
+    "shelfBackground": "#DDEFE3",
+    "surface": "#F4FBF6",
+    "text": "#10261A",
+    "waiting": "#D99A00",
+    "warning": "#D35400"
+  },
+  "variant": "Forest Green",
+  "variants": {
+    "Forest Blue": {
+      "tokens": {
+        "active": "#2483C5",
+        "arenaBackground": "#E6F1FA",
+        "boxSurface": "#FFFFFF",
+        "cardSurface": "#F2F8FD",
+        "complete": "#21618C",
+        "debugOverlay": "#7B4DFF",
+        "error": "#C0392B",
+        "importerConflict": "#B03A2E",
+        "importerNew": "#2471A3",
+        "importerQuarantined": "#8E44AD",
+        "importerUpdate": "#B9770E",
+        "owner": "#6C5CE7",
+        "selection": "#1F6FEB",
+        "shelfBackground": "#D8EAF7",
+        "surface": "#F2F8FD",
+        "text": "#0E2433",
+        "waiting": "#B9770E",
+        "warning": "#CA6F1E"
+      }
+    },
+    "Forest Green": {
+      "tokens": {
+        "active": "#00A86B",
+        "arenaBackground": "#E7F4EA",
+        "boxSurface": "#FFFFFF",
+        "cardSurface": "#F4FBF6",
+        "complete": "#148F77",
+        "debugOverlay": "#2D6CDF",
+        "error": "#C0392B",
+        "importerConflict": "#B03A2E",
+        "importerNew": "#1E8449",
+        "importerQuarantined": "#8E44AD",
+        "importerUpdate": "#D99A00",
+        "owner": "#8E44AD",
+        "selection": "#2F80ED",
+        "shelfBackground": "#DDEFE3",
+        "surface": "#F4FBF6",
+        "text": "#10261A",
+        "waiting": "#D99A00",
+        "warning": "#D35400"
+      }
+    }
+  }
+}

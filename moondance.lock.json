@@ -1,0 +1,14 @@
+{
+  "kit_version": "0.1.11",
+  "source_revision": "c7d155914990b6eef7a0affb6a5f60d775f2b53f",
+  "content_digest": "11676f2317c920d4ca2d024ac26fa7cfdb51b836ee03bf8deaf7c5c945f290a9",
+  "adopted_at": "2026-09-15T18:00:00+02:00",
+  "compatibility_state": "CURRENT",
+  "accepting_owner": "Netty Particle Map",
+  "local_extensions": [],
+  "source_tag": "v0.1.11",
+  "installed_at": "2026-09-19T11:05:24.674584+00:00",
+  "status": "installed-documentation-runtime-unverified",
+  "installed_path": "project-kit",
+  "implementation_acceptance": "unverified"
+}

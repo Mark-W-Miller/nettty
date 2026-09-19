@@ -1,0 +1,16 @@
+{
+  "status": "incomplete-awaiting-owner-export",
+  "source_database": null,
+  "snapshot_time": null,
+  "authoritative_identity_count": null,
+  "included_morph_count": 0,
+  "coverage_verified": false,
+  "dependency_closure_verified": false,
+  "missing": [
+    "Authoritative database inventory and accepted revision selection",
+    "Complete native definitions",
+    "Motion, material and media dependency closure",
+    "Source provenance and file digests",
+    "Owner export and validation evidence"
+  ]
+}

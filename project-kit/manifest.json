@@ -1,0 +1,732 @@
+{
+  "kit_version": "0.1.11",
+  "kind": "documentation-release",
+  "source_revision": "4dc9f433df50d4a64208d18eb09ede55122ac42a",
+  "source_date": "2026-09-19",
+  "source_revision_role": "base revision; candidate working bytes identified by content_digest; no final release commit yet",
+  "catalog_status": "incomplete",
+  "content_digest": "11676f2317c920d4ca2d024ac26fa7cfdb51b836ee03bf8deaf7c5c945f290a9",
+  "digest_algorithm": "SHA256 of UTF-8 JSON files array, sorted keys, compact separators; manifest excluded",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 19,
+      "sha256": "862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 542,
+      "sha256": "885167e7c29e1955ccb61a8bbe48d69d1fd41b944a781fa599112b6c145113c7"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 10694,
+      "sha256": "b96a6edad2bf02d7ce947500ea113c9bccbc43daae8b3df9c37deb253c0679b3"
+    },
+    {
+      "path": "DEPENDENCIES-LICENSES.md",
+      "bytes": 932,
+      "sha256": "8ae961dcb67dcb2d66e4b8efcbb913a9f93479a1ece86e65d4b4c7735d39e373"
+    },
+    {
+      "path": "MOONDANCE-PROJECT-KIT.md",
+      "bytes": 9037,
+      "sha256": "87ff5fe3f63b268b128c51d5a0efd845b84724845c5fb6f1bc57544367df6654"
+    },
+    {
+      "path": "PROVENANCE.json",
+      "bytes": 1026,
+      "sha256": "aad740796a4a1f211361df2023d30f42c1b82348aff0a625e5b429c26b226e68"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7702,
+      "sha256": "e5423448ae11831237f376fb1dc3d72f638ebc55aec2d99c3b4945788eef54f6"
+    },
+    {
+      "path": "RELEASE-NOTES.md",
+      "bytes": 1567,
+      "sha256": "1ee50f854771b84402306620195ed9d355b81dcbbfb246414769dafb2b613ff4"
+    },
+    {
+      "path": "VERSION-0.1.11.md",
+      "bytes": 268,
+      "sha256": "57c320a35c4028f8c7a43f731e1e830ff5231f767ab66054e24fdb783bcdc881"
+    },
+    {
+      "path": "catalog/README.md",
+      "bytes": 927,
+      "sha256": "58184bbbf098737c8d7f76218265604dcaaab7c3e29ef08be6558b95bd09ed8c"
+    },
+    {
+      "path": "catalog/status.json",
+      "bytes": 507,
+      "sha256": "df444eef4023fd81bf5e85f5eadbb6b935c4a242ea17dbd4d8d4ba6ec589cb30"
+    },
+    {
+      "path": "collection/pinned-projects.json",
+      "bytes": 2309,
+      "sha256": "0f6e8e00692f2789e04bb83ce0dcb1633d5dd9c765cb3fc646572ebc218139dd"
+    },
+    {
+      "path": "contracts/accessibility.md",
+      "bytes": 154,
+      "sha256": "04297ad653acebb7bae2e0906ea89077dcbe8b8f04c47a29328bbfab5090cb69"
+    },
+    {
+      "path": "contracts/ai-provider-dialogue.md",
+      "bytes": 9040,
+      "sha256": "45c9694ab7a119585c191d6ac5b36983d0bab176cfef031251fe09a20b64212f"
+    },
+    {
+      "path": "contracts/ai-runtime-decisions.md",
+      "bytes": 11114,
+      "sha256": "be5fd3885f9a8ebe5f44d486b262e12f801ce46760fe5d69758b77a8313d6d84"
+    },
+    {
+      "path": "contracts/architecture.md",
+      "bytes": 1121,
+      "sha256": "3b97ce8bc34f4c69a9c621376960d6d109924151a335eb772659e80e80f7c2c1"
+    },
+    {
+      "path": "contracts/behavior-executors.md",
+      "bytes": 10093,
+      "sha256": "d6a9c708aa443fa4669bb5f7df0eefb3bc49940ee433cd1426625255859033df"
+    },
+    {
+      "path": "contracts/behavior.md",
+      "bytes": 6676,
+      "sha256": "b27d44939cedea76ae66fe43c042cdd064d223d1fb1eebfe35244a41df00db95"
+    },
+    {
+      "path": "contracts/campaign-simulation.md",
+      "bytes": 7618,
+      "sha256": "03c4be272933e0e48cf7d11e3765cd5039fef45890e5be8a9cedcf233a3659ff"
+    },
+    {
+      "path": "contracts/context.md",
+      "bytes": 132,
+      "sha256": "76122ed447d70b31cac491babd439e0a3864712b35094fe943f8353eac8807cb"
+    },
+    {
+      "path": "contracts/database-importer.md",
+      "bytes": 5688,
+      "sha256": "2792eba0cafaf6c1d5799d6102ab66b1de0b5a7466869c1d8441ad30c2e69885"
+    },
+    {
+      "path": "contracts/dtd-ui.md",
+      "bytes": 2272,
+      "sha256": "b4f766566721a8a3aede8c7c33ca75be078d4f7c548301e7b7fc8012f99e681a"
+    },
+    {
+      "path": "contracts/feedback.md",
+      "bytes": 414,
+      "sha256": "31b71b60d6cc2e6f56814bd6e1093b54cbb52049ad07e24b439ee8541cb7ac32"
+    },
+    {
+      "path": "contracts/local-supplements.md",
+      "bytes": 5506,
+      "sha256": "f1f682680b6513c07a8c28529f001eb682e7a6b65a2d91c0f685d56021c0d8a7"
+    },
+    {
+      "path": "contracts/metamorph.md",
+      "bytes": 2968,
+      "sha256": "27a37a39c4f96accbe12bba79ae9529b8653a893268752169352113b98e9ee0a"
+    },
+    {
+      "path": "contracts/morph-catalog.md",
+      "bytes": 1842,
+      "sha256": "816f91b23551f07091c679ac1000f7343d4768b804de4009aa801103ddba2c1c"
+    },
+    {
+      "path": "contracts/morph-return-cycle.md",
+      "bytes": 7657,
+      "sha256": "2872dfa76e868ba9ea9b74b47cf97e3300b6f02634eeaed7b9a6f67db96e5be1"
+    },
+    {
+      "path": "contracts/morph.md",
+      "bytes": 6395,
+      "sha256": "bcbf1eed24d135444a6b1299b4e2684bc40669c14b566e60b2f9ade1f862aaea"
+    },
+    {
+      "path": "contracts/native-content.md",
+      "bytes": 5672,
+      "sha256": "b0104afb45b296845eac45b41129387b774347fa5db5517d079babfa8e2c6fd8"
+    },
+    {
+      "path": "contracts/objects.md",
+      "bytes": 3484,
+      "sha256": "d0edad88b99710197fba53b00c3ec957a8fa33588b084c64360c2ccd5d9be799"
+    },
+    {
+      "path": "contracts/ownership.md",
+      "bytes": 218,
+      "sha256": "50a430270dc53e21255292c134086176fdcf2a45b1b140a7effbf43db94c6a94"
+    },
+    {
+      "path": "contracts/persistence.md",
+      "bytes": 5407,
+      "sha256": "0214d4b9d78d77f15957586dfde724f450420b8afc68a14459a65a8f59ab60ca"
+    },
+    {
+      "path": "contracts/physics.md",
+      "bytes": 6299,
+      "sha256": "3c9baedc65c9fefe9dd80bff95c102efaeaaefcdda7634e09f76f5b9cfea7832"
+    },
+    {
+      "path": "contracts/place.md",
+      "bytes": 2634,
+      "sha256": "fbfb986b435a24c725922502a238d1693857258f565df6dae35318bb0afaeb99"
+    },
+    {
+      "path": "contracts/services.md",
+      "bytes": 130,
+      "sha256": "17877ce7d07787cb5043a19a467b79d0ab976d8d1afafb41a53a7c50300f273b"
+    },
+    {
+      "path": "contracts/shelf.md",
+      "bytes": 4578,
+      "sha256": "ac39d1ac1a8fea0273c726383d92572e7da829243314bdd6227f75b8ceacb6d7"
+    },
+    {
+      "path": "contracts/talisman-console.md",
+      "bytes": 9797,
+      "sha256": "683b0678164dde65d44e337547a8f01feb04d738e86f8e49183fa3394fcbddc5"
+    },
+    {
+      "path": "contracts/theme.md",
+      "bytes": 1535,
+      "sha256": "e54bb146228c23290c47198192a9f38e52bf3b416d04a214b56eac251fa4bb83"
+    },
+    {
+      "path": "contracts/voice-authoring.md",
+      "bytes": 6534,
+      "sha256": "bd9bfb964f7c29fe2b6bf19c37039524babbc586601177b73e5a91e453ea5c00"
+    },
+    {
+      "path": "contracts/voice-lab.md",
+      "bytes": 11737,
+      "sha256": "e411d69692a25be97828b10de3ae0b664494179a4c7bf133dc72c1b292a24f04"
+    },
+    {
+      "path": "docs/ADOPTION.md",
+      "bytes": 2746,
+      "sha256": "94484c56aff29f31e7915d78800db877fe833c0157ea9f7f74a320ef95b47d3a"
+    },
+    {
+      "path": "docs/BROWSER-HOST-ARCHITECTURE.md",
+      "bytes": 1421,
+      "sha256": "b78eab784afa1f3a8fb368c6f5d4db1ad78855e00968c303d9cd77248b66b732"
+    },
+    {
+      "path": "docs/COLLECTING-PROJECT-UPDATES.md",
+      "bytes": 5438,
+      "sha256": "cd8a19d0d4a7ac526f9c4a2dca2e852958b78384248ea7dd7bfc4403a5a356ed"
+    },
+    {
+      "path": "docs/DELIVERY-GATES.md",
+      "bytes": 10640,
+      "sha256": "cb494e08468e0d16f1511b8fb508fa44dbf3d4ead8cdae2b361881e91c2ded6f"
+    },
+    {
+      "path": "docs/FIELD-TRIAL-LESSONS.md",
+      "bytes": 1960,
+      "sha256": "5f84bbff133b8f4fc111062a7c63f1fc3d83091a7dff2b9d734941f2d046184c"
+    },
+    {
+      "path": "docs/INSTALLING-PROJECT-KIT.md",
+      "bytes": 3538,
+      "sha256": "72226f703d94c5320de482268fdebaba4a12e635f8592cc542815155ce5b89d1"
+    },
+    {
+      "path": "docs/LEE-VOICE-LAB-FINDINGS.md",
+      "bytes": 3262,
+      "sha256": "57e7a9b1a20a4f3d6e587709d5bd48ade8ac454d027ed7744b18ebc739b93058"
+    },
+    {
+      "path": "docs/LOCAL-FINDINGS-0.1.3.md",
+      "bytes": 2016,
+      "sha256": "f6a459b3fdeec80b7c9316b34dc93021969e34ea7932a07452921342d5f5e045"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.1.md",
+      "bytes": 1527,
+      "sha256": "ed4a53f9160e7291047f4f6885f9ee86067815a0244293a8c545068d27683f6c"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.10.md",
+      "bytes": 725,
+      "sha256": "022a32ed1d916b9270a4a0f31be7d2c67748af11284db2929ca6a283c5dcdcbf"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.11.md",
+      "bytes": 1197,
+      "sha256": "e6fcb966e96364fa46ff6b781827da38e35f3b237ed0583771daba658867b652"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.2.md",
+      "bytes": 1709,
+      "sha256": "2bebdca43c6e5fa822994b3dabd16dae99212c292fb52ce9af4ebe9078fafdb4"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.3.md",
+      "bytes": 1526,
+      "sha256": "26caa76ea45e1281f48114ff82e70cf79ac94efe22b7025290ef4c693fa549da"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.4.md",
+      "bytes": 3207,
+      "sha256": "88a85c8679a8135869eef50efd0a29935bfe09c28d89521274b5d848a3896b07"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.5.md",
+      "bytes": 2149,
+      "sha256": "1a533d88b969c16b8bb2b562c95a2ce78a64359d2b08e285276dff631e28c239"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.6.md",
+      "bytes": 2592,
+      "sha256": "5bb24ac0d2006352da8bcbce08065f07b321fef9a253b310399c4b216c58d0d3"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.7.md",
+      "bytes": 2012,
+      "sha256": "5c0b83fe34e88293cb13449eddbaffb187eac7d1f0f46bb5f5265a115d35e401"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.8.md",
+      "bytes": 1710,
+      "sha256": "f1e644823d08a6b4ef903d7f0078f18f600881202dfb83a4e9082d16bf5300cb"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.9.md",
+      "bytes": 887,
+      "sha256": "a490830f2b2c371bb53827114f46d31fda8bd9cf1b8bf36e28c593d2826ed195"
+    },
+    {
+      "path": "docs/MORPH-CAPABILITY-STATUS.md",
+      "bytes": 5101,
+      "sha256": "46cf7d21034caf0d399b5a599446d148ae42a51f4e4317755f4962b8b299b78a"
+    },
+    {
+      "path": "docs/NEW-UPDATE-PROFILE.md",
+      "bytes": 2984,
+      "sha256": "d33a070e783968fe618088da5cdab82c8abbfb4403c49b5702ee168642f1ed45"
+    },
+    {
+      "path": "docs/OWNER-CAPABILITY-REPORTS.md",
+      "bytes": 5278,
+      "sha256": "3396975ef016b25949d02c4464f2511a8b7f69fcdda87e80591e7d47376bfc5c"
+    },
+    {
+      "path": "docs/PUBLISHING-INSTALLED-KITS.md",
+      "bytes": 3753,
+      "sha256": "c4e3f947a9ca6d467662e6e7ecec1324e70536fa22bd30255072d17eaa84c853"
+    },
+    {
+      "path": "docs/TASSY-ADMISSION-REFERENCE.md",
+      "bytes": 3471,
+      "sha256": "4982bf66c57e8a5e03d0c833edf6d10593af82c2ecc01b5de9e8534eff0340da"
+    },
+    {
+      "path": "docs/TEMPLATES.md",
+      "bytes": 1178,
+      "sha256": "593faf76585a8458363822c847a0d2262cc5fbb00e9831f39b14ee57d3178e4d"
+    },
+    {
+      "path": "docs/UPDATE-SOURCES.md",
+      "bytes": 10033,
+      "sha256": "6a33192cad40d63ca185cc282a58277facee030644b606f2b49df1aba0708cdd"
+    },
+    {
+      "path": "docs/VOICE-LAB-PACKAGE.md",
+      "bytes": 7724,
+      "sha256": "b62253a3cd3d884b4442bb8ac5daac2d0a73fad67e1c1014434905ac8291542b"
+    },
+    {
+      "path": "examples/behavior-executor.md",
+      "bytes": 3252,
+      "sha256": "7f5b9138fd22046e105d0357e4eabae35c8fd2b1fe6c4d0c0f5f184a17d189c4"
+    },
+    {
+      "path": "examples/behavior-plans.md",
+      "bytes": 3013,
+      "sha256": "1dfee94a5073f39dc6cef85fe39a28d8b4fd99c8bfa9b590eb1d656ed3c71ab7"
+    },
+    {
+      "path": "examples/consumer-lock.json",
+      "bytes": 251,
+      "sha256": "ddbc38d3ca37c09e53de8cfd25970c6808833f457ffaaa9631067a08a9c1928e"
+    },
+    {
+      "path": "examples/derek-campaign-heartbeat.md",
+      "bytes": 5035,
+      "sha256": "5de5e7842d5ab876e170a920634bb61bf749bdf28036950a15e9e30ca857cae4"
+    },
+    {
+      "path": "examples/morph-language.md",
+      "bytes": 4353,
+      "sha256": "5051f6d874bad00cedde60cf02c71825abd74478ff0edf0c6f82525f62a666a4"
+    },
+    {
+      "path": "examples/voice-lab-package.json",
+      "bytes": 2407,
+      "sha256": "dbb240ee4c22941684a85dd1ee9080ab5b76456f6c68146cdcec3e8aee97a9fe"
+    },
+    {
+      "path": "inspect/index.html",
+      "bytes": 14849,
+      "sha256": "356371cffdf1b3fdb8509d6a80a7d8588797c5db93f29b448bac6b56fb88922e"
+    },
+    {
+      "path": "lifecycle/ACTIVE-DESIGN.template.md",
+      "bytes": 506,
+      "sha256": "1e0fcd7a66f721fb34c93fce2945ac09aebccc1221b74c10112934168c99506a"
+    },
+    {
+      "path": "lifecycle/HANDOFF.template.md",
+      "bytes": 790,
+      "sha256": "6f7cdc2ec89aeabd374d06be1338226a61ac1412647332e5057d0e8b3229338e"
+    },
+    {
+      "path": "lifecycle/KIT-FEEDBACK.template.md",
+      "bytes": 1002,
+      "sha256": "72704f779c09e942f565ec720bebf1f685d40064930f7bd79257be8021dfb1c5"
+    },
+    {
+      "path": "lifecycle/LOCAL-SUPPLEMENT.template.md",
+      "bytes": 886,
+      "sha256": "99039a1ede6df7bec18bc9ca452e51c8a93113ebb176ee3277a9af0b72a1b024"
+    },
+    {
+      "path": "lifecycle/MPK-HANDOFF.template.json",
+      "bytes": 373,
+      "sha256": "164730209d47fd3acc7df205948859eac9d7fb2c47d5d26952c328e53537cad4"
+    },
+    {
+      "path": "lifecycle/TEST-PLAN.template.md",
+      "bytes": 218,
+      "sha256": "f87c5c00a304695ed838543d6881ff9d9a63bf31e46e7fd1acdccbef7b6e9601"
+    },
+    {
+      "path": "reference/README.md",
+      "bytes": 828,
+      "sha256": "97b233f2389ba581b405ab07b0d093ad7ba7981acda1c177340a0a8c976202f2"
+    },
+    {
+      "path": "reference/talisman/AGENTS.index.md",
+      "bytes": 145588,
+      "sha256": "e7475cb51b025fe8e5dd659233531930d513d393537ee24c7705833936c570f0"
+    },
+    {
+      "path": "reference/talisman/PATCH-BUNDLE-INSTRUCTIONS.md",
+      "bytes": 3909,
+      "sha256": "24abc38ca666cac69ef460e133ab69209f2795902677b7aca7e03510bf129a4c"
+    },
+    {
+      "path": "reference/talisman/context-management/README.md",
+      "bytes": 3727,
+      "sha256": "79b6562c729820e8a127a58f14eda7117c4470a91f7b5ae50234d73927adec5e"
+    },
+    {
+      "path": "reference/talisman/context-management/docs/APPLICATION-CONTEXT-PAYLOAD-V1.md",
+      "bytes": 5487,
+      "sha256": "41d2e3a05857755997d51b38d18157462eefd1c3ff555e25244026e42f6ae5f8"
+    },
+    {
+      "path": "reference/talisman/context-management/docs/APPLICATION-INTEGRATION.md",
+      "bytes": 10818,
+      "sha256": "9afcf8b01a0f0c5dc7f89fa3ff5eb87bfeeaa6a7dbd44a5d4b370bb27636854c"
+    },
+    {
+      "path": "reference/talisman/context-management/docs/CONTEXT-CONTRACT.md",
+      "bytes": 7635,
+      "sha256": "654223f9e30d8ffc5caaf588efac6b7d6f85edfc751052d6a4e3984237464a71"
+    },
+    {
+      "path": "reference/talisman/context-management/docs/MONITOR-AND-TALITALK.md",
+      "bytes": 5754,
+      "sha256": "59392f632479ce4367020d79043b4267ae49ef8223b94c4392064d20e1e4f80c"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Application Server/CRITTER-READ-CONTRACT.md",
+      "bytes": 11952,
+      "sha256": "102fc5025026156d22cfd785259753673cce0e9f14f6c8834d43f08459d8f6a1"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Application Server/DATABASE-VIEWER.md",
+      "bytes": 15332,
+      "sha256": "851df6319dfee7f5744db9be3e954d87541a472c9495b294896f779515eddb8f"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Application Server/HOT-PUBLICATION-HANDOFF.md",
+      "bytes": 4293,
+      "sha256": "bfdf2ba709ad5a63fba7c226a87e5957f6a77552f94378519b3ff954a272f903"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Application Server/MANAGED-HANDLER-RUNTIME-DESIGN.md",
+      "bytes": 9611,
+      "sha256": "473a96b6607fc8f60def2ac5a3fe33884b20e00e09a20150318a4681f17dc221"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Application Server/MOONBEAM-DELTA-PUBLICATION-DESIGN.md",
+      "bytes": 4430,
+      "sha256": "734f95641ab403503665685fc30fb136a69d37f54f06cabcf81df4f32e33379d"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Application Server/PAGE-PLUGIN-CONTRACT.md",
+      "bytes": 9061,
+      "sha256": "521bd669f8a97d46ddde532c04b3380a9a623c751e756217498b7da34d605c19"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/GM Control Screen/CONTROL-CONTEXT-REVIEW.md",
+      "bytes": 15193,
+      "sha256": "01e77bd3e42a92696c719dc01137cc9efb08b51cf4a1632d0f36179300262315"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/GM Control Screen/CONTROL-SAVED-LAYOUT-REVIEW.md",
+      "bytes": 14050,
+      "sha256": "7a737481155e9a94298f4a5b150ef6a06861ea54d7e6618db16a00d44b9a6727"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Moondance Web/TALISMAN-ONLINE-SERVER.md",
+      "bytes": 20790,
+      "sha256": "85ca0e781f6dc79604a17f3ce8c857a3ee11be555b18916a6575e75f6c9dc816"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Object Sing & Dance Factory__/METAMORPH-GALLERY.md",
+      "bytes": 37867,
+      "sha256": "7dad3cb34e683404db264f5bf00809d2392c1131e3669affc28ad1a86b03848e"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Object Sing & Dance Factory__/MORPH-DESIGN.md",
+      "bytes": 34206,
+      "sha256": "7f8022446a1ff58b2d575157d2651e3f4673e92ffa81b2d0645e44b9b05c6de1"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Object Sing & Dance Factory__/REFERENCE-AUDIT.md",
+      "bytes": 21620,
+      "sha256": "11cfb71627ed477295e33d914fbaca2836fd0342489f5bbbc9597dcdc0656c25"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Object Sing & Dance Factory__/SIGN-LANGUAGE-MORPH-CAPABILITY.md",
+      "bytes": 17330,
+      "sha256": "1745f0b84dec9c2aef62b437ed027bbb25c34c66d180ae1cbf42ea27970907fb"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Object Sing & Dance Factory__/SLICE-NATIVE-STORAGE.md",
+      "bytes": 6554,
+      "sha256": "b3912fcbda8d2fff1191ea60c1cd68b8e62afc461c084f1fb842ea58fb1452bc"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Object Sing & Dance Factory__/SYSTEM-DESIGN.md",
+      "bytes": 206319,
+      "sha256": "165b9623c6231e8ea0bca89d0de8957336ee95f8ad74c3379654af4dc550933a"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Object Sing & Dance Factory__/TEST-PLAN.md",
+      "bytes": 100220,
+      "sha256": "0aa963e651c7004ae14cbed4bc2bdd4df38611675f8030934b331f7d95a424a1"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Object Sing & Dance Factory__/UNIFIED-MORPH-WORKBENCH-HANDOFF.md",
+      "bytes": 14835,
+      "sha256": "0f6a03ce9a806aeb35b98dd7c309ce094b1a214fcd00310b5e949055e9314f42"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Architecture/ACTIVE-DESIGN.md",
+      "bytes": 13538,
+      "sha256": "588aa7396358096e86e261101217d0d426e3267cc72f91891707d1aae26e36f1"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Architecture/IMPLEMENTATION-FRICTION.md",
+      "bytes": 7323,
+      "sha256": "3d64019f67e00b44b75f180e66a3b5b18960f07d9f931f99f072fd33338c4e6b"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Architecture/MOONDANCE-PROJECT-KIT.md",
+      "bytes": 22203,
+      "sha256": "3ca2faba9594d287f02f57995a75e7af833eeaec41f2dd5a8771a28633ee3536"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Architecture/PATCHER-QUEUE-CONTRACT.md",
+      "bytes": 7610,
+      "sha256": "d5ef2fed57201ffb62545b76242f6bf759d81adb69b5bc65c63d6c400957556c"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Architecture/TALISMAN-ARCHITECTURE-OPERATIONS-ATLAS.md",
+      "bytes": 25880,
+      "sha256": "3652838c976243632f6bc28526d1067a33718a58a01670a3b04e787d57680fb7"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Architecture/TEST-PLAN.md",
+      "bytes": 23508,
+      "sha256": "2b7b81c9798d79e343fe562f517b0f1eeaaea8f1a448605512dae3c7202d3526"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Architecture/THE-RIGHT-LINE.md",
+      "bytes": 10893,
+      "sha256": "9ccb510acaad209fc0e09dec26cd316b4b2381d5a369cff3ab0561170b0e8a64"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Architecture/handoffs/LIFECYCLE-HANDOFF.md",
+      "bytes": 10117,
+      "sha256": "429c0876fb80cd415dd2b3b6972c21dabcf17a6f57f8dd429915876aa6bd753f"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Architecture/handoffs/PROJECT-KIT-HANDOFF.md",
+      "bytes": 6380,
+      "sha256": "1e7b53bfc185062ff0988a623e6c2128f396bcb8763fbdbf210e7bdcbf6578d7"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Editor Integration/LOCAL-EDITOR-INTEGRATION.md",
+      "bytes": 32703,
+      "sha256": "0bd9e71112c083aefa78f39d2a1cda65880e72bbaa3f34d7cb4b3ba592ec2c05"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Forest__/ACTIVE-DESIGN.md",
+      "bytes": 15312,
+      "sha256": "d1ca020fd8aa6fb6e36328b6c7e6571f3422ec9c17077b9409fce2174786acac"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Forest__/BROWSER-THEME-CONTRACT.md",
+      "bytes": 9518,
+      "sha256": "17b7785f5f36e2f34b796e237ba930b02d1530167cc6284efb1da2b100b05f42"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Shelf__/DTDT-V3-SHELF-DESIGN.md",
+      "bytes": 42225,
+      "sha256": "09a4c4bd1b4d14f12371e72cb2b09e9e31d9d6961192407083975ba25c08532d"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Shelf__/SHELF-CONTRACT-V1.md",
+      "bytes": 11296,
+      "sha256": "450e008050381f3ad7e07cf174fb20655e6ff975a5e884cc2980c0eff35489a3"
+    },
+    {
+      "path": "reference/talisman/design/Active Designs/Talisman Shelf__/SHELF-CONTRACT-V2.md",
+      "bytes": 12178,
+      "sha256": "87d93032609948d4152441902ddecf2337aaebed2d2e772929b16348de636559"
+    },
+    {
+      "path": "reference/talisman/design/MOONDANCE-PROJECT-PROFILE.md",
+      "bytes": 25360,
+      "sha256": "584a0f6b52442a585f752d042efa469ade76d7fdf274b4f0d05aa385088e7b3e"
+    },
+    {
+      "path": "reference/talisman/development-atlas/Development-Architecture-Atlas.md",
+      "bytes": 26818,
+      "sha256": "c8e14a19b4b135b26b08e1415f6bf12f50d8504578885ce73446704ff89c42fa"
+    },
+    {
+      "path": "reference/talisman/development-atlas/action-routing.md",
+      "bytes": 235023,
+      "sha256": "d3c7e1112614efc352be5d7d76374292a5d4a66c8226c12000f7622966547cc1"
+    },
+    {
+      "path": "reference/talisman/development-atlas/events-threading.md",
+      "bytes": 187317,
+      "sha256": "5a012fec1021399df80cab5f4aa8d21112f22d2e990e12c25b09478d3b492050"
+    },
+    {
+      "path": "reference/talisman/development-atlas/focused-tests.md",
+      "bytes": 278586,
+      "sha256": "88930f6d4951751660009f43273516abfe93197cb380f35b685f60943f0c34d0"
+    },
+    {
+      "path": "reference/talisman/development-atlas/operations-contract.md",
+      "bytes": 14720,
+      "sha256": "45b8ee099de5cfea20c377cdaf8378a1c6e18e9224e29dd0a807dece934af93c"
+    },
+    {
+      "path": "reference/talisman/development-atlas/persistence-and-content.md",
+      "bytes": 159938,
+      "sha256": "32b0a6c3b779fc67595c34eff9e383dd2608816a2f1f5a9229f54e4be765dd2b"
+    },
+    {
+      "path": "reference/talisman/development-atlas/service-architecture.md",
+      "bytes": 135287,
+      "sha256": "ff203d1c5af90ad1cf23bfd1240bcb65a942674a110e59db1a9d2fad8a352d14"
+    },
+    {
+      "path": "reference/talisman/development-atlas/validation.md",
+      "bytes": 7766,
+      "sha256": "dffa198e62f952ebe36063ed17ece59c78eb522586450dacaaea28bf085d8334"
+    },
+    {
+      "path": "schemas/character.schema.json",
+      "bytes": 276,
+      "sha256": "dccb4517d6df1af486d1b434f2a463eac5a3ccd30dbb2533c91e566d6fc1b7b1"
+    },
+    {
+      "path": "schemas/consumer-lock.schema.json",
+      "bytes": 399,
+      "sha256": "9d4b37da0d2877847bac2caebf6bd32697fc9304b79f29d574be038c1a6145b0"
+    },
+    {
+      "path": "schemas/manifest.schema.json",
+      "bytes": 139,
+      "sha256": "a06d2fc33fdf43e27b145b952db87a1e9d65c1bbcea093fcb1313908a4135a9e"
+    },
+    {
+      "path": "schemas/place.schema.json",
+      "bytes": 333,
+      "sha256": "b0939cf844c18471b1a2508421932b27f8e0c2c1a6ac6d90264eb478d2a1d227"
+    },
+    {
+      "path": "schemas/voice-lab-package.schema.json",
+      "bytes": 5757,
+      "sha256": "ad075c78c56ad4d16a62cdfad9b3b0de2a3eead3a8bbb94c405550aa0e70d488"
+    },
+    {
+      "path": "scripts/collect_mpk.py",
+      "bytes": 10897,
+      "sha256": "b765063ff4d11deafe13c5bc920bb28f2b7da33ef7c64db443a19f99418f5e44"
+    },
+    {
+      "path": "scripts/install_mpk.py",
+      "bytes": 11215,
+      "sha256": "9acbab1e0eb16ce4a42fccb6b4bc4850ea93a67bca6f791b0d5eb96104f3ba96"
+    },
+    {
+      "path": "scripts/publish_mpk_installs.py",
+      "bytes": 11507,
+      "sha256": "41e52d5c800251a07138dde51bb1a7769f7f56062ccbb6c99a2841c5cc1a563f"
+    },
+    {
+      "path": "templates/character.json",
+      "bytes": 558,
+      "sha256": "e259ce37b6f1d8ac8b01046fb7d7d3dc25c9753148452b61496b667d02eb8cbb"
+    },
+    {
+      "path": "templates/place.json",
+      "bytes": 893,
+      "sha256": "f54e6aa3999e31310ebb6e6f8390fecdd237be975a8900506b5f241f8df243ac"
+    },
+    {
+      "path": "templates/voice-lab-package.json",
+      "bytes": 2407,
+      "sha256": "dbb240ee4c22941684a85dd1ee9080ab5b76456f6c68146cdcec3e8aee97a9fe"
+    },
+    {
+      "path": "tests/test_collect_mpk.py",
+      "bytes": 4109,
+      "sha256": "b1af28d549b5a70631d34b8a0ad00fca68e0565183be9b243a1aab7f2997616b"
+    },
+    {
+      "path": "tests/test_install_mpk.py",
+      "bytes": 5007,
+      "sha256": "7d65b97e311e5399f89891797c9e97086d369b9c89d7cc53bdd6d21f5622506a"
+    },
+    {
+      "path": "tests/test_publish_mpk_installs.py",
+      "bytes": 4104,
+      "sha256": "bdef8e6c98807925f13c05c4cfc19d9e0fbbbc1a67cb431d03bb14a9774d07d9"
+    },
+    {
+      "path": "themes/talisman-forest.tokens.json",
+      "bytes": 2434,
+      "sha256": "a62876bae072e6d152a5eb350d7cd1f3f26fbef799d9cc6de7f78ec31f9f60a7"
+    }
+  ]
+}

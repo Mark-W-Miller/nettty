@@ -1,0 +1,10 @@
+{
+  "required": [
+    "kit_version",
+    "source_revision",
+    "source_date",
+    "content_digest",
+    "files"
+  ],
+  "type": "object"
+}
