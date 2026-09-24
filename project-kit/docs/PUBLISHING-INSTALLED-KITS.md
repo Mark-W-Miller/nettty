@@ -1,8 +1,7 @@
-# Commit and push installed Kits — MPK 0.1.10 tool
+# Commit and push installed Kits
 
 This script publishes the files identified by a completed installer distribution receipt. It does not
-install a release, create a new shared Kit release or include unrelated project changes. This tool is
-included in 0.1.10; the immutable 0.1.9 tag/archive remain unchanged.
+install a release, create a new shared Kit release or include unrelated working-file changes.
 
 Preview the current installation:
 
@@ -29,29 +28,31 @@ project paths, not a new or changed registry, so the release and installation ev
 ## Exact scope
 
 - Verify the release tag on origin and every installed Kit file against the tagged manifest.
-- Commit only `project-kit/`, `moondance.lock.json` and `project-kit-local/README.md` when the installer
-  created that exact unchanged index. Existing local supplements/findings are not included.
+- Group destinations by Git repository. Branch worktrees share one repository delivery.
+- Resolve the repository's default branch from `origin` and publish the release there. A temporary
+  worktree isolates delivery from active coding checkouts.
+- Begin with the latest remote default branch. Existing local commits on that default branch are
+  included when possible; divergence is merged in the isolated worktree.
+- Commit only `project-kit/` and `moondance.lock.json`. `project-kit-local/` is always excluded because
+  it belongs to the separate collection and framework-improvement process.
 - Stage deletions under `project-kit/` as well as additions and updates. Use a path-limited commit;
-  unrelated working changes are left alone. Preserve normal Git hooks and repository Git configuration.
-- Push the recorded commit to the current branch's existing `origin` upstream branch. No default-branch
-  guessing, force push, branch creation/switching, merge/rebase or other-remote fallback.
+  unrelated working changes, staged files and active worktrees are left alone.
+- Push the recorded commit to the default branch on `origin`. Never force push.
 - Verify the remote branch now names the exact commit and report per-project results.
 
-Non-Git task folders (Sam and Grand Pubah) are reported as skipped; the script cannot push a folder
-without a repository/remote. Staged changes, detached HEAD, missing upstream, an in-progress Git
-operation, changed installed bytes or HEAD differing from origin block that project. Reconcile these
-through the project owner. Unrelated unpublished commits are never pushed just to deliver the Kit.
-Other eligible projects can still proceed, so a multi-project run is not atomic.
+Non-Git task folders (currently Grand Pubah) are reported as skipped; the script cannot push a folder
+without a repository/remote. Uncommitted or staged application work does not block delivery. A changed
+installed Kit, an origin that does not advertise a default branch, a genuine merge conflict, or a
+non-fast-forward race still blocks that repository for review. Other repositories can proceed, so a
+multi-project run is not atomic.
 
-After a network push failure, the journal retains this script's commit and parent identity. A retry
-can push that exact verified commit without creating another one. If origin or the checkout changed,
-the script stops for reconciliation. A failed commit may leave the scoped staging visible for review;
-it never resets the index automatically. If the process is killed between committing and recording the
-commit, reconcile it manually rather than guessing which unpublished work is safe to push.
+The journal records the repository, default branch, release, members and published commit. A retry starts
+from the then-current remote default branch and verifies exact release bytes again. Temporary delivery
+worktrees are removed after each repository; active owner indexes and working files are never reset.
 
-Run one publisher at a time while owners are not performing Git operations in the same checkouts.
-Git locks and fast-forward checks still apply; this is not a cross-process transaction coordinator.
-If a hook alters the scoped files, committed-byte verification must pass before any push.
+The isolated worktree means owners may keep coding while delivery runs. Run one MPK publisher at a time;
+Git locks and fast-forward checks still apply. If a hook alters the scoped files, committed-byte
+verification must pass before any push.
 
 ## Reports and exit codes
 

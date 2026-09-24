@@ -1,5 +1,5 @@
 {
-  "version": "0.1.11",
+  "version": "0.1.13",
   "kind": "documentation-release",
   "base_release": {
     "version": "0.1.0",
@@ -10,9 +10,9 @@
     "returned_candidate_sha256": "d2c8b295b39265a9ae3023e9403352094ff179f487974b2c38cd95538eb33c91",
     "curation": "Documentation and examples only; experimental tools excluded; owner-authored entry/adoption/navigation"
   },
-  "base_kit_revision": "4dc9f433df50d4a64208d18eb09ede55122ac42a",
-  "curation_date": "2026-09-19",
-  "curation": "Release-11 documentation curation for DTDT shelf/view structure, Control-Tick inspection, portable database packets, shared importer and Talisman Forest theme variants.",
+  "base_kit_revision": "0362970053caf8d337bdb8bd7865df8f889ee254",
+  "curation_date": "2026-09-24",
+  "curation": "Read-only delivery/local-workshop profiles, typed AI context, browser workspace Archive/Reinflate, compiled Morph packages, press-hold radial interaction, guarded Place package exchange and a typed Tassy-to-Moonbeam component-publication boundary curated from Mark, Rougish, Slice and one deduplicated Talisman source body.",
   "update_sources": "docs/UPDATE-SOURCES.md",
-  "previous_release_revision": "4dc9f433df50d4a64208d18eb09ede55122ac42a"
+  "previous_release_revision": "0362970053caf8d337bdb8bd7865df8f889ee254"
 }

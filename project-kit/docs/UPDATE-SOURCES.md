@@ -138,3 +138,58 @@ Applied Mark's supplied `mpk-0.1.11-dtdt-importer-theme.patch`, SHA-256
 `49f4f74a008c68baabc79422ace11642882c75a80ba612a010bd99f594a7d004`, to clean source `4dc9f433df50d4a64208d18eb09ede55122ac42a`.
 Corrected packaging to retain only VERSION-0.1.11.md and identify the exact prior release as the base.
 This is a local candidate update; no 0.1.11 publication, consumer installation or runtime proof is implied.
+
+## Rougish terrain navigation and nested Place continuity — 2026-09-22
+
+Curated the portable parts of Rougish commit `13b0698d2183369189ca84e165166b7fe1ecae8e`
+and its `project-kit-local/3D-MOUSE-CONTROLS.md`, `PLACE-CONTINUITY-AND-ZOOM.md`,
+`PLACE-CONTINUITY-EVIDENCE.json` and `MPK-HANDOFF.json`. The recorded SHA-256 values for the inspected
+zoom, navigation, progressive-detail, seam and view-presentation sources/checks matched the current files.
+The shared contract preserves explicit evidence limits: the 1.20 intake reported focused non-browser checks
+and a browser smoke check, not full scenario, device, other-consumer or database acceptance.
+
+## Slice shared findings — 2026-09-22
+
+At Mark's request, Slice reviewed its local guidance before receiving 0.1.12. The read-only audit used
+clean `main`/`origin/main` revision `d51008a60bf19da1c77d5969cf8ba04b846a3ccc`; exact reviewed file
+hashes and dispositions are in [the curation record](SLICE-FINDINGS-0.1.12.md). Shared findings were
+promoted while golf/product-specific rules remained local. Focused evidence is retained with explicit
+browser/GPU/iPad, production Tassy and complete save/import/deploy/reopen gaps.
+
+The first 0.1.12 tag candidate contained Rougish curation only. Mark confirmed it had not been distributed
+and directed Slice's findings into 0.1.12 before delivery. The tag, manifest and ZIP were therefore rebuilt
+to identify the completed undistributed release; the earlier candidate digest is not an adoption identity.
+
+## Read-only delivery and typed AI context candidate — 2026-09-24
+
+Mark's direction was recorded in
+`project-kit-local/active-designs/moondance-product-family-integration/READ-ONLY-HOSTS-LOCAL-EDITS-AND-AI-CONTEXT.md`.
+Final reviewed working-file SHA-256: `bf184a05c76f2992143d4d31cfd0da4adf4440b34a1891c3d441c08649e71d98`.
+It defines local project servers as the ordinary database-capable workshops, Tassy as the assembled
+read-only rehearsal of Moonbeam, and Moonbeam as public delivery. It supersedes older writable-Tassy
+authoring requirements while retaining explicit local database Save and existing disk/offline work.
+The local record links the MDN browser-storage reference used for origin, persistence and quota facts.
+
+The only live observation was a read-only GET to the local Tassy Slice storage capability endpoint,
+which declared `legacy-sqlite`, `write=true`, `readOnly=false` and `tassy-project-database`. No mutation,
+standalone service start, Rougish retest or Moonbeam inspection occurred. Release 0.1.13 updates contracts
+and acceptance guidance only; published 0.1.12 and its tag remain unchanged.
+
+## Tassy-to-Moonbeam component publication review — 2026-09-24
+
+Sam inspected the current Workboard and owner deployment sources while 0.1.13 was being prepared. The
+Tassy inventory pins component/version/package digest and Workboard rechecks the local Tassy selection
+before launching. Existing staging verifies descriptor-listed regular files and the low-level Moonbeam
+transport installs one bundle. However, Workboard passes only component ID and version to the operator;
+the transport has no expected destination instance/current-receipt guard and returns neither the exact
+remote selected digest nor public served-byte proof. The configured flag is currently false.
+
+The shared Kit therefore adds [component publication](../contracts/component-publication.md), an exact
+plan preview and receipt validator. It retains the owner's canonical package-digest semantics rather than
+inventing a replacement. Workboard commit `cdd0971f65c5f2e9b9209433313b59c341f88f8b` subsequently added
+the four-field operator call and focused tests while leaving the operator disabled. Tassy implementation
+`31b47b6b803db6a653c3b23952d7dc4878dbaf02`, reconciled at
+`0db121a5923d942a8000c78cb74296ccdcbf0d97`, then added the reusable adapter and eight focused
+publisher/staging scenarios. The concrete operator-machine transport, private Moonbeam activation and a
+live public receipt remain external dependencies. No production publication or Workboard enablement was
+attempted.

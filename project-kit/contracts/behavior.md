@@ -46,6 +46,15 @@ Cancellation stops the directive's owned controls/relationships and reports alre
 it is not an implicit rollback of game state. Replan budgets, unreachable targets and lost authority have
 explicit failure outcomes, not endless invisible retries or invented success.
 
+An authoring surface keeps one source of editable Motion state while allowing named selections,
+independent rate drafts and per-Point contributor blending. Arrival/display order does not erase those
+independent rates. Previewing a Motion is distinct from adding it to a workspace or saving it; display
+speed is not automatically canonical content.
+
+Resolved game-rule receipts own damage, defeat and other outcomes. Animation follows accepted results.
+Refreshing an actor may retain deliberate queue/reaction fields, but must not copy an obsolete Path or
+otherwise preserve movement that conflicts with the new authoritative state.
+
 ## Multi-actor intentions and knowledge boundaries
 
 Interactions are typed directives/relationships with exact participant identities and authority.

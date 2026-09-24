@@ -1,5 +1,31 @@
 # 0.1.2 current scope
 
+## Release 0.1.13: read-only delivery and local authoring
+
+The [next-candidate migration](READ-ONLY-DELIVERY-MIGRATION.md) and updated
+[persistence](../contracts/persistence.md) and [context](../contracts/context.md) contracts supersede the
+older assumption that ordinary Tassy editor Save writes canonical SQL. Local project servers are the
+database-capable development workshops. Tassy rehearses the Moonbeam read-only baseline while its
+editors save to browser-owned overlays. Moonbeam uses the same delivery boundary. This is documentation
+curation only.
+
+Proof order is Slice, then Rougish, then a Tassy-to-Moonbeam rehearsal. Each requires server-side
+mutation rejection, unchanged canonical read-back, fresh browser-overlay reopen, explicit local-workshop
+database read-back, offline closure, quota/export recovery, baseline conflict handling, origin separation
+and two-tab stale-save checks. Motion and Citadel-building AI requests require distinct self-contained
+typed context packets and rejection of stale/out-of-scope answers.
+
+On 24 September the inspected Tassy Slice capability endpoint still declared writable legacy SQLite;
+no write was attempted. Slice standalone was unavailable, Rougish was not freshly retested and Moonbeam
+was uninspected. None of these acceptance gates is therefore complete.
+
+Component publication has an additional gate. The exact plan must pass
+`scripts/publish_component.py`, then the compatible owner adapter must return the same component,
+version, owner package digest, inventory digest and descriptor digest with an immediate destination
+check, remote selection receipt and public served-byte proof. Workboard's four-field call and Tassy's
+reusable adapter have focused source tests, but the concrete operator-machine transport and live
+Moonbeam receipt do not. Configuration or a successful lower-level upload cannot satisfy this gate.
+
 The [portable return cycle](../contracts/morph-return-cycle.md) supersedes earlier new-definition-only
 guidance and limited two-lab sequence. Three labs must adopt before further software; all three plus
 Slice need hot deployment and database access. [Source inspection](NEW-UPDATE-PROFILE.md) confirms
@@ -142,3 +168,30 @@ implementation merely by copying this Kit. Evidence for implementation requires,
   preserved.
 
 No such runtime evidence is included in this documentation release.
+
+## Release 0.1.12 terrain-navigation gates
+
+The terrain-navigation contract is shared behavior, not an implementation receipt. A consumer must show:
+
+- real pointer routing for left select/edit, middle pan, right orbit, double-right orbit focus and wheel zoom;
+- preserved cursor world point, yaw, pitch, scale and active parent link across inward/outward handover;
+- bounded progressive loading, honest approach/loading/failure state and stale-completion rejection;
+- continuous child-owned geometry and parent-owned seams without changing physical samples for display repair;
+- no authored dirty state or history from navigation/cache work, plus save/reopen for deliberate edits;
+- native guarded save and canonical read-back before claiming database persistence.
+
+Rougish source inspection and focused checks informed the contract. Cross-project and physical-device
+acceptance remain outstanding until each consumer records them.
+
+## Release 0.1.12 Slice authoring/admission gates
+
+Slice source and focused tests informed shared rules, but adoption still requires the actual owner paths:
+
+- exact Save/Import authority, operation recovery, before-images, partial-package disposition and read-back;
+- stored FEATURE/RASTER inventory plus renderer and browser/GPU/iPad presentation evidence;
+- stale/cancelled read rejection with preserved selection, row metrics, drafts, camera and receipts;
+- displayed-source editing through the real replacement bridge and geometric clearance checks;
+- consumer load and Gallery/reopen of exact model, texture/media and transform dependencies;
+- admitted higher-detail child terrain before calling a crop or resample multiresolution refinement.
+
+The complete local-save → import → deployed-edit → Gallery-reopen chain remains unproved.

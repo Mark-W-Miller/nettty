@@ -22,6 +22,13 @@
    Activate only the coherent installed dependency set, then prove runtime loading after restart.
    Show missing/incompatible content; keep standalone fixture mode explicitly labelled.
 
+Ordinary Save writes within the current authority; Import deliberately crosses authority. Do not make Save
+silently contact a database or make viewing/navigation import content. Before each import persist the exact
+request, immutable dependency-byte hashes, target and conditional guards. Use before-images/conflict stops
+and endpoint-specific size/count limits. After an ambiguous transport result, recover by operation identity,
+receipt and canonical read-back rather than blind resubmission. Per-item atomic writes do not make the whole
+package atomic; retain a recoverable activation plan and report partial disposition honestly.
+
 ## Binding record and proof
 
 For authoring → Morph, Morph → instance, terrain → Place, appearance → geometry, content → package,
@@ -33,6 +40,11 @@ First implementation proof: one textured numeric terrain/Place, a placed object 
 and applicable Character data. Validate, preview/admit, read back and reload; demonstrate repeat import,
 conflict/missing-reference rejection and recovery, plus geometry, texture alignment and ground contact.
 These are content/integration acceptance checks, not application tests required for documentation assembly.
+
+Native/database validity alone is not consumer acceptance. Exercise the real consumer display/game path
+with exact model and texture/media bytes, full socket/ancestor transforms and cache identity that includes
+asset bytes. Reopen through the ordinary catalog/gallery after restart. A source fixture, upload response,
+database read-back or simplified renderer proves only its own gate.
 
 ## Source-specific candidate seams, not confirmed capabilities
 

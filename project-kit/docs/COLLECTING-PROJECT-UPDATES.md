@@ -37,9 +37,9 @@ python3 /Users/mmiller/Git/moondance-project-kit/scripts/collect_mpk.py \
 
 The [owner registry](../collection/pinned-projects.json) was checked against pinned tasks and saved
 projects on 2026-09-18. It includes Lee, Finian/Thinian, Slice, Dara, Beetle, Atlas, Judy, Tassy, Mandy,
-Sally, Sam, Netty, Simon/President and Grand Pubah. Lee occurs once; Merlin and companion chats are
+Sally, Netty, Simon/President and Grand Pubah. Lee occurs once; Merlin and companion chats are
 excluded. Repository paths come from saved projects rather than a task's possibly unrelated working
-folder. Sam and Grand Pubah currently use task folders and are reported as non-Git sources.
+folder. Grand Pubah currently uses a task folder and is reported as a non-Git source.
 
 This is an explicit registry snapshot, not live access to the sidebar. Refresh it when owners are
 pinned/unpinned or projects move; `--registry` accepts an updated file using the same shape. Branches

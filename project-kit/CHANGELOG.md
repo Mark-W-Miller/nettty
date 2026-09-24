@@ -1,5 +1,54 @@
 # What's new
 
+## 0.1.13 — 2026-09-24
+
+- Defines local project servers as the database-capable development workshops, with direct supported
+  Save for selected database objects and retained disk/offline authoring.
+- Makes Tassy the assembled rehearsal of Moonbeam: both delivery profiles serve a read-only canonical
+  SQL baseline while editors retain edits and new records in browser-owned overlays.
+- Uses runtime capabilities rather than hostnames or ports for authority and keeps component publication
+  and content-baseline publication as separate receipt streams.
+- Separates authored browser data from disposable cache and adds origin separation, quota/export recovery,
+  baseline conflict, multi-tab and optional LAN synchronization boundaries.
+- Replaces the one-line Context summary with self-contained typed envelopes and distinct Motion and
+  Citadel-building profiles, including exact revisions/units, resolvable bytes and authorized operations.
+- Records the current writable Tassy Slice declaration as a mismatch requiring Slice-first proof; no
+  runtime, database, Moonbeam, provider, release or consumer distribution change is claimed.
+- Adds a complete browser-workspace/Archive/Reinflate contract with trusted application profiles,
+  origin separation, transaction/recovery invariants, malicious-archive rejection and application proof.
+- Adds compiled Morph package identity, invalidation, authorized compile-after-read, atomic activation,
+  distance-level semantics and honest end-to-end timing.
+- Adds press-and-hold radial menu gesture arbitration, persistent palette/command boundaries and
+  keyboard/touch acceptance requirements.
+- Adds baseline-bound Place package exchange, explicit sparse changes/deletions, stable structural
+  identities, conflict recovery and native-admission boundaries.
+- Curates one Rougish body, one Slice body and one byte-identical Talisman shared-storage body; records
+  retained local material and unresolved runtime/device proof.
+- Adds an exact component-publication plan validator and typed owner-adapter boundary. It verifies the
+  complete package inventory and validates remote-selection/public-served receipts. Workboard's typed
+  call and Tassy's reusable adapter are focused-tested; the concrete machine transport and live receipt
+  remain external proof without embedding credentials.
+
+## 0.1.12 — 2026-09-22
+
+- Incorporates Rougish's portable terrain-navigation findings into one shared contract for all 3D views:
+  left select/edit, middle-drag pan, right-drag orbit, double-right-click orbit focus and cursor-directed zoom.
+- Defines continuous nested Place refinement: stable parent-child registration, bounded progressive detail,
+  one composed child surface, child-owned interior geometry and parent-owned seam continuation.
+- Preserves cursor focus and camera continuity through explicit approach, inward/outward loading, transition,
+  cancellation and failure states; outward parent selection begins at one-third projected viewport span.
+- Separates navigation, cache and derived surfaces from authored changes and from browser, disk and canonical
+  database authority. Adds focused acceptance scenarios without claiming consumer runtime adoption.
+- Includes the active-development-safe repository publisher update made after 0.1.11; unrelated owner work
+  and `project-kit-local/` remain outside MPK delivery commits.
+- Curates Slice's shared findings for Save versus Import authority, exact recovery receipts, layer
+  representation, stable asynchronous selection/loading, displayed-source authoring and consumer closure.
+- Adds multiresolution Place/instance rules, motion preview/composition boundaries, asset-byte cache identity,
+  endpoint-specific limits and evidence that tests the real structural/display path.
+
+Limitations: Rougish and Slice source/focused evidence support the contracts, but this release does not prove
+every scenario, physical-device interaction, full Slice save/import/deploy/reopen or canonical database acceptance.
+
 ## 0.1.11 — 2026-09-19
 
 - Defines the release-11 DTDT UI vocabulary for Cards, Shelf Items, Shelves, Boxes, Arenas, Six-View Bars,

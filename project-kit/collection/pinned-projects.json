@@ -74,13 +74,6 @@
       "path": "~/Git/talisman-git/talisman-main"
     },
     {
-      "id": "sam",
-      "owners": [
-        "Sam \u2014 System Administrator__"
-      ],
-      "path": "~/Documents/Codex/2026-09-01/talisman-workboard-owner"
-    },
-    {
       "id": "netty",
       "owners": [
         "Netty \u2013 Particle Map"

@@ -33,7 +33,11 @@ def release_files(repo, tag, remote=True):
     for row in git(repo, 'ls-tree', '-r', '-z', commit).split(b'\0'):
         if row:
             meta, name = row.split(b'\t', 1)
-            modes[name.decode()] = meta.split()[0]
+            name = name.decode()
+            # Source-side collector guidance belongs to this repository and is
+            # intentionally not nested into consumer Kit installations.
+            if not name.startswith('project-kit-local/'):
+                modes[name] = meta.split()[0]
     raw = git(repo, 'show', commit + ':manifest.json')
     manifest = json.loads(raw)
     if manifest['kit_version'] != tag[1:]:

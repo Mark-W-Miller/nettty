@@ -1,4 +1,4 @@
-# Moondance Project Kit 0.1.11
+# Moondance Project Kit 0.1.13
 
 ## Purpose and authority
 
@@ -9,7 +9,7 @@ Local root guidance wins over historical Talisman references. Preserve local ide
 
 ## Read first
 
-- [What's new](CHANGELOG.md), [adoption](docs/ADOPTION.md), [migration](docs/MIGRATION-0.1.11.md).
+- [What's new](CHANGELOG.md), [adoption](docs/ADOPTION.md), [migration](docs/MIGRATION-0.1.13.md).
 - [Place](contracts/place.md): actual numeric height and aligned texture; optional refining layers.
 - [Objects](contracts/objects.md): actual Slice native forms required; exact example/codec binding pending.
 - [Native authoring/admission](contracts/native-content.md): derive locally, validate, admit, read back, activate.
@@ -18,6 +18,18 @@ Local root guidance wins over historical Talisman references. Preserve local ide
 - [Field-trial lessons](docs/FIELD-TRIAL-LESSONS.md) and [evidence/gaps](docs/DELIVERY-GATES.md).
 - [Voice Lab package](contracts/voice-lab.md): self-hosted STT/TTS/recording package shape; no runtime claim.
 - [Shelf/Card UI](contracts/shelf.md), [DTDT inspection](contracts/dtd-ui.md), [database importer](contracts/database-importer.md) and [theme](contracts/theme.md): release-11 design contracts and friction tests.
+- [3D terrain navigation](contracts/terrain-navigation.md): shared pointer mapping, orbit focus, cursor zoom,
+  progressive nested-Place detail, seam ownership and continuous scale transitions.
+- [Stable authoring state](contracts/authoring-state.md): checked asynchronous identity, stable loading,
+  displayed-source edits and evidence through the real consumer path.
+- [Persistence profiles](contracts/persistence.md), [typed AI context](contracts/context.md) and
+  [next-candidate migration](docs/READ-ONLY-DELIVERY-MIGRATION.md): local database workshops followed by
+  read-only Tassy rehearsal and Moonbeam delivery with browser-owned edits. These are unreleased contracts.
+- [Browser workspace](contracts/browser-workspace.md), [compiled Morph packages](contracts/compiled-morph-packages.md),
+  [radial menu](contracts/press-hold-radial-menu.md) and [Place exchange](contracts/place-package-exchange.md):
+  the additional 0.1.13 contracts and their explicit acceptance boundaries.
+- [Component publication](contracts/component-publication.md): exact Tassy selection closure, guarded
+  Moonbeam owner-adapter execution and remote/public receipts; current owner binding remains pending.
 
 ## Contents
 
@@ -30,6 +42,10 @@ lifecycle/ provides current-design, Patcher handoff and verification-plan forms.
 examples requiring local bindings and non-color accessibility cues. reference/ retains labelled historical
 source documentation. inspect/ is a local contents page; manifest.json inventories exact packaged bytes.
 
+Release 0.1.13 adds read-only delivery/local-workshop profiles, typed AI context, browser
+Archive/Reinflate, compiled Morph packages, radial menus, Place exchange and a guarded component-publication
+adapter boundary. Release 0.1.12 adds the shared 3D terrain-navigation and nested-Place continuity contract derived from
+Rougish owner feedback plus Slice's shared authoring, admission, representation and evidence findings.
 Release 0.1.11 adds explicit DTDT UI structure language, including Cards, Shelves, Boxes, Arenas,
 Six-View Bars, tear-off tool bars, twist-open tree shelves and the required Control-Tick debug overlay.
 It also adds a portable database-packet/importer contract for projects that create Morphs, Places and
@@ -45,11 +61,12 @@ return. Preserve dispatched archives; send later guidance as an explicit supplem
 Record receipt, review, acceptance and publication separately. Log observed friction, local decisions,
 responsible owners and evidence for Atlas; local decisions do not alter another owner's contract.
 
-0.1.11 adds DTDT shelf/view, importer and theme contracts. 0.1.8 adds the Voice Lab package shape and preserves 0.1.7's freely authored versioned behavior
+0.1.12 adds 3D navigation, focus, progressive Place detail and transition rules. 0.1.11 adds DTDT shelf/view, importer and theme contracts. 0.1.8 adds the Voice Lab package shape and preserves 0.1.7's freely authored versioned behavior
 executors, the 0.1.6 AI runtime correction, console, universal Morph and future physics contracts.
-Packaging checks cover inventory, links and exact bytes. No new executable toolkit, voice server, model,
-recording, browser controller or application test suite is required for documentation assembly. Product,
-browser and physical-device acceptance remain separate.
+Packaging checks cover inventory, links and exact bytes. The component-publication preview/receipt
+validator is executable, but the machine-bound Tassy/Moonbeam owner adapter is not yet delivered. Voice
+servers, models, recordings and browser controllers remain consumer-owned. Product, browser and
+physical-device acceptance remain separate.
 
 ## Portable return and update cycle
 
@@ -67,6 +84,14 @@ Merlin curates general lessons into a versioned shared release; project-only dec
 Read [the procedure](contracts/local-supplements.md), [curation decisions](docs/LOCAL-FINDINGS-0.1.3.md)
 and [incorporated owner evidence](docs/OWNER-CAPABILITY-REPORTS.md).
 
+## Repository delivery during active development
+
+MPK delivery must not require an owner to stop coding or clean the working tree. Installations replace
+the shared `project-kit/` and release pin while preserving `project-kit-local/`. Publication groups
+worktrees by Git repository, commits the exact release once on the repository's `origin` default branch,
+and leaves unrelated working and staged files untouched. Local MPK findings are collected separately;
+they are never swept into a delivery commit. See [the publishing procedure](docs/PUBLISHING-INSTALLED-KITS.md).
+
 ## Shared Talisman Console
 
 Read [the bidirectional console contract](contracts/talisman-console.md).
@@ -80,9 +105,10 @@ This is a documentation requirement, not proof of live integration.
 [Metamorph](contracts/metamorph.md) is the assembled stage/world graph. Read the
 [six semantic examples](examples/morph-language.md), [storage guidance](contracts/persistence.md) and
 [requirements versus evidence](docs/MORPH-CAPABILITY-STATUS.md). Slice and Thinian/Rougish are editors
-over the same language. Current narrower codecs do not redefine it. SQLite remains the local/Tassy
-default; database layout is non-normative and PostgreSQL is a measured scale-up option behind the same
-services. No consumer upgrade or new implementation proof is implied by this release.
+over the same language. Current narrower codecs do not redefine it. SQLite remains the canonical local
+authoring default; Tassy and Moonbeam delivery profiles use read-only baseline copies. Database layout is
+non-normative and PostgreSQL is a measured scale-up option behind the same services. No consumer upgrade
+or new implementation proof is implied by this release.
 
 [Behavior layers](contracts/behavior.md) distinguish local Motion, Place-bound Path, admitted Intention
 and game-system authority; [examples](examples/behavior-plans.md) show their controller composition.
@@ -125,4 +151,4 @@ without editing consumers or publishing. A stable command is available for later
 [Direct project installation](docs/INSTALLING-PROJECT-KIT.md) verifies the published tag and replaces
 only the vendored Kit, preserving local supplements and recording delivery separately from runtime proof.
 
-[VERSION-0.1.11.md](VERSION-0.1.11.md) makes this Kit version visible in a directory listing.
+[VERSION-0.1.13.md](VERSION-0.1.13.md) makes this candidate version visible in a directory listing.

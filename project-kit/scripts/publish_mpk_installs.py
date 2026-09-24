@@ -1,18 +1,13 @@
 #!/usr/bin/env python3
 """Commit/push verified installed MPK files only. Preview by default; --apply writes."""
 import argparse
-from datetime import datetime, timezone
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 
 from install_mpk import atomic_json, release_files, sha, tree_state
-
-INITIAL_INDEX = ('# Local MPK guidance\n\nKeep project-specific decisions here. When asked to update MPK, record findings and\n'
-                 'prepare MPK-HANDOFF.json using the forms in ../project-kit/lifecycle/.\n'
-                 'Read ../project-kit/docs/COLLECTING-PROJECT-UPDATES.md. No findings or acceptance are inferred\n'
-                 'from this initial index. Preserve root project guidance and release authority.\n')
 
 
 def git(root, *args, check=True):
@@ -38,83 +33,109 @@ def validate_install(entry, release):
     for key, val in [('source_revision', commit), ('content_digest', manifest['content_digest']),
                      ('kit_version', manifest['kit_version']), ('source_tag', 'v' + manifest['kit_version'])]:
         if data.get(key) != val: raise ValueError('release pin differs: ' + key)
-    paths = ['project-kit', 'moondance.lock.json']
-    if entry.get('created_local_index'):
-        index = root / 'project-kit-local/README.md'
-        if index.is_symlink() or index.read_text() != INITIAL_INDEX:
-            raise ValueError('installer-created local index changed; owner review required')
-        paths.append('project-kit-local/README.md')
-    return root, paths
+    # Local guidance is collected separately and is never part of MPK delivery commits.
+    return root, ['project-kit', 'moondance.lock.json']
 
 
-def publish_project(root, paths, tag, apply, prior, save, verify_commit=None):
-    top = git(root, 'rev-parse', '--show-toplevel', check=False)
-    if top is None: return {'status': 'skipped-non-git'}
-    if Path(top).resolve() != root.resolve(): raise ValueError('not a repository root')
-    branch = git(root, 'symbolic-ref', '--quiet', '--short', 'HEAD', check=False)
-    if not branch: raise ValueError('detached HEAD; no branch selected')
-    tracking = git(root, 'for-each-ref', '--format=%(upstream:remotename)|%(upstream:remoteref)', 'refs/heads/' + branch)
-    remote, ref = tracking.split('|')
-    if remote != 'origin' or not ref.startswith('refs/heads/'):
-        raise ValueError('an existing origin tracking branch is required')
+def repository_identity(root):
+    """Return the origin URL and its advertised default branch."""
     origin = git(root, 'remote', 'get-url', 'origin')
-    head = git(root, 'rev-parse', 'HEAD')
-    remote_lines = git(root, 'ls-remote', '--heads', 'origin', ref).splitlines()
-    if len(remote_lines) != 1: raise ValueError('tracking branch missing on origin')
-    remote_head = remote_lines[0].split()[0]
-    context = {'branch': branch, 'remote_ref': ref, 'head': head, 'origin': origin, 'paths': paths, 'tag': tag}
-    if git(root, 'diff', '--cached', '--name-only'):
-        raise ValueError('staged changes present; left untouched')
-    # Never mutate a checkout already in the middle of another Git operation.
-    for marker in ('MERGE_HEAD', 'CHERRY_PICK_HEAD', 'REVERT_HEAD', 'rebase-merge', 'rebase-apply'):
-        location = Path(git(root, 'rev-parse', '--git-path', marker))
-        if not location.is_absolute(): location = root / location
-        if location.exists(): raise ValueError('Git operation in progress: ' + marker)
-    resume = (prior.get('commit') == head and prior.get('parent') == remote_head
-              and all(prior.get(k) == context[k] for k in ('branch', 'remote_ref', 'origin', 'paths', 'tag')))
-    if head != remote_head and not resume:
-        raise ValueError('HEAD differs from origin; reconcile unrelated unpublished/ahead/behind work first')
-    if resume:
-        if git(root, 'rev-parse', head + '^') != remote_head:
-            raise ValueError('resume commit has unexpected parent')
-        changed = git(root, 'diff-tree', '--no-commit-id', '--name-only', '-r', head).splitlines()
-        if any(not any(n == p or n.startswith(p + '/') for p in paths) for n in changed):
-            raise ValueError('resume commit contains out-of-scope paths')
-        if git(root, 'status', '--porcelain=v1', '--', *paths):
-            raise ValueError('installed paths changed since recorded commit')
-        result = {**context, 'commit': head, 'parent': remote_head, 'status': 'would-resume-push'}
-    else:
-        if not git(root, 'status', '--porcelain=v1', '--untracked-files=all', '--', *paths):
-            if verify_commit: verify_commit(head)
-            return {**context, 'status': 'already-published', 'commit': head}
-        result = {**context, 'status': 'would-commit-and-push', 'parent': head}
-    if not apply: return result
-    # Journal before writes, allowing a retry to recognize only this operation's commit.
-    save({**result, 'status': 'preparing'})
-    if not resume:
-        if git(root, 'rev-parse', 'HEAD') != head or git(root, 'diff', '--cached', '--name-only'):
-            raise ValueError('HEAD or index changed during preparation')
-        git(root, 'add', '-A', '--', *paths)
-        try:
-            git(root, 'commit', '--only', '-m', 'Adopt Moondance Project Kit ' + tag[1:], '--', *paths)
-        except Exception:
-            # Preserve state for inspection; never reset another process's index.
-            save({**result, 'status': 'commit-failed-review-index'})
-            raise
-        result['commit'] = git(root, 'rev-parse', 'HEAD')
-        save({**result, 'status': 'committed-push-pending'})
-        changed = git(root, 'diff-tree', '--no-commit-id', '--name-only', '-r', result['commit']).splitlines()
-        if git(root, 'rev-parse', result['commit'] + '^') != head or any(not any(n == p or n.startswith(p + '/') for p in paths) for n in changed):
-            raise ValueError('unexpected commit contents/parent; not pushed')
-    if verify_commit: verify_commit(result['commit'])
-    # Push the recorded commit, never a newer moving HEAD; normal fast-forward checks apply.
-    git(root, 'push', 'origin', result['commit'] + ':' + ref)
-    observed = git(root, 'ls-remote', '--heads', 'origin', ref).splitlines()
-    if len(observed) != 1 or observed[0].split()[0] != result['commit']:
-        raise ValueError('push not confirmed at exact remote commit')
-    result['status'] = 'published'
-    save(result)
-    return result
+    advertised = git(root, 'ls-remote', '--symref', 'origin', 'HEAD').splitlines()
+    symbolic = [line for line in advertised if line.startswith('ref: refs/heads/') and line.endswith('\tHEAD')]
+    heads = [line for line in advertised if not line.startswith('ref:') and line.endswith('\tHEAD')]
+    if len(symbolic) != 1 or len(heads) != 1:
+        raise ValueError('origin must advertise exactly one default branch')
+    ref = symbolic[0].split()[1]
+    return origin, ref, heads[0].split()[0]
+
+
+def verify_release_commit(root, commit, release, lock_bytes):
+    names = git(root, 'ls-tree', '-r', '--name-only', commit, '--', 'project-kit').splitlines()
+    expected = {'project-kit/' + name for name in release[2]}
+    if set(names) != expected:
+        raise ValueError('committed Kit membership differs from release (possibly ignored files)')
+    for name, data in release[2].items():
+        raw = subprocess.check_output(['git', '-C', str(root), 'show', commit + ':project-kit/' + name], timeout=20)
+        if raw != data: raise ValueError('committed Kit bytes differ: ' + name)
+    raw = subprocess.check_output(['git', '-C', str(root), 'show', commit + ':moondance.lock.json'], timeout=20)
+    if raw != lock_bytes: raise ValueError('committed release pin differs')
+
+
+def publish_repository(root, member_ids, release, lock_bytes, tag, apply, workspace):
+    """Publish one exact Kit commit on a repository's default branch via an isolated worktree."""
+    origin, ref, advertised_head = repository_identity(root)
+    branch = ref.removeprefix('refs/heads/')
+    git(root, 'fetch', '--no-tags', 'origin', '+' + ref + ':refs/remotes/origin/' + branch)
+    remote_head = git(root, 'rev-parse', 'refs/remotes/origin/' + branch)
+    if remote_head != advertised_head:
+        raise ValueError('origin default branch moved during preparation; retry')
+
+    # Include existing local commits on the default branch when they are a fast-forward
+    # continuation of origin. Diverged local work remains untouched and is not guessed at.
+    local_ref = 'refs/heads/' + branch
+    local_head = git(root, 'rev-parse', '--verify', local_ref, check=False)
+    base = remote_head
+    included_local_head = None
+    merge_remote = False
+    if local_head and git(root, 'merge-base', '--is-ancestor', remote_head, local_head, check=False) is not None:
+        base = local_head
+        included_local_head = local_head
+    elif local_head and git(root, 'merge-base', '--is-ancestor', local_head, remote_head, check=False) is None:
+        # Reconcile a diverged local default branch in isolation. Active worktrees and
+        # their uncommitted files are never checked out, stashed or reset.
+        base = local_head
+        included_local_head = local_head
+        merge_remote = True
+
+    context = {'repository': origin, 'default_branch': branch, 'remote_ref': ref,
+               'remote_parent': remote_head, 'members': member_ids, 'tag': tag}
+    if workspace.exists():
+        git(root, 'worktree', 'remove', '--force', str(workspace), check=False)
+        shutil.rmtree(workspace, ignore_errors=True)
+    workspace.parent.mkdir(parents=True, exist_ok=True)
+    git(root, 'worktree', 'add', '--detach', str(workspace), base)
+    try:
+        if merge_remote:
+            git(workspace, 'merge', '--no-edit', remote_head)
+        kit = workspace / 'project-kit'
+        if kit.exists() or kit.is_symlink():
+            if kit.is_symlink() or kit.is_file(): kit.unlink()
+            else: shutil.rmtree(kit)
+        kit.mkdir()
+        for name, data in release[2].items():
+            target = kit / name; target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes(data)
+        (workspace / 'moondance.lock.json').write_bytes(lock_bytes)
+        changed = git(workspace, 'status', '--porcelain=v1', '--untracked-files=all', '--',
+                      'project-kit', 'moondance.lock.json')
+        if not changed:
+            verify_release_commit(workspace, base, release, lock_bytes)
+            if base == remote_head:
+                return {**context, 'status': 'already-published', 'commit': base,
+                        'included_local_head': included_local_head}
+            result = {**context, 'status': 'would-push-existing-default-head', 'commit': base,
+                      'included_local_head': included_local_head}
+            if not apply: return result
+            git(workspace, 'push', 'origin', base + ':' + ref)
+            observed = git(workspace, 'ls-remote', '--heads', 'origin', ref).splitlines()
+            if len(observed) != 1 or observed[0].split()[0] != base:
+                raise ValueError('push not confirmed at exact remote commit')
+            return {**result, 'status': 'published'}
+        result = {**context, 'status': 'would-commit-and-push', 'parent': base,
+                  'included_local_head': included_local_head}
+        if not apply: return result
+        git(workspace, 'add', '-f', '-A', '--', 'project-kit', 'moondance.lock.json')
+        git(workspace, 'commit', '--only', '-m', 'Adopt Moondance Project Kit ' + tag[1:], '--',
+            'project-kit', 'moondance.lock.json')
+        commit = git(workspace, 'rev-parse', 'HEAD')
+        verify_release_commit(workspace, commit, release, lock_bytes)
+        git(workspace, 'push', 'origin', commit + ':' + ref)
+        observed = git(workspace, 'ls-remote', '--heads', 'origin', ref).splitlines()
+        if len(observed) != 1 or observed[0].split()[0] != commit:
+            raise ValueError('push not confirmed at exact remote commit')
+        return {**result, 'status': 'published', 'commit': commit}
+    finally:
+        git(root, 'worktree', 'remove', '--force', str(workspace), check=False)
+        shutil.rmtree(workspace, ignore_errors=True)
 
 
 def main():
@@ -144,33 +165,40 @@ def main():
         state = json.loads(journal.read_text()) if journal.exists() else {'distribution_sha256': identity, 'projects': {}}
         if state['distribution_sha256'] != identity: raise ValueError('journal belongs to another distribution')
         outcomes = []
+        groups = {}
         for entry in entries:
-            key = entry['id']; prior = dict(state['projects'].get(key, {}))
-            def save(value):
-                state['projects'][key] = value
-                atomic_json(journal, state)
+            key = entry['id']
             try:
-                root, paths = validate_install(entry, release)
+                root, _ = validate_install(entry, release)
                 if root.resolve() == a.source.resolve(): raise ValueError('publisher source cannot be a consumer')
-                def verify_commit(commit):
-                    names = git(root, 'ls-tree', '-r', '--name-only', commit, '--', 'project-kit').splitlines()
-                    expected = {'project-kit/' + name for name in release[2]}
-                    if set(names) != expected: raise ValueError('committed Kit membership differs from release (possibly ignored files)')
-                    for name, data in release[2].items():
-                        raw = subprocess.check_output(['git','-C',str(root),'show',commit+':project-kit/'+name], timeout=20)
-                        if raw != data: raise ValueError('committed Kit bytes differ: ' + name)
-                    for name in paths[1:]:
-                        raw = subprocess.check_output(['git','-C',str(root),'show',commit+':'+name], timeout=20)
-                        if raw != (root/name).read_bytes(): raise ValueError('committed metadata differs: ' + name)
-                result = publish_project(root, paths, distribution['tag'], a.apply, prior, save, verify_commit)
-                if a.apply: save(result)
+                top = git(root, 'rev-parse', '--show-toplevel', check=False)
+                if top is None:
+                    outcomes.append({'id': key, 'status': 'skipped-non-git'})
+                    continue
+                origin, _, _ = repository_identity(root)
+                groups.setdefault(origin, []).append((entry, root))
             except (OSError, ValueError, KeyError, subprocess.SubprocessError) as ex:
-                result = {'status': 'blocked', 'error': str(ex)}
+                outcomes.append({'id': key, 'status': 'blocked', 'error': str(ex)})
+
+        for number, (origin, members) in enumerate(groups.items(), 1):
+            ids = [entry['id'] for entry, _ in members]
+            root = members[0][1]
+            key = 'repository:' + sha(origin.encode())
+            prior = dict(state['projects'].get(key, {}))
+            lock_bytes = (root / 'moondance.lock.json').read_bytes()
+            try:
+                result = publish_repository(root, ids, release, lock_bytes, distribution['tag'], a.apply,
+                                            a.state_dir / 'worktrees' / str(number))
                 if a.apply:
-                    # Retain any committed-push-pending identity for a safe resume.
-                    retained = state['projects'].get(key, prior)
-                    save({**retained, 'last_error': str(ex)})
-            outcomes.append({'id': key, **result})
+                    state['projects'][key] = result
+                    atomic_json(journal, state)
+            except (OSError, ValueError, KeyError, subprocess.SubprocessError) as ex:
+                result = {'status': 'blocked', 'repository': origin, 'members': ids, 'error': str(ex)}
+                if a.apply:
+                    state['projects'][key] = {**prior, 'last_error': str(ex)}
+                    atomic_json(journal, state)
+            for entry, _ in members:
+                outcomes.append({'id': entry['id'], **result})
         report = a.state_dir / ('result-apply.json' if a.apply else 'result-preview.json')
         atomic_json(report, {'apply': a.apply, 'projects': outcomes})
         print(json.dumps({'report': str(report.resolve()), 'projects': outcomes}))

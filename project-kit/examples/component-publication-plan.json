@@ -1,0 +1,20 @@
+{
+  "schema": "moondance.component-publication/v1",
+  "component_id": "example-component",
+  "selected_version": "1.2.3",
+  "local_tassy_process_instance": "replace-with-captured-tassy-process-instance",
+  "package": {
+    "root": "./example-component-package",
+    "package_digest": "replace-with-owner-canonical-package-digest",
+    "inventory_sha256": "replace-with-sha256-of-canonical-file-inventory",
+    "descriptor_path": "component.json",
+    "descriptor_sha256": "replace-with-component-json-sha256",
+    "files": [
+      {
+        "path": "component.json",
+        "bytes": 0,
+        "sha256": "replace-with-component-json-sha256"
+      }
+    ]
+  }
+}

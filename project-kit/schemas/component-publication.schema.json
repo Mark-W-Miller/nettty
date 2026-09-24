@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://moondance.local/schemas/component-publication.schema.json",
+  "title": "Moondance component publication plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "component_id", "selected_version", "local_tassy_process_instance", "package"],
+  "properties": {
+    "schema": {"const": "moondance.component-publication/v1"},
+    "component_id": {"type": "string", "minLength": 1},
+    "selected_version": {"type": "string", "minLength": 1},
+    "local_tassy_process_instance": {"type": "string", "minLength": 8},
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["root", "package_digest", "inventory_sha256", "descriptor_path", "descriptor_sha256", "files"],
+      "properties": {
+        "root": {"type": "string", "minLength": 1},
+        "package_digest": {"type": "string", "minLength": 1},
+        "inventory_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "descriptor_path": {"type": "string", "minLength": 1},
+        "descriptor_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "bytes", "sha256"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "bytes": {"type": "integer", "minimum": 0},
+              "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

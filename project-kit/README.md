@@ -1,9 +1,9 @@
-# Moondance Project Kit 0.1.11
+# Moondance Project Kit 0.1.13
 
 Portable architecture documentation, contracts and reference examples for physical inclusion in a
 project. Start with [the Kit guide](MOONDANCE-PROJECT-KIT.md), [What's new](CHANGELOG.md), or the
 [expandable contents](inspect/index.html). Follow [adoption](docs/ADOPTION.md) and
-[migration from 0.1.10](docs/MIGRATION-0.1.11.md). Reading the Kit requires no installation; the optional collection script is described below.
+[migration from 0.1.12](docs/MIGRATION-0.1.13.md). Reading the Kit requires no installation; the optional collection script is described below.
 
 ## Known limitations
 
@@ -15,6 +15,48 @@ Insect Wars import, readback, database-backed gameplay, shared importer screen o
 Projects retain their own root guidance, ownership, implementation and acceptance requirements.
 Talisman references describe their recorded source; they are not evidence of another project's behavior.
 Keep local extensions separate and preserve earlier releases and dispatched archives.
+
+## Read-only delivery and local edits — 0.1.13
+
+Release 0.1.13 defines [runtime storage profiles](contracts/persistence.md),
+[typed AI context](contracts/context.md) and a
+[migration/acceptance sequence](docs/READ-ONLY-DELIVERY-MIGRATION.md). Local project servers are the
+database-capable workshops; Tassy rehearses the Moonbeam read-only canonical baseline while retaining
+edits in browser-owned storage. Published 0.1.12 remains unchanged; no service, database, consumer or
+release was modified by this curation.
+
+## Browser workspaces, compiled Morphs and authoring interactions — 0.1.13
+
+Read [browser workspace and portable archive](contracts/browser-workspace.md),
+[compiled Morph packages](contracts/compiled-morph-packages.md),
+[press-and-hold radial menus](contracts/press-hold-radial-menu.md), and
+[Place package exchange](contracts/place-package-exchange.md). Release 0.1.13 defines durable local
+browser work with Archive/Reinflate, source-bound derived Morph representations, safe contextual gesture
+routing and explicit baseline/change package exchange. The
+[curation record](docs/COLLECTED-FINDINGS-0.1.13.md) separates promoted rules, local details and proof gaps.
+
+## Tassy-to-Moonbeam component publication — 0.1.13
+
+Read [component publication](contracts/component-publication.md). Release 0.1.13 includes
+`scripts/publish_component.py`, which verifies an exact selected package plan and validates the resulting
+remote-selection and public-served receipt from a local owner adapter. Workboard now has the four-field,
+fail-closed operator call and Tassy has the tested reusable adapter; both remain disabled. The concrete
+operator-machine transport and a live Moonbeam receipt remain external owner dependencies.
+
+## 3D terrain navigation and nested Places — 0.1.12
+
+Read [3D terrain navigation and nested Place continuity](contracts/terrain-navigation.md). Release 0.1.12
+incorporates Rougish's shared findings for consistent mouse controls, orbit focus, cursor-directed zoom,
+progressive child detail, continuous seams and stable inward/outward Place transitions. These are portable
+requirements and acceptance scenarios, not proof that another consumer implements them.
+
+## Stable authoring and admission — 0.1.12
+
+Read [stable authoring state](contracts/authoring-state.md) and the
+[Slice curation record](docs/SLICE-FINDINGS-0.1.12.md). Slice's reusable findings now require checked
+asynchronous identity, stable loading/layout, edits against the displayed structural source, honest layer
+representations, Save/Import separation, exact recovery receipts and proof through the real consumer path.
+Slice-specific golf rules and presentation remain local.
 
 ## Release-11 DTDT, importer and theme contracts
 
@@ -42,6 +84,13 @@ Merlin curates general lessons into a versioned shared release; project-only dec
 Read [the procedure](contracts/local-supplements.md), [curation decisions](docs/LOCAL-FINDINGS-0.1.3.md)
 and [incorporated owner evidence](docs/OWNER-CAPABILITY-REPORTS.md).
 
+## Repository delivery during active development
+
+MPK delivery may run while owners have unrelated working or staged files. It replaces only the shared
+Kit and release pin, preserves `project-kit-local/`, groups worktrees by Git repository and publishes one
+exact release commit to the repository's `origin` default branch. See
+[the publishing procedure](docs/PUBLISHING-INSTALLED-KITS.md).
+
 ## Voice Lab package
 
 Read [the Voice Lab contract](contracts/voice-lab.md) and [Voice Lab package guide](docs/VOICE-LAB-PACKAGE.md).
@@ -64,9 +113,10 @@ This is a documentation requirement, not proof of live integration.
 [Metamorph](contracts/metamorph.md) is the assembled stage/world graph. Read the
 [six semantic examples](examples/morph-language.md), [storage guidance](contracts/persistence.md) and
 [requirements versus evidence](docs/MORPH-CAPABILITY-STATUS.md). Slice and Thinian/Rougish are editors
-over the same language. Current narrower codecs do not redefine it. SQLite remains the local/Tassy
-default; database layout is non-normative and PostgreSQL is a measured scale-up option behind the same
-services. No consumer upgrade or new implementation proof is implied by this release.
+over the same language. Current narrower codecs do not redefine it. SQLite remains the canonical local
+authoring default; Tassy and Moonbeam delivery profiles use read-only baseline copies. Database layout is
+non-normative and PostgreSQL is a measured scale-up option behind the same services. No consumer upgrade
+or new implementation proof is implied by this release.
 
 [Behavior layers](contracts/behavior.md) distinguish local Motion, Place-bound Path, admitted Intention
 and game-system authority; [examples](examples/behavior-plans.md) show their controller composition.
@@ -109,7 +159,7 @@ without editing consumers or publishing. A stable command is available for later
 [Direct project installation](docs/INSTALLING-PROJECT-KIT.md) verifies the published tag and replaces
 only the vendored Kit, preserving local supplements and recording delivery separately from runtime proof.
 
-[VERSION-0.1.11.md](VERSION-0.1.11.md) makes this Kit version visible in a directory listing.
+[VERSION-0.1.13.md](VERSION-0.1.13.md) makes this candidate version visible in a directory listing.
 
 ## Shared voice-authoring refinements
 

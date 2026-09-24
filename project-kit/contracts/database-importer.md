@@ -31,9 +31,13 @@ The project runs in a browser, local server or local filesystem environment. It 
 browser `localStorage`, project folders, export packages, virtual Git patches or local files. Direct
 canonical database access is absent or optional, so export/import packages are the bridge.
 
+On Tassy or Moonbeam delivery profiles, browser-owned storage is the ordinary edit destination and
+canonical database mutation is unavailable to editor clients. A package may still be exported for
+review; Import cannot be used as a hidden delivery-host write path.
+
 ### Mode 3: direct database mode
 
-The project runs locally with direct access to the canonical database through the approved local service
+The project runs in its explicitly selected local development workshop with direct access to the canonical database through the approved local service
 surface. Checked writes, readback, guarded updates and review receipts are required. Direct access does
 not bypass the canonical importer/admission rules.
 
@@ -66,9 +70,10 @@ interaction unless a project explicitly declares a finer physical contract.
 ## Shared canonical database importer
 
 There should be one shared **Canonical Database Importer** screen rather than bespoke importers per
-project. The preferred strong runtime is the Talisman Application Server because it can run as a
-controlled local-area/system-administrator tool with direct access to registered projects and the
-canonical database.
+project. The preferred strong runtime is a controlled local authoring/system-administrator profile with
+direct access to registered projects and the canonical database. It may use Talisman Application Server
+code, but it is not the Tassy delivery profile. Tassy rehearses the Moonbeam read-only baseline and does
+not expose importer writes to ordinary editor clients.
 
 The design must still allow weaker situations: a project-local screen may validate/export packages, and
 offline tools may prepare an import report without committing to the database.

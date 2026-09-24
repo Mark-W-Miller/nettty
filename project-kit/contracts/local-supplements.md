@@ -33,6 +33,9 @@ handoff includes the relevant project context; a content-only Morph return remai
 with required dependencies. Send documentation feedback as an accompanying clearly identified supplement
 or owner handoff, not by forcing full application source into every content return. Preserve previously
 dispatched ZIP bytes; issue a new named snapshot or explicit supplement for later guidance.
+Check version-pinned packaging/validation tools during every Kit upgrade; a historical tool pin is not
+silently current. Keep the active assignment and later supplements distinct from the source baseline and
+completed earlier attempts, even when a cumulative return contains all of them.
 
 ## Handoff to Merlin, then shared review
 

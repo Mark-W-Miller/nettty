@@ -42,6 +42,26 @@ class InstallTests(unittest.TestCase):
         g('tag','v0.1.9')
         with self.assertRaises(ValueError): i.release_files(repo,'v0.1.9',remote=False)
 
+    def test_source_local_supplements_are_not_release_files(self):
+        repo = self.base / 'release'; repo.mkdir()
+        (repo / 'README.md').write_bytes(b'released')
+        (repo / 'VERSION-0.1.12.md').write_text('# Moondance Project Kit 0.1.12\n')
+        (repo / 'project-kit-local').mkdir()
+        (repo / 'project-kit-local/README.md').write_text('source-only collector guidance')
+        entries = []
+        for name in ('README.md', 'VERSION-0.1.12.md'):
+            data = (repo / name).read_bytes()
+            entries.append({'path':name, 'bytes':len(data), 'sha256':i.sha(data)})
+        manifest = {'kit_version':'0.1.12', 'files':entries,
+                    'content_digest':i.sha(json.dumps(entries,sort_keys=True,separators=(',',':')).encode())}
+        (repo / 'manifest.json').write_text(json.dumps(manifest))
+        def g(*args):
+            return subprocess.check_output(['git','-C',str(repo),*args],stderr=subprocess.PIPE)
+        g('init','-q'); g('add','.'); g('-c','user.name=Test','-c','user.email=test@example.invalid','commit','-qm','fixture')
+        g('tag','v0.1.12')
+        loaded = i.release_files(repo,'v0.1.12',remote=False)
+        self.assertEqual(set(loaded[2]), {'README.md', 'VERSION-0.1.12.md', 'manifest.json'})
+
     def test_preview_is_read_only(self):
         before = i.tree_state(self.root)
         r = i.install(self.root, self.release, self.base / 'state')

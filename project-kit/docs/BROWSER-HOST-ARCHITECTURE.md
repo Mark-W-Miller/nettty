@@ -5,6 +5,12 @@ Tassy remains the Java service/database/native-integration host. Its primary use
 browser-hosted HTML/CSS/JavaScript. Any remaining native UI may be a small launcher/operator surface
 (start/stop/status/open browser/configuration/recovery), or eventually none.
 
+The unreleased 24 September direction refines authority: local project servers are the writable
+development workshops; Tassy is the assembled rehearsal of Moonbeam and serves its canonical baseline
+read-only to editor clients while browser-owned edits remain enabled. Browser hosting therefore does not
+grant database writes. See [persistence profiles](../contracts/persistence.md) and the
+[migration sequence](READ-ONLY-DELIVERY-MIGRATION.md).
+
 Before claiming Java UI removal, inventory existing screens/operator functions, native integrations,
 authentication/permissions and user-data flows; identify replacements and remaining dependencies.
 Plan any required data/configuration migration and recovery, preserve existing user state, implement

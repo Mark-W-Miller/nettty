@@ -18,7 +18,7 @@ Apply to registered Git checkouts:
 python3 scripts/install_mpk.py --tag v0.1.9 --apply --state-dir /absolute/new-receipt-directory
 ```
 
-Use `--include-workspaces` to include registered non-Git task folders (currently Sam and Grand Pubah).
+Use `--include-workspaces` to include registered non-Git task folders (currently Grand Pubah).
 Use `--only lee finian` to select registry IDs. The default registry is `collection/pinned-projects.json`;
 `--registry` overrides it. Each worktree receives its physical copy while retaining shared repository
 identity. No branch creation, switching, deletion or consumer Git operation is performed.
@@ -28,6 +28,9 @@ content digest, complete tree membership and every size/hash, then stages and re
 copy. Local dirty source bytes cannot substitute for a tagged release. Network failure blocks source
 verification; there is no CLI bypass. Run from the publisher checkout with the requested tag available;
 a vendored Kit is not itself the publisher repository.
+
+The publisher repository's own `project-kit-local/` collector guidance is outside the release inventory.
+It is never nested inside an installed Kit or substituted for a consumer's local supplements.
 
 Receipts and backups go in a new `--state-dir` outside source and target projects. Defaults use `/tmp`,
 which is temporary; select durable storage for retained recovery evidence. Existing receipt directories

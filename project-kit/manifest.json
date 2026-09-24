@@ -1,12 +1,12 @@
 {
-  "kit_version": "0.1.11",
+  "kit_version": "0.1.13",
   "kind": "documentation-release",
-  "source_revision": "4dc9f433df50d4a64208d18eb09ede55122ac42a",
-  "source_date": "2026-09-19",
-  "source_revision_role": "base revision; candidate working bytes identified by content_digest; no final release commit yet",
+  "source_revision": "0362970053caf8d337bdb8bd7865df8f889ee254",
+  "source_date": "2026-09-24",
+  "source_revision_role": "base revision; candidate working bytes identified by content_digest; final release commit recorded by tag",
   "catalog_status": "incomplete",
-  "content_digest": "11676f2317c920d4ca2d024ac26fa7cfdb51b836ee03bf8deaf7c5c945f290a9",
-  "digest_algorithm": "SHA256 of UTF-8 JSON files array, sorted keys, compact separators; manifest excluded",
+  "content_digest": "6885ded7fee884dc6d96f88c1856cc2bfb47ecf4f859b3372deb32b74a26ebc8",
+  "digest_algorithm": "SHA256 of UTF-8 JSON files array, sorted keys, compact separators; manifest and source-side project-kit-local excluded",
   "files": [
     {
       "path": ".gitignore",
@@ -20,8 +20,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 10694,
-      "sha256": "b96a6edad2bf02d7ce947500ea113c9bccbc43daae8b3df9c37deb253c0679b3"
+      "bytes": 14705,
+      "sha256": "5271752785f98018ef3f06b4ef1261dfa2d1708112ea3ecae0b23c8c4a7bb693"
     },
     {
       "path": "DEPENDENCIES-LICENSES.md",
@@ -30,33 +30,33 @@
     },
     {
       "path": "MOONDANCE-PROJECT-KIT.md",
-      "bytes": 9037,
-      "sha256": "87ff5fe3f63b268b128c51d5a0efd845b84724845c5fb6f1bc57544367df6654"
+      "bytes": 11470,
+      "sha256": "bf5329cd829a5144fb60162b2920135efc800880793ab70ea22dc8aec4ab7ccc"
     },
     {
       "path": "PROVENANCE.json",
-      "bytes": 1026,
-      "sha256": "aad740796a4a1f211361df2023d30f42c1b82348aff0a625e5b429c26b226e68"
+      "bytes": 1181,
+      "sha256": "383181341293fb9141c2a876583507e76c8724f7f2d97d1922b2d5c9412140d3"
     },
     {
       "path": "README.md",
-      "bytes": 7702,
-      "sha256": "e5423448ae11831237f376fb1dc3d72f638ebc55aec2d99c3b4945788eef54f6"
+      "bytes": 10870,
+      "sha256": "0896658cd2d4c0132730befbfa7ae97719f40b17bdf5da725e08bf13b57fd28b"
     },
     {
       "path": "RELEASE-NOTES.md",
-      "bytes": 1567,
-      "sha256": "1ee50f854771b84402306620195ed9d355b81dcbbfb246414769dafb2b613ff4"
+      "bytes": 3574,
+      "sha256": "0b6e4fac6860ed8290d549f7cc782a1fbef5c5f560e5368845a8d14e3e4deef0"
     },
     {
-      "path": "VERSION-0.1.11.md",
-      "bytes": 268,
-      "sha256": "57c320a35c4028f8c7a43f731e1e830ff5231f767ab66054e24fdb783bcdc881"
+      "path": "VERSION-0.1.13.md",
+      "bytes": 427,
+      "sha256": "ac285c57dc003db9f31e9f4c42e9c8f52128999ffd349e3c63544f2d2aa2504b"
     },
     {
       "path": "catalog/README.md",
       "bytes": 927,
-      "sha256": "58184bbbf098737c8d7f76218265604dcaaab7c3e29ef08be6558b95bd09ed8c"
+      "sha256": "70615b3f90bd1021fdbfbca60ded548138973bb0583250ab46972cc7ebb8d341"
     },
     {
       "path": "catalog/status.json",
@@ -65,8 +65,8 @@
     },
     {
       "path": "collection/pinned-projects.json",
-      "bytes": 2309,
-      "sha256": "0f6e8e00692f2789e04bb83ce0dcb1633d5dd9c765cb3fc646572ebc218139dd"
+      "bytes": 2136,
+      "sha256": "92506561029785b37261e12095e047c7116c043d3842dff0643020f318bd4562"
     },
     {
       "path": "contracts/accessibility.md",
@@ -89,14 +89,24 @@
       "sha256": "3b97ce8bc34f4c69a9c621376960d6d109924151a335eb772659e80e80f7c2c1"
     },
     {
+      "path": "contracts/authoring-state.md",
+      "bytes": 3767,
+      "sha256": "93fc344c80acbbe13bba464711322f8f4063ffa8a9beee7c5a7f37cd60cebd6b"
+    },
+    {
       "path": "contracts/behavior-executors.md",
       "bytes": 10093,
       "sha256": "d6a9c708aa443fa4669bb5f7df0eefb3bc49940ee433cd1426625255859033df"
     },
     {
       "path": "contracts/behavior.md",
-      "bytes": 6676,
-      "sha256": "b27d44939cedea76ae66fe43c042cdd064d223d1fb1eebfe35244a41df00db95"
+      "bytes": 7309,
+      "sha256": "a7a7f431471a8af16f6185d5be1582be4981c1d30fe098aeb9e0902d2b41d886"
+    },
+    {
+      "path": "contracts/browser-workspace.md",
+      "bytes": 5556,
+      "sha256": "06be96e48b18e56b9ddea0a7763c80e4606b91a206410b9d972e779f7dc50256"
     },
     {
       "path": "contracts/campaign-simulation.md",
@@ -104,14 +114,24 @@
       "sha256": "03c4be272933e0e48cf7d11e3765cd5039fef45890e5be8a9cedcf233a3659ff"
     },
     {
+      "path": "contracts/compiled-morph-packages.md",
+      "bytes": 3816,
+      "sha256": "5d17a2f0be9df70c79184125c2e90017f646da17a8b12098452a7fe4a9591512"
+    },
+    {
+      "path": "contracts/component-publication.md",
+      "bytes": 4031,
+      "sha256": "c9c3507f7b0573aadeb2fbda0404259f60b9e8b48057cb5f934791ed647321af"
+    },
+    {
       "path": "contracts/context.md",
-      "bytes": 132,
-      "sha256": "76122ed447d70b31cac491babd439e0a3864712b35094fe943f8353eac8807cb"
+      "bytes": 4182,
+      "sha256": "cd37b6ee366f40d6a4f2daabb0ab40e95728c25d98120fedaa7f9811b94dabc7"
     },
     {
       "path": "contracts/database-importer.md",
-      "bytes": 5688,
-      "sha256": "2792eba0cafaf6c1d5799d6102ab66b1de0b5a7466869c1d8441ad30c2e69885"
+      "bytes": 6153,
+      "sha256": "8ad88e9dde5acf646a8953f29c3c0163b52f5265648a1b21681a1fb30ff524f5"
     },
     {
       "path": "contracts/dtd-ui.md",
@@ -125,8 +145,8 @@
     },
     {
       "path": "contracts/local-supplements.md",
-      "bytes": 5506,
-      "sha256": "f1f682680b6513c07a8c28529f001eb682e7a6b65a2d91c0f685d56021c0d8a7"
+      "bytes": 5794,
+      "sha256": "97c7772ee4e80bde04a2756b30f3418c3a64dc53049bddc116741b79b3dbc74d"
     },
     {
       "path": "contracts/metamorph.md",
@@ -150,8 +170,8 @@
     },
     {
       "path": "contracts/native-content.md",
-      "bytes": 5672,
-      "sha256": "b0104afb45b296845eac45b41129387b774347fa5db5517d079babfa8e2c6fd8"
+      "bytes": 6694,
+      "sha256": "bdbd2525dbae5163776e49a9e8597d9e95b15babab6512bf9063406e3261919f"
     },
     {
       "path": "contracts/objects.md",
@@ -165,8 +185,8 @@
     },
     {
       "path": "contracts/persistence.md",
-      "bytes": 5407,
-      "sha256": "0214d4b9d78d77f15957586dfde724f450420b8afc68a14459a65a8f59ab60ca"
+      "bytes": 11055,
+      "sha256": "8ec2db40a136d37c168e820279e2b0c2079b147b724077303908d4770a26c8d2"
     },
     {
       "path": "contracts/physics.md",
@@ -174,9 +194,19 @@
       "sha256": "3c9baedc65c9fefe9dd80bff95c102efaeaaefcdda7634e09f76f5b9cfea7832"
     },
     {
+      "path": "contracts/place-package-exchange.md",
+      "bytes": 3408,
+      "sha256": "2516aaf195cfdf007c0270eadc99b74770ba8decf333408a0d47bbbea84088ed"
+    },
+    {
       "path": "contracts/place.md",
-      "bytes": 2634,
-      "sha256": "fbfb986b435a24c725922502a238d1693857258f565df6dae35318bb0afaeb99"
+      "bytes": 3800,
+      "sha256": "ecb0a6e01d9433860f648097bfdd66d3c0e2f90dc66e00b3a7ee4c3456d7e223"
+    },
+    {
+      "path": "contracts/press-hold-radial-menu.md",
+      "bytes": 2803,
+      "sha256": "576a003a34e6fd5a9d206a7a327528a12b03920377821a6da87abdbb982ce45f"
     },
     {
       "path": "contracts/services.md",
@@ -192,6 +222,11 @@
       "path": "contracts/talisman-console.md",
       "bytes": 9797,
       "sha256": "683b0678164dde65d44e337547a8f01feb04d738e86f8e49183fa3394fcbddc5"
+    },
+    {
+      "path": "contracts/terrain-navigation.md",
+      "bytes": 8448,
+      "sha256": "2a36a463cdc76da8197ff2f9e69a227cd6bba3636b60803b388499ba27b8b6b6"
     },
     {
       "path": "contracts/theme.md",
@@ -210,23 +245,28 @@
     },
     {
       "path": "docs/ADOPTION.md",
-      "bytes": 2746,
-      "sha256": "94484c56aff29f31e7915d78800db877fe833c0157ea9f7f74a320ef95b47d3a"
+      "bytes": 2788,
+      "sha256": "11378f584eac6f245454c57fd2b13ea00ca5c5f11b012a5f2603d88336637976"
     },
     {
       "path": "docs/BROWSER-HOST-ARCHITECTURE.md",
-      "bytes": 1421,
-      "sha256": "b78eab784afa1f3a8fb368c6f5d4db1ad78855e00968c303d9cd77248b66b732"
+      "bytes": 1867,
+      "sha256": "ff04a2e7d86090697f0f043361c36d806d4a3866f2fb3274e6bf74adc7259890"
+    },
+    {
+      "path": "docs/COLLECTED-FINDINGS-0.1.13.md",
+      "bytes": 6153,
+      "sha256": "3cd640df2fb16882b332ad3edd8a8f12af7a0c27e2e60e9f548a99b4d5033c1f"
     },
     {
       "path": "docs/COLLECTING-PROJECT-UPDATES.md",
-      "bytes": 5438,
-      "sha256": "cd8a19d0d4a7ac526f9c4a2dca2e852958b78384248ea7dd7bfc4403a5a356ed"
+      "bytes": 5427,
+      "sha256": "71e6e20b7ff6b202b6b2fd72b17bd534f736071d5716f6d4bf53ebfccc75cdae"
     },
     {
       "path": "docs/DELIVERY-GATES.md",
-      "bytes": 10640,
-      "sha256": "cb494e08468e0d16f1511b8fb508fa44dbf3d4ead8cdae2b361881e91c2ded6f"
+      "bytes": 14307,
+      "sha256": "735d30c1146b18b1563edaa4636bb69675046721222a0d452b78107827b4390c"
     },
     {
       "path": "docs/FIELD-TRIAL-LESSONS.md",
@@ -235,8 +275,8 @@
     },
     {
       "path": "docs/INSTALLING-PROJECT-KIT.md",
-      "bytes": 3538,
-      "sha256": "72226f703d94c5320de482268fdebaba4a12e635f8592cc542815155ce5b89d1"
+      "bytes": 3730,
+      "sha256": "1fc6beba3c3241d68d21b2c09150899f8427325fe78d3df5ba21c756533cb722"
     },
     {
       "path": "docs/LEE-VOICE-LAB-FINDINGS.md",
@@ -262,6 +302,16 @@
       "path": "docs/MIGRATION-0.1.11.md",
       "bytes": 1197,
       "sha256": "e6fcb966e96364fa46ff6b781827da38e35f3b237ed0583771daba658867b652"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.12.md",
+      "bytes": 1995,
+      "sha256": "4b132d7f362ff530d0cb77ef1d605f3569a1f135bbeca90816b0e3e8496c121a"
+    },
+    {
+      "path": "docs/MIGRATION-0.1.13.md",
+      "bytes": 2328,
+      "sha256": "f06fee0e5d71b2d8caed603deabfe27f6f6d707bdf5484f79c7d89412fc0eab3"
     },
     {
       "path": "docs/MIGRATION-0.1.2.md",
@@ -320,8 +370,18 @@
     },
     {
       "path": "docs/PUBLISHING-INSTALLED-KITS.md",
-      "bytes": 3753,
-      "sha256": "c4e3f947a9ca6d467662e6e7ecec1324e70536fa22bd30255072d17eaa84c853"
+      "bytes": 3639,
+      "sha256": "67bac4ac6c0011cefd8d4b0b5299db478bc1bf7531bb83513144b5bfc427699f"
+    },
+    {
+      "path": "docs/READ-ONLY-DELIVERY-MIGRATION.md",
+      "bytes": 4571,
+      "sha256": "0aca2932addcab340ead791d055f67b2d988ea3a9356695a086a9c4cfb721ab7"
+    },
+    {
+      "path": "docs/SLICE-FINDINGS-0.1.12.md",
+      "bytes": 4280,
+      "sha256": "b78ecb4aad85e164b5573291a958ea7f4f27ca3900dc972746a47b7ad3506b33"
     },
     {
       "path": "docs/TASSY-ADMISSION-REFERENCE.md",
@@ -335,8 +395,8 @@
     },
     {
       "path": "docs/UPDATE-SOURCES.md",
-      "bytes": 10033,
-      "sha256": "6a33192cad40d63ca185cc282a58277facee030644b606f2b49df1aba0708cdd"
+      "bytes": 14127,
+      "sha256": "c7cf55772abf3464de84c5085664aed55f36b06bf33562f18f979cc205fc4e8a"
     },
     {
       "path": "docs/VOICE-LAB-PACKAGE.md",
@@ -354,9 +414,14 @@
       "sha256": "1dfee94a5073f39dc6cef85fe39a28d8b4fd99c8bfa9b590eb1d656ed3c71ab7"
     },
     {
+      "path": "examples/component-publication-plan.json",
+      "bytes": 662,
+      "sha256": "530a5ae627a62cc824de16e9eb8c3dfe43faf5e8e75e52b32ffc8b1ab83a71aa"
+    },
+    {
       "path": "examples/consumer-lock.json",
       "bytes": 251,
-      "sha256": "ddbc38d3ca37c09e53de8cfd25970c6808833f457ffaaa9631067a08a9c1928e"
+      "sha256": "e02d990740f50a832330662dea422fc85dd47aa65158617709c4c4e5f4306cf0"
     },
     {
       "path": "examples/derek-campaign-heartbeat.md",
@@ -375,8 +440,8 @@
     },
     {
       "path": "inspect/index.html",
-      "bytes": 14849,
-      "sha256": "356371cffdf1b3fdb8509d6a80a7d8588797c5db93f29b448bac6b56fb88922e"
+      "bytes": 16362,
+      "sha256": "0ad4edeef908d06f1a62a77bb9bdc446c8053cc7388f5df9d31ceda7ee61caa7"
     },
     {
       "path": "lifecycle/ACTIVE-DESIGN.template.md",
@@ -659,6 +724,11 @@
       "sha256": "dccb4517d6df1af486d1b434f2a463eac5a3ccd30dbb2533c91e566d6fc1b7b1"
     },
     {
+      "path": "schemas/component-publication.schema.json",
+      "bytes": 1656,
+      "sha256": "1c5d9bbe78d843bf83c93eb49c51e214f0ea8e4cba1549d53df7a2e0161284a4"
+    },
+    {
       "path": "schemas/consumer-lock.schema.json",
       "bytes": 399,
       "sha256": "9d4b37da0d2877847bac2caebf6bd32697fc9304b79f29d574be038c1a6145b0"
@@ -685,13 +755,18 @@
     },
     {
       "path": "scripts/install_mpk.py",
-      "bytes": 11215,
-      "sha256": "9acbab1e0eb16ce4a42fccb6b4bc4850ea93a67bca6f791b0d5eb96104f3ba96"
+      "bytes": 11452,
+      "sha256": "ecf2a25803d9fcc88ae6eefae199839b392d9816214f0c4d9fc62a3ec294b998"
+    },
+    {
+      "path": "scripts/publish_component.py",
+      "bytes": 6790,
+      "sha256": "0a66be42b66986f313fb3f6c105c79b18f6a4e5097bb1164c45ae1561f6c8e08"
     },
     {
       "path": "scripts/publish_mpk_installs.py",
-      "bytes": 11507,
-      "sha256": "41e52d5c800251a07138dde51bb1a7769f7f56062ccbb6c99a2841c5cc1a563f"
+      "bytes": 12036,
+      "sha256": "1bd8028646a9cc66a7e65105d25e30d23be1af9457fd8e9b666566173610bf14"
     },
     {
       "path": "templates/character.json",
@@ -715,13 +790,18 @@
     },
     {
       "path": "tests/test_install_mpk.py",
-      "bytes": 5007,
-      "sha256": "7d65b97e311e5399f89891797c9e97086d369b9c89d7cc53bdd6d21f5622506a"
+      "bytes": 6272,
+      "sha256": "7c160401f78469dc2977a120821007d3c6fc067a13693969b0e9b3e3b60b6ec2"
+    },
+    {
+      "path": "tests/test_publish_component.py",
+      "bytes": 4383,
+      "sha256": "7f500c802724fe06639159fb1f1926cf3ed13c4c218f40e32ef83c75e1399d81"
     },
     {
       "path": "tests/test_publish_mpk_installs.py",
-      "bytes": 4104,
-      "sha256": "bdef8e6c98807925f13c05c4cfc19d9e0fbbbc1a67cb431d03bb14a9774d07d9"
+      "bytes": 3788,
+      "sha256": "73d557bd74ca55f691ca2f62361db3880ea87a6703945059f2b8fd571d1f7898"
     },
     {
       "path": "themes/talisman-forest.tokens.json",
